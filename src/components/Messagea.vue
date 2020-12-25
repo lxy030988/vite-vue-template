@@ -15,6 +15,7 @@ export default {
 
 <style lang="scss" scoped module>
 .a {
+  display: flex;
   background: rebeccapurple;
   .b {
     font-size: 28px;
