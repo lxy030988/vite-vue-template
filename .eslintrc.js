@@ -1,24 +1,33 @@
-// ESLint的规则有三种级别：
-// "off"或者0，不启用这个规则
-// "warn"或者1，出现问题会有警告
-// "error"或者2，出现问题会报错
+/**
+ * ESLint的规则有三种级别：
+ * "off"或者0，不启用这个规则
+ * "warn"或者1，出现问题会有警告
+ * "error"或者2，出现问题会报错
+ */
 module.exports = {
   root: true,
   env: {
+    node: true,
     browser: true,
     commonjs: true,
     es6: true
   },
-  extends: ['eslint:recommended', 'plugin:vue/base'],
+  extends: [
+    'plugin:vue/vue3-essential',
+    'eslint:recommended',
+    '@vue/typescript/recommended',
+    '@vue/prettier',
+    '@vue/prettier/@typescript-eslint'
+  ],
   parserOptions: {
+    ecmaVersion: 2020,
     sourceType: 'module',
     parser: 'babel-eslint'
   },
   plugins: ['vue'],
   globals: {
     process: true,
-    __dirname: true,
-    videojs: true
+    __dirname: true
   },
   rules: {
     indent: [2, 2], //缩减两个空格

@@ -3,19 +3,24 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "lint": "eslint \"src/**/*([^d]|[^.]d).{ts,vue}\""
   },
   "dependencies": {
-    "babel-eslint": "^10.1.0",
     "vue": "^3.0.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
     "@typescript-eslint/eslint-plugin": "^4.11.0",
     "@typescript-eslint/parser": "^4.11.0",
     "@vue/compiler-sfc": "^3.0.4",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
-    "autoprefixer": "^10.1.0",
+    "@vue/test-utils": "^1.1.2",
+    "autoprefixer": "^8.0.0",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "eslint": "^7.16.0",
     "eslint-plugin-prettier": "^3.3.0",
     "eslint-plugin-vue": "^7.3.0",
