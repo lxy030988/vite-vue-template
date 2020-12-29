@@ -21,3 +21,8 @@ vite+vue3+antd后台管理系统模板
 
 
 
+### 环境变量
+- 客服端使用
+```js
+import.meta.env.VITE_BASE_URL
+```

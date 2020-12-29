@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "cross-env vite build --mode=prod",
     "lint": "eslint \"src/**/*([^d]|[^.]d).{ts,vue}\""
   },
   "dependencies": {
@@ -20,7 +20,7 @@
     "@vue/test-utils": "^1.1.2",
     "autoprefixer": "^8.6.5",
     "babel-eslint": "^10.1.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "cross-env": "^7.0.3",
     "eslint": "^7.16.0",
     "eslint-plugin-prettier": "^3.3.0",
     "eslint-plugin-vue": "^7.3.0",
@@ -37,7 +37,7 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx,vue,ts,tsx}": [
+    "src/**/**.{js,jsx,vue,ts,tsx}": [
       "eslint",
       "git add"
     ]

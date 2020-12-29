@@ -18,6 +18,7 @@ export default defineComponent({
     Messagea
   },
   setup() {
+    // console.log(import.meta.env.VITE_BASE_URL)
     return {}
   }
 })
