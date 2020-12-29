@@ -7,4 +7,4 @@ vite+vue3+antd后台管理系统模板
 },
 "lint-staged": {
   "*.{js,vue}": "eslint"
-},
+}, 
