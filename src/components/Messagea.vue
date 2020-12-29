@@ -24,4 +24,7 @@ export default defineComponent({
     font-size: 28px;
   }
 }
+::placeholder {
+  color: gray;
+}
 </style>
