@@ -25,6 +25,7 @@ export interface Lessons {
 }
 
 export interface HomeState {
+  name: string
   currentCategory: CATEGORY_TYPES
   sliders: Slider[]
   lessons: Lessons

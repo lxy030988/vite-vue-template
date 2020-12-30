@@ -9,6 +9,7 @@ import HelloWorld from '/@/components/HelloWorld.vue'
 import Messagea from '/@/components/Messagea.vue'
 
 import { defineComponent } from 'vue'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'App',
@@ -18,6 +19,8 @@ export default defineComponent({
   },
   setup() {
     // console.log(import.meta.env.VITE_BASE_URL)
+    const store = useStore()
+    console.log(store.state.home.name)
     return {}
   }
 })
