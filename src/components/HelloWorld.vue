@@ -1,5 +1,7 @@
 <template>
   <h1>{{ msg }}</h1>
+  <img alt="Vue logo" src="/@/assets/logo.png" />
+
   <a-button type="primary" @click="onSubmit">测试按钮</a-button>
 </template>
 

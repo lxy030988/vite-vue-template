@@ -1,8 +1,8 @@
 const path = require('path')
-import { loadEnv, UserConfig } from 'vite'
+import { loadEnv } from 'vite'
 const CWD: string = process.cwd()
 
-module.exports = (mode: string): UserConfig => {
+module.exports = (mode: string) => {
   console.log('mode=>', mode)
   const envConfig = loadEnv(mode, CWD)
   console.log('envConfig=>', envConfig)
@@ -14,6 +14,7 @@ module.exports = (mode: string): UserConfig => {
       // 路径映射必须以/开头和结尾
       '/@/': path.resolve(__dirname, 'src')
     },
+    // assetsDir: 'vite-vue-template/assets', // 资源文件夹
     // proxy: {
     //   '/api': {
     //     target: 'http://jsonplaceholder.typicode.com',
@@ -29,13 +30,7 @@ module.exports = (mode: string): UserConfig => {
     },
     optimizeDeps: {
       link: [],
-      include: [
-        'qs',
-        'echarts/map/js/china',
-        'ant-design-vue/es/locale/zh_CN',
-        'ant-design-vue/es/locale/en_US',
-        '@ant-design/icons-vue'
-      ],
+      include: [],
       allowNodeBuiltins: [],
       exclude: []
     },
@@ -44,22 +39,22 @@ module.exports = (mode: string): UserConfig => {
         keep_infinity: true
       }
     },
-    // rollupOutputOptions: {
-    //   preserveEntrySignatures: 'strict',
-    //   // entryFileNames: '[name].js',
-    //   // chunkFileNames: '[name].js',
-    //   // assetFileNames: '[name].[ext]',
-    //   manualChunks(id) {
-    //     if (id.includes('/node_modules/')) {
-    //       const expansions = []
-    //       if (expansions.some(exp => id.includes(`/node_modules/${exp}`))) {
-    //         return 'expansion'
-    //       } else {
-    //         return 'vendor'
-    //       }
-    //     }
-    //   }
-    // },
+    rollupOutputOptions: {
+      preserveEntrySignatures: 'strict',
+      entryFileNames: '[name]-[hash].js',
+      chunkFileNames: '[name]-[hash].js',
+      assetFileNames: '[name]-[hash].[ext]',
+      manualChunks(id) {
+        if (id.includes('/node_modules/')) {
+          const expansions = []
+          if (expansions.some(exp => id.includes(`/node_modules/${exp}`))) {
+            return 'expansion'
+          } else {
+            return 'vendor'
+          }
+        }
+      }
+    },
     shouldPreload() {
       return true
     }
