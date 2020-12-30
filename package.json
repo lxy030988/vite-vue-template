@@ -7,6 +7,7 @@
     "lint": "eslint \"src/**/*([^d]|[^.]d).{ts,vue}\""
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "vue": "^3.0.4"
   },
   "devDependencies": {

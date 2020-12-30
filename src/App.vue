@@ -8,6 +8,8 @@
 <script lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
 import Messagea from './components/Messagea.vue'
+import { getSliders } from '/@/api/home'
+import { Slider } from '/@/typings/home'
 
 import { defineComponent } from 'vue'
 
@@ -17,7 +19,10 @@ export default defineComponent({
     HelloWorld,
     Messagea
   },
-  setup() {
+  async setup() {
+    const sliders = await getSliders<Slider>()
+
+    console.log(sliders)
     // console.log(import.meta.env.VITE_BASE_URL)
     return {}
   }
