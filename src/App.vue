@@ -1,25 +1,23 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <img alt="Vue logo" src="/@/assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3.0 + Vite1" />
-  <Messagea></Messagea>
+  <a-menu theme="dark" mode="horizontal" v-model:selectedKeys="selectedKeys" :style="{ lineHeight: '64px' }">
+    <a-menu-item key="/">
+      <router-link to="/">首页</router-link>
+    </a-menu-item>
+    <a-menu-item key="/plan">
+      <router-link to="/plan">计划</router-link>
+    </a-menu-item>
+  </a-menu>
+  <router-view></router-view>
 </template>
 
 <script lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import Messagea from './components/Messagea.vue'
-
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'App',
-  components: {
-    HelloWorld,
-    Messagea
-  },
   setup() {
-    // console.log(import.meta.env.VITE_BASE_URL)
     return {}
   }
 })
 </script>
+
+<style scoped></style>
