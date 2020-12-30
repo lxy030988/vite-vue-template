@@ -1,24 +1,26 @@
 <template>
   <h1>{{ msg }}</h1>
-  <button @click="count++">count is: {{ count }}</button>
-  <p>
-    Edit
-    <code>components/HelloWorld.vue</code>
-    to test hot module replacement.
-  </p>
+  <a-button type="primary" @click="onSubmit">测试按钮</a-button>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { getSystemDomainLogo } from '/@/api/user'
 
 export default defineComponent({
   name: 'HelloWorld',
   props: {
     msg: String
   },
-  data() {
+  setup() {
+    async function onSubmit() {
+      const res = await getSystemDomainLogo<any>()
+
+      console.log('onSubmit', res)
+    }
     return {
-      count: 0
+      count: 0,
+      onSubmit
     }
   }
 })

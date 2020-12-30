@@ -1,5 +1,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import './index.scss'
+import { setupAntd } from '/@/plugins/'
 
-createApp(App).mount('#app')
+import './index.scss'
+const app = createApp(App)
+setupAntd(app)
+
+app.mount('#app')

@@ -23,7 +23,9 @@ module.exports = (mode: string): UserConfig => {
     // },
     plugins: [],
     cssPreprocessOptions: {
-      scss: {}
+      scss: {
+        // additionalData: `@import "src/index.scss";`
+      }
     },
     optimizeDeps: {
       link: [],

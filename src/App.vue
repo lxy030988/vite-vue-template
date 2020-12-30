@@ -8,8 +8,6 @@
 <script lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
 import Messagea from './components/Messagea.vue'
-import { getSystemDomainLogo } from '/@/api/user'
-import { Slider } from '/@/typings/user'
 
 import { defineComponent } from 'vue'
 
@@ -20,10 +18,7 @@ export default defineComponent({
     Messagea
   },
   setup() {
-    // const res = await getSystemDomainLogo<any>()
-
-    // console.log(res)
-    console.log(import.meta.env.VITE_BASE_URL)
+    // console.log(import.meta.env.VITE_BASE_URL)
     return {}
   }
 })
