@@ -3,7 +3,7 @@ import { loadEnv } from 'vite'
 const CWD: string = process.cwd()
 
 module.exports = (mode: string) => {
-  // console.log('mode=>', mode)
+  console.log('mode=>', mode)
   const envConfig = loadEnv(mode, CWD)
   console.log('envConfig=>', envConfig)
 
