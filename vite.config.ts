@@ -1,19 +1,28 @@
 const path = require('path')
-import { loadEnv } from 'vite'
+import { loadEnv, Resolver } from 'vite'
+import { configManualChunk } from './build/optimizer'
+import { createRollupPlugin, createVitePlugins } from './build/plugin'
+import globTransform from './build/plugin/transform/globby'
+import { wrapperEnv } from './build/utils'
 const CWD: string = process.cwd()
+const pkg = require('./package.json')
+
+const alias: Record<string, string> = {
+  // 路径映射必须以/开头和结尾
+  '/@/': path.resolve(__dirname, 'src')
+}
+const resolvers: Resolver[] = []
 
 module.exports = (mode: string) => {
-  // console.log('mode=>', mode)
-  const envConfig = loadEnv(mode, CWD)
-  console.log('envConfig=>', envConfig)
+  const env = loadEnv(mode, CWD)
+  const viteEnv = wrapperEnv(env)
+  console.log('viteEnv=>', viteEnv)
+  const { VITE_DROP_CONSOLE } = viteEnv
 
   return {
     root: path.resolve(__dirname),
     base: './', //生产过程中的基本公共路径 默认 '/'
-    alias: {
-      // 路径映射必须以/开头和结尾
-      '/@/': path.resolve(__dirname, 'src')
-    },
+    alias,
     // assetsDir: 'vite-vue-template/assets', // 资源文件夹
     // proxy: {
     //   '/api': {
@@ -22,7 +31,6 @@ module.exports = (mode: string) => {
     //     rewrite: path => path.replace(/^\/api/, '')
     //   }
     // },
-    plugins: [],
     cssPreprocessOptions: {
       scss: {
         // additionalData: `@import "src/index.scss";`
@@ -30,30 +38,34 @@ module.exports = (mode: string) => {
     },
     optimizeDeps: {
       link: [],
-      include: [],
+      include: ['ant-design-vue/es/locale/zh_CN', '@ant-design/icons-vue'],
       allowNodeBuiltins: [],
       exclude: []
     },
     terserOptions: {
       compress: {
-        keep_infinity: true
+        keep_infinity: true,
+        drop_console: VITE_DROP_CONSOLE
       }
     },
+    define: {
+      __VERSION__: pkg.version
+    },
+    transforms: [
+      globTransform({
+        resolvers: resolvers,
+        root: CWD,
+        alias: alias,
+        includes: [path.resolve('src/router')]
+      })
+    ],
+    plugins: createVitePlugins(viteEnv, mode as any),
+    rollupInputOptions: {
+      plugins: createRollupPlugin()
+    },
     rollupOutputOptions: {
-      preserveEntrySignatures: 'strict',
-      entryFileNames: '[name]-[hash].js',
-      chunkFileNames: '[name]-[hash].js',
-      assetFileNames: '[name]-[hash].[ext]',
-      manualChunks(id) {
-        if (id.includes('/node_modules/')) {
-          const expansions = []
-          if (expansions.some(exp => id.includes(`/node_modules/${exp}`))) {
-            return 'expansion'
-          } else {
-            return 'vendor'
-          }
-        }
-      }
+      compact: true,
+      manualChunks: configManualChunk
     },
     shouldPreload() {
       return true
