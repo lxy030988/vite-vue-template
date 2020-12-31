@@ -1,8 +1,6 @@
 const path = require('path')
-import { loadEnv, Resolver } from 'vite'
-import { configManualChunk } from './build/optimizer'
-import { createRollupPlugin, createVitePlugins } from './build/plugin'
-import globTransform from './build/plugin/transform/globby'
+import { loadEnv } from 'vite'
+import { createRollupPlugin } from './build/plugin'
 import { wrapperEnv } from './build/utils'
 const CWD: string = process.cwd()
 const pkg = require('./package.json')
@@ -11,7 +9,6 @@ const alias: Record<string, string> = {
   // 路径映射必须以/开头和结尾
   '/@/': path.resolve(__dirname, 'src')
 }
-const resolvers: Resolver[] = []
 
 module.exports = (mode: string) => {
   const env = loadEnv(mode, CWD)
@@ -51,22 +48,12 @@ module.exports = (mode: string) => {
     define: {
       __VERSION__: pkg.version
     },
-    transforms: [
-      globTransform({
-        resolvers: resolvers,
-        root: CWD,
-        alias: alias,
-        includes: [path.resolve('src/router')]
-      })
-    ],
-    plugins: createVitePlugins(viteEnv, mode as any),
+    transforms: [],
+    plugins: [],
     rollupInputOptions: {
       plugins: createRollupPlugin()
     },
-    rollupOutputOptions: {
-      compact: true,
-      manualChunks: configManualChunk
-    },
+    rollupOutputOptions: {},
     shouldPreload() {
       return true
     }

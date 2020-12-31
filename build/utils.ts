@@ -1,22 +1,9 @@
 import path from 'path'
 import fs from 'fs'
-
-export const isFunction = (arg: unknown): arg is (...args: any[]) => any =>
-  typeof arg === 'function'
-
 export interface ViteEnv {
   VITE_BASE_URL: string
   VITE_DROP_CONSOLE: boolean
-
-  VITE_PORT: number
-  VITE_USE_MOCK: boolean
-  VITE_USE_PWA: boolean
-  VITE_PUBLIC_PATH: string
-  VITE_PROXY: [string, string][]
-  VITE_GLOB_APP_TITLE: string
-  VITE_USE_CDN: boolean
   VITE_BUILD_GZIP: boolean
-  VITE_DYNAMIC_IMPORT: boolean
 }
 
 // Read all environment variable configuration files to process.env
@@ -47,6 +34,9 @@ export function isSiteMode(): boolean {
 export function isProdFn(mode: 'development' | 'production'): boolean {
   return mode === 'production'
 }
+
+export const isFunction = (arg: unknown): arg is (...args: any[]) => any =>
+  typeof arg === 'function'
 
 export function readAllFile(root: string, reg: RegExp) {
   let resultArr: string[] = []

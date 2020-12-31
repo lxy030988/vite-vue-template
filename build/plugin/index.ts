@@ -1,32 +1,9 @@
-import type { Plugin as VitePlugin } from 'vite'
 import type { Plugin as rollupPlugin } from 'rollup'
-
-import PurgeIcons from 'vite-plugin-purge-icons'
 
 import visualizer from 'rollup-plugin-visualizer'
 import gzipPlugin from './gzip/index'
 
-import { isSiteMode, ViteEnv, isReportMode, isBuildGzip } from '../utils'
-import { setupHtmlPlugin } from './html'
-// import { setupPwaPlugin } from './pwa'
-// import { setupMockPlugin } from './mock'
-
-// gen vite plugins
-export function createVitePlugins(viteEnv: ViteEnv, mode: 'development' | 'production') {
-  const vitePlugins: VitePlugin[] = []
-
-  // vite-plugin-html
-  setupHtmlPlugin(vitePlugins, viteEnv, mode)
-  // vite-plugin-pwa
-  // setupPwaPlugin(vitePlugins, viteEnv, mode)
-  // vite-plugin-mock
-  // setupMockPlugin(vitePlugins, viteEnv, mode)
-
-  // vite-plugin-purge-icons
-  vitePlugins.push(PurgeIcons())
-
-  return vitePlugins
-}
+import { isSiteMode, isReportMode, isBuildGzip } from '../utils'
 
 // gen rollup plugins
 export function createRollupPlugin() {
