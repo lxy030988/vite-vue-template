@@ -4,6 +4,7 @@ vite+vue3+antd后台管理系统模板
 
 
 ### git commit eslint
+- eslint lint -- --fix 修正分号
 
 ```json
 "gitHooks": {
@@ -25,4 +26,19 @@ vite+vue3+antd后台管理系统模板
 - 客服端使用
 ```js
 import.meta.env.VITE_BASE_URL
+```
+
+
+### commitizen git提交规范
+- npm install -g commitizen
+- commitizen init cz-conventional-changelog --save-dev --save-exact
+- git commit => git cz
+
+
+```json
+"config": {
+  "commitizen": {
+    "path": "./node_modules/cz-conventional-changelog"
+  }
+}
 ```
