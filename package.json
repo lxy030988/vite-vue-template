@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "cross-env vite build --mode=production",
-    "lint": "eslint \"src/**/*([^d]|[^.]d).{ts,vue}\""
+    "lint": "eslint --fix \"src/**/*([^d]|[^.]d).{ts,vue}\""
   },
   "dependencies": {
     "ant-design-vue": "^2.0.0-rc.7",
@@ -46,7 +46,7 @@
   },
   "lint-staged": {
     "src/**/**.{js,jsx,vue,ts,tsx}": [
-      "eslint",
+      "eslint --fix",
       "git add"
     ]
   }
