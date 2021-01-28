@@ -1,4 +1,4 @@
-import { CATEGORY_TYPES, HomeState, Lessons, Slider } from '/@/typings/user'
+import { CATEGORY_TYPES, HomeState, Lessons, Slider } from '@/typings/user'
 import { Module } from 'vuex'
 import { GlobleState } from '..'
 import * as TYPES from '../action-types'

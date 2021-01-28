@@ -1,6 +1,6 @@
 <template>
   <div>plan</div>
-  <img alt="Vue logo" src="/@/assets/logo.png" />
+  <img alt="Vue logo" src="@/assets/logo.png" />
 </template>
 
 <script lang="ts">

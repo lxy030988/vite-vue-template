@@ -1,3 +1,4 @@
+import vue from '@vitejs/plugin-vue'
 const path = require('path')
 import { loadEnv } from 'vite'
 import { createRollupPlugin } from './build/plugin'
@@ -7,7 +8,8 @@ const pkg = require('./package.json')
 
 const alias: Record<string, string> = {
   // 路径映射必须以/开头和结尾
-  '/@/': path.resolve(__dirname, 'src')
+  '@': path.resolve(__dirname, 'src')
+  // img: path.resolve(__dirname, 'src/assets')
 }
 
 module.exports = (mode: string) => {
@@ -49,7 +51,7 @@ module.exports = (mode: string) => {
       __VERSION__: pkg.version
     },
     transforms: [],
-    plugins: [],
+    plugins: [vue()],
     rollupInputOptions: {
       plugins: createRollupPlugin()
     },

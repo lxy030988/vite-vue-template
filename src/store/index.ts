@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import { HomeState } from '/@/typings/user'
+import { HomeState } from '@/typings/user'
 import home from './modules/user'
 
 export interface GlobleState {

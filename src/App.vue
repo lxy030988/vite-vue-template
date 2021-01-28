@@ -1,5 +1,6 @@
 <template>
-  <img alt="Vue logo" src="/@/assets/logo.png" />
+  <!-- /src   src   ~assets  ~/assets -->
+  <img alt="Vue logo" src="src/assets/logo.png" />
 
   <a-menu theme="dark" mode="horizontal" v-model:selectedKeys="selectedKeys" :style="{ lineHeight: '64px' }">
     <a-menu-item key="/">
@@ -15,7 +16,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import HelloWorld from '/@/components/HelloWorld.vue'
+import HelloWorld from '@/components/HelloWorld.vue'
 
 export default defineComponent({
   components: {
