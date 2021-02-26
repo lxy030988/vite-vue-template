@@ -12,7 +12,8 @@ const alias: Record<string, string> = {
   // img: path.resolve(__dirname, 'src/assets')
 }
 
-module.exports = (mode: string) => {
+module.exports = ({ mode }) => {
+  // console.log('mode', mode)
   const env = loadEnv(mode, CWD)
   const viteEnv = wrapperEnv(env)
   console.log('viteEnv=>', viteEnv)
@@ -21,7 +22,9 @@ module.exports = (mode: string) => {
   return {
     root: path.resolve(__dirname),
     base: './', //生产过程中的基本公共路径 默认 '/'
-    alias,
+    resolve: {
+      alias
+    },
     // assetsDir: 'vite-vue-template/assets', // 资源文件夹
     // proxy: {
     //   '/api': {
@@ -48,7 +51,7 @@ module.exports = (mode: string) => {
       }
     },
     define: {
-      __VERSION__: pkg.version
+      __VERSION__: JSON.stringify(pkg.version)
     },
     transforms: [],
     plugins: [vue()],
