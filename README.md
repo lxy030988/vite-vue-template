@@ -1,5 +1,47 @@
 # vite-vue-template
-vite+vue3+antd后台管理系统模板
+vite2+vue3+antd后台管理系统模板
+
+### lint
+
+```json
+"lint": "eslint --fix \"src/**/*([^d]|[^.]d).{ts,vue}\""
+"lint": "eslint --ext .ts,.vue src/** --error-on-unmatched-pattern"   --quiet(不报警告)
+"lint:fix": "eslint --ext .ts,.vue src/** --error-on-unmatched-pattern --fix"
+```
+
+
+
+### jest
+
+```json
+"jest:unit":"jest"
+
+"jest":"^26.6.3"
+"@types/jest":"^26.0.20"
+"vue-jest":"^5.0.0-alpha.7"
+"babel-jest":"^26.6.3"
+"@babel/preset-env": "^7.12.17"
+"@vue/test-utils": "^2.0.0-beta.9"
+"@babel/preset-typescript": "^7.12.17"
+"ts-jest":"^26.5.1"
+```
+
+```js
+jest.config.js
+
+module.exports = {
+  transform: {
+    "^.+\\.vue$": "vue-jest",
+    "^.+\\js$": "babel-jest",
+    "^.+\\ts$": "ts-jest",
+  },
+  moduleNameMapper: {
+    "^@/components(.*)$": "<rootDir>/src/components$1",
+  },
+  testMatch:["**/tests/unit/**/*.[jt]s?(x)"]
+};
+
+```
 
 
 

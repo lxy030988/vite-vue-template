@@ -25,14 +25,16 @@ module.exports = ({ mode }) => {
     resolve: {
       alias
     },
+    server: {
+      // proxy: {
+      //   '/api': {
+      //     target: 'http://jsonplaceholder.typicode.com',
+      //     changeOrigin: true,
+      //     rewrite: path => path.replace(/^\/api/, '')
+      //   }
+      // },
+    },
     // assetsDir: 'vite-vue-template/assets', // 资源文件夹
-    // proxy: {
-    //   '/api': {
-    //     target: 'http://jsonplaceholder.typicode.com',
-    //     changeOrigin: true,
-    //     rewrite: path => path.replace(/^\/api/, '')
-    //   }
-    // },
     cssPreprocessOptions: {
       scss: {
         // additionalData: `@import "src/index.scss";`

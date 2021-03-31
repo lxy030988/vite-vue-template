@@ -18,10 +18,7 @@ axios.interceptors.response.use(
       if (res.data.resCode === ResultEnum.SUCCESS) {
         return res.data.resData
       } else {
-        if (
-          res.data.resMsg.msgCode === ResultEnum.AUTH_ERROR ||
-          res.data.resMsg.msgCode === ResultEnum.AUTH_EXPIRE
-        ) {
+        if (res.data.resMsg.msgCode === ResultEnum.AUTH_ERROR || res.data.resMsg.msgCode === ResultEnum.AUTH_EXPIRE) {
           // Message({ message: '您未登录或登录已失效', type: 'error', offset: 20 })
           // router.push({ name: 'login' })
         } else {

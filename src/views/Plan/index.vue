@@ -1,16 +1,11 @@
 <template>
   <div>plan</div>
-  <img alt="Vue logo" src="@/assets/logo.png" />
+  <!-- <img alt="Vue logo" src="@/assets/logo.png" /> -->
+  <test-setup></test-setup>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  setup() {
-    return {}
-  }
-})
+<script setup>
+import testSetup from '@/components/testSetup.vue'
 </script>
 
 <style scoped></style>

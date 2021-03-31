@@ -6,6 +6,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+// import classes from './index.module.scss' //加载模块化scss
 
 export default defineComponent({
   name: 'Message',
@@ -16,6 +17,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped module>
+//$style.a
 .a {
   display: flex;
   box-shadow: 0px 0px 3px #121212 inset;
