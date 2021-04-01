@@ -11,5 +11,6 @@ module.exports = {
         useBuiltIns: 'usage' //按需注⼊
       }
     ]
+    // '@babel/preset-typescript'
   ]
 }

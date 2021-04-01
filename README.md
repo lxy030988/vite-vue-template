@@ -14,7 +14,7 @@ vite2+vue3+antd后台管理系统模板
 ### jest
 
 ```json
-"jest:unit":"jest"
+"test:unit":"jest"
 
 "jest":"^26.6.3"
 "@types/jest":"^26.0.20"
@@ -51,10 +51,10 @@ module.exports = {
 ```json
 "gitHooks": {
   "pre-commit": "lint-staged",
-  "pre-push": "npm run test"
+  "pre-push": "npm run test:unit"
 },
 "lint-staged": {
-  "*.{js,vue}": "eslint"
+  "*.{js,vue}": "eslint --fix"
 },
 ```
 

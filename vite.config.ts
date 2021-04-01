@@ -6,6 +6,8 @@ import { wrapperEnv } from './build/utils'
 const CWD: string = process.cwd()
 const pkg = require('./package.json')
 
+import vm from './plugins/test-vite-plugin'
+
 const alias: Record<string, string> = {
   // 路径映射必须以/开头和结尾
   '@': path.resolve(__dirname, 'src')
@@ -56,7 +58,7 @@ module.exports = ({ mode }) => {
       __VERSION__: JSON.stringify(pkg.version)
     },
     transforms: [],
-    plugins: [vue()],
+    plugins: [vue(), vm()],
     rollupInputOptions: {
       plugins: createRollupPlugin()
     },
