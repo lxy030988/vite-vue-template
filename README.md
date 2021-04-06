@@ -1,6 +1,16 @@
 # vite-vue-template
 vite2+vue3+antd后台管理系统模板
 
+
+
+### typescript版本
+
+```json
+"typescript": "^4.1.5",
+```
+
+
+
 ### lint
 
 ```json
