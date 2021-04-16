@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es5",
     "module": "esnext",
     "strict": true,
+    "strictNullChecks": true /* 不允许把null、undefined赋值给其他类型的变量 */,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
@@ -19,12 +20,12 @@
     "strictPropertyInitialization": false,
     "downlevelIteration": true,
     "noUnusedLocals": false,
-    "noImplicitAny": false,
-    "noImplicitThis": true,
+    "noImplicitAny": true /*不允许隐式any类型*/,
+    "noImplicitThis": true /* 关闭 this 类型注解提示  对隐含“any”类型的“this”表达式引发错误 */,
     "removeComments": false,
     "strictFunctionTypes": false,
     "baseUrl": ".",
-    "types": ["webpack-env", "vite/client", "jest"],
+    "types": ["vite/client"] /*"webpack-env",, "jest" */,
     "paths": {
       "@/*": ["src/*"]
     },
