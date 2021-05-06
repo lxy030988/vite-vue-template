@@ -4,7 +4,9 @@
  * "warn"或者1，出现问题会有警告
  * "error"或者2，出现问题会报错
  */
-module.exports = {
+const { defineConfig } = require('eslint-define-config')
+
+module.exports = defineConfig({
   root: true,
   env: {
     browser: true,
@@ -26,4 +28,4 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   }
-}
+})
