@@ -41,7 +41,7 @@ module.exports = ({ mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@import "@/styles/variables.scss";`
+          additionalData: `@import "@/styles/variables.scss";@import "@/styles/variables2.scss";`
         }
       }
     },

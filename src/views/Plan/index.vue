@@ -1,5 +1,6 @@
 <template>
   <div class="plan">plan</div>
+  <div class="plan2">plan</div>
   <!-- <img alt="Vue logo" src="@/assets/logo.png" /> -->
   <test-setup></test-setup>
 </template>
@@ -13,5 +14,8 @@
 <style lang="scss" scoped>
 .plan {
   color: $green;
+}
+.plan2 {
+  color: $green1;
 }
 </style>

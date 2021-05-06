@@ -1,6 +1,13 @@
 # vite-vue-template
 vite2+vue3+antd后台管理系统模板
 
+## 基础
+
+### scss变量全局使用
+
+- src\styles\variables.scss 在此文件里定义变量
+- 如果新建文件定义变量  需要在vite.config.ts配置additionalData引入该文件
+
 
 
 ### SVG图标使用
@@ -30,7 +37,7 @@ src\assets\icons\dynamic-avatar-2.svg
 
 ---------------------------------------------------------
 
-
+## 提升
 
 ### typescript版本
 
