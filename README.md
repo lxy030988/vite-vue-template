@@ -3,6 +3,24 @@ vite2+vue3+antd后台管理系统模板
 
 
 
+### SVG图标使用
+
+```html
+svg文件存放路径为 src\assets\icons
+svg-icon组件 name字段： 文件夹名称+文件名称（没有文件夹则省略）
+
+用例1
+src\assets\icons\test2\dynamic-avatar-2.svg
+<svg-icon name="test2-dynamic-avatar-2"></svg-icon>
+
+用例2
+src\assets\icons\dynamic-avatar-2.svg
+<svg-icon name="dynamic-avatar-2"></svg-icon>
+
+```
+
+
+
 ### vue3的vetur
 
 - Volar（vscode插件）

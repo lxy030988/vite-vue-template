@@ -4,8 +4,10 @@
   <test-setup></test-setup>
 </template>
 
-<script setup>
-import testSetup from '@/components/testSetup.vue'
+<script setup lang="ts">
+// import { defineAsyncComponent } from 'vue'
+// const TestSetup = defineAsyncComponent(() => import('@/components/testSetup.vue'))
+// import TestSetup from '@/components/testSetup.vue'
 </script>
 
 <style scoped></style>

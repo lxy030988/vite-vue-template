@@ -8,7 +8,11 @@ import store from './store'
 // console.log(vm)
 
 import './index.scss' //引入通用样式
+
+import 'vite-plugin-svg-icons/register'
+import SvgIcon from '@/components/Icon/index.vue'
+
 const app = createApp(App)
 setupAntd(app)
 
-app.use(store).use(router).mount('#app')
+app.component('SvgIcon', SvgIcon).use(store).use(router).mount('#app')

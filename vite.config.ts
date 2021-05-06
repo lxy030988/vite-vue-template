@@ -5,9 +5,10 @@ import { createRollupPlugin } from './build/plugin'
 import { wrapperEnv } from './build/utils'
 const CWD: string = process.cwd()
 const pkg = require('./package.json')
+import viteSvgIcons from 'vite-plugin-svg-icons'
 
-import vm from './plugins/test-vite-plugin'
-import i18n from './plugins/vite-plugin-i18n'
+// import vm from './plugins/test-vite-plugin'
+// import i18n from './plugins/vite-plugin-i18n'
 
 const alias: Record<string, string> = {
   // 路径映射必须以/开头和结尾
@@ -37,35 +38,39 @@ module.exports = ({ mode }) => {
       //   }
       // },
     },
-    // assetsDir: 'vite-vue-template/assets', // 资源文件夹
-    cssPreprocessOptions: {
-      scss: {
-        // additionalData: `@import "src/index.scss";`
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `$injectedColor: orange;`
+          // additionalData: `@import "src/index.scss";`
+        }
+      }
+    },
+    build: {
+      // assetsDir: 'vite-vue-template/assets', // 资源文件夹
+      terserOptions: {
+        compress: {
+          keep_infinity: true,
+          drop_console: VITE_DROP_CONSOLE
+        }
       }
     },
     optimizeDeps: {
-      link: [],
       include: ['ant-design-vue/es/locale/zh_CN', '@ant-design/icons-vue'],
-      allowNodeBuiltins: [],
       exclude: []
-    },
-    terserOptions: {
-      compress: {
-        keep_infinity: true,
-        drop_console: VITE_DROP_CONSOLE
-      }
     },
     define: {
       __VERSION__: JSON.stringify(pkg.version)
     },
-    transforms: [],
-    plugins: [vue(), vm(),i18n],
-    rollupInputOptions: {
+    plugins: [
+      vue(),
+      viteSvgIcons({
+        iconDirs: [path.resolve(CWD, 'src/assets/icons')],
+        symbolId: 'icon-[dir]-[name]'
+      })
+    ], //, vm(), i18n
+    rollupOptions: {
       plugins: createRollupPlugin()
-    },
-    rollupOutputOptions: {},
-    shouldPreload() {
-      return true
     }
   }
 }
