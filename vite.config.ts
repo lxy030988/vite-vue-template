@@ -41,8 +41,7 @@ module.exports = ({ mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `$injectedColor: orange;`
-          // additionalData: `@import "src/index.scss";`
+          additionalData: `@import "@/styles/variables.scss";`
         }
       }
     },

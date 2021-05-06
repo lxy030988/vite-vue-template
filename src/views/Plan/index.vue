@@ -1,5 +1,5 @@
 <template>
-  <div>plan</div>
+  <div class="plan">plan</div>
   <!-- <img alt="Vue logo" src="@/assets/logo.png" /> -->
   <test-setup></test-setup>
 </template>
@@ -10,4 +10,8 @@
 // import TestSetup from '@/components/testSetup.vue'
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.plan {
+  color: $green;
+}
+</style>
