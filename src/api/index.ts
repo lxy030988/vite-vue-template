@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ResultEnum } from '../enums/httpEnum'
 
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL as string
 
 axios.interceptors.request.use(
   (config: AxiosRequestConfig) => {

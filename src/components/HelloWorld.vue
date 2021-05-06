@@ -12,7 +12,10 @@ import { getSystemDomainLogo } from '@/api/user'
 export default defineComponent({
   name: 'HelloWorld',
   props: {
-    msg: String
+    msg: {
+      type: String,
+      default: ''
+    }
   },
   setup() {
     async function onSubmit() {

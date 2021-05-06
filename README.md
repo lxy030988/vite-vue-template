@@ -3,6 +3,12 @@ vite2+vue3+antd后台管理系统模板
 
 
 
+### vue3的vetur
+
+- Volar（vscode插件）
+
+
+
 ### typescript版本
 
 ```json
