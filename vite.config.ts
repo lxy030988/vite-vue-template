@@ -1,4 +1,6 @@
 import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+
 const path = require('path')
 import { loadEnv } from 'vite'
 import { createRollupPlugin } from './build/plugin'
@@ -53,6 +55,7 @@ module.exports = ({ mode }) => {
     },
     plugins: [
       vue(),
+      vueJsx(),
       viteSvgIcons({
         iconDirs: [path.resolve(CWD, 'src/assets/icons')],
         symbolId: 'icon-[dir]-[name]'
