@@ -31,9 +31,10 @@ module.exports = ({ mode }) => {
       alias
     },
     server: {
+      port: 3333
       // proxy: {
       //   '/api': {
-      //     target: 'http://jsonplaceholder.typicode.com',
+      //     target: 'http://192.168.0.180:8001',
       //     changeOrigin: true,
       //     rewrite: path => path.replace(/^\/api/, '')
       //   }
