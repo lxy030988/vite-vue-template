@@ -1,7 +1,7 @@
 <template>
   <!-- /src   src   ~assets  ~/assets -->
-  <img alt="Vue logo" src="src/assets/logo.png" />
-
+  <img alt="Vue logo" src="@/assets/logo.png" />
+  <div class="bg">bg</div>
   <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
     <a-menu-item key="/">
       <router-link to="/">首页</router-link>
@@ -29,4 +29,10 @@ export default defineComponent({
 })
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.bg {
+  width: 200px;
+  height: 200px;
+  background: url(@/assets/logo.png);
+}
+</style>

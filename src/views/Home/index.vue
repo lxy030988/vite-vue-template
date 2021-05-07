@@ -21,6 +21,7 @@
 <script lang="ts">
 import HelloWorld from '@/components/HelloWorld.vue'
 import Messagea from '@/components/Messagea.vue'
+import { GlobleState } from '@/store'
 
 import { defineComponent } from 'vue'
 import { useStore } from 'vuex'
@@ -33,7 +34,7 @@ export default defineComponent({
   },
   setup() {
     // console.log(import.meta.env.VITE_BASE_URL)
-    const store = useStore()
+    const store = useStore<GlobleState>()
     console.log(store.state.home.name)
     return {}
   }

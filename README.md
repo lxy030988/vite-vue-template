@@ -3,6 +3,15 @@ vite2+vue3+antd后台管理系统模板
 
 ## 基础
 
+### 文件引入
+
+- @ = src目录
+
+- 相对路径   ./assets/logo.png
+- 绝对路径   @/assets/logo.png
+
+
+
 ### scss变量全局使用
 
 - src\styles\variables.scss 在此文件里定义变量

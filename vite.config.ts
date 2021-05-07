@@ -45,15 +45,6 @@ module.exports = ({ mode }) => {
         }
       }
     },
-    build: {
-      // assetsDir: 'vite-vue-template/assets', // 资源文件夹
-      terserOptions: {
-        compress: {
-          keep_infinity: true,
-          drop_console: VITE_DROP_CONSOLE
-        }
-      }
-    },
     optimizeDeps: {
       include: ['ant-design-vue/es/locale/zh_CN', '@ant-design/icons-vue'],
       exclude: []
@@ -68,8 +59,17 @@ module.exports = ({ mode }) => {
         symbolId: 'icon-[dir]-[name]'
       })
     ], //, vm(), i18n
-    rollupOptions: {
-      plugins: createRollupPlugin()
+    build: {
+      // assetsDir: 'vite-vue-template/assets', // 资源文件夹
+      terserOptions: {
+        compress: {
+          keep_infinity: true,
+          drop_console: VITE_DROP_CONSOLE
+        }
+      },
+      rollupOptions: {
+        plugins: createRollupPlugin()
+      }
     }
   }
 }
