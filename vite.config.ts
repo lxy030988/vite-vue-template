@@ -11,7 +11,6 @@ import viteSvgIcons from 'vite-plugin-svg-icons'
 // import i18n from './plugins/vite-plugin-i18n'
 
 const alias: Record<string, string> = {
-  // 路径映射必须以/开头和结尾
   '@': path.resolve(__dirname, 'src')
   // img: path.resolve(__dirname, 'src/assets')
 }
@@ -60,13 +59,15 @@ module.exports = ({ mode }) => {
       })
     ], //, vm(), i18n
     build: {
-      // assetsDir: 'vite-vue-template/assets', // 资源文件夹
+      target: 'es2015',
       terserOptions: {
         compress: {
           keep_infinity: true,
           drop_console: VITE_DROP_CONSOLE
         }
       },
+      brotliSize: false,
+      chunkSizeWarningLimit: 1500,
       rollupOptions: {
         plugins: createRollupPlugin()
       }
