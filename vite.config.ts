@@ -2,7 +2,7 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
 const path = require('path')
-import { loadEnv } from 'vite'
+import { loadEnv, defineConfig } from 'vite'
 import { createRollupPlugin } from './build/plugin'
 import { wrapperEnv } from './build/utils'
 const CWD: string = process.cwd()
@@ -24,7 +24,7 @@ module.exports = ({ mode }) => {
   console.log('viteEnv=>', viteEnv)
   const { VITE_DROP_CONSOLE } = viteEnv
 
-  return {
+  return defineConfig({
     root: path.resolve(__dirname),
     base: './', //生产过程中的基本公共路径 默认 '/'
     resolve: {
@@ -76,5 +76,5 @@ module.exports = ({ mode }) => {
         plugins: createRollupPlugin()
       }
     }
-  }
+  })
 }

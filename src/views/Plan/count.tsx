@@ -13,6 +13,7 @@ export default defineComponent({
     })
     const inc = () => state.count++
     const dec = () => state.count--
+    // const dec = () => state.count!--
     return () => (
       <div>
         <p>{state.count}</p>
