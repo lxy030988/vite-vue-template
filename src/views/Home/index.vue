@@ -21,10 +21,11 @@
 <script lang="ts">
 import HelloWorld from '@/components/HelloWorld.vue'
 import Messagea from '@/components/Messagea.vue'
-import { GlobleState } from '@/store'
-
 import { defineComponent } from 'vue'
-import { useStore } from 'vuex'
+
+// import { GlobleState } from '@/store'
+// import { useStore } from 'vuex'
+import { useMyStore } from '@/hooks/use-store'
 
 export default defineComponent({
   name: 'App',
@@ -34,8 +35,12 @@ export default defineComponent({
   },
   setup() {
     // console.log(import.meta.env.VITE_BASE_URL)
-    const store = useStore<GlobleState>()
-    console.log(store.state.home.name)
+    // const store = useStore<GlobleState>()
+    // console.log(store.state.home.name)
+
+    const { state, getters } = useMyStore()
+    console.log('vuex state', state.user.loading)
+    console.log('getters', getters['user/isLogin'])
     return {}
   }
 })
