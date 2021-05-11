@@ -95,6 +95,9 @@ export default defineComponent({
       onMounted(() => {
         mychart = echarts.init(chartRef.value as HTMLElement)
         mychart.setOption(options.value)
+
+        window.addEventListener('resize', resize)
+
         emit('rendered')
       })
 
@@ -103,6 +106,9 @@ export default defineComponent({
           mychart.clear()
           mychart.dispose()
         }
+
+        window.removeEventListener('resize', resize)
+
         emit('destroyed')
       })
     } else {
