@@ -15,4 +15,7 @@ import SvgIcon from '@/components/Icon/index.vue'
 const app = createApp(App)
 setupAntd(app)
 
+// import VueEcharts from './components/echarts'
+// app.use(VueEcharts)
+
 app.component('SvgIcon', SvgIcon).use(store).use(router).mount('#app')
