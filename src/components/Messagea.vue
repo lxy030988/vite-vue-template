@@ -1,6 +1,10 @@
 <template>
   <div :class="$style.a">
     <span :class="$style.b">aaaaa</span>
+    <span class="deep-test">
+      deep-test
+      <span class="c1">c1</span>
+    </span>
   </div>
 </template>
 

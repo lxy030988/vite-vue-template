@@ -12,10 +12,33 @@ vite2+vue3+antd后台管理系统模板
 
 
 
+### css深度选择器
+
+```scss
+::v-deep(.deep-test) {
+  color: red;
+  .c1 {
+    color: wheat;
+  }
+}
+```
+
+
+
 ### scss变量全局使用
 
 - src\styles\variables.scss 在此文件里定义变量
 - 如果新建文件定义变量  需要在vite.config.ts配置additionalData引入该文件
+
+```js
+css: {
+    preprocessorOptions: {
+        scss: {
+            additionalData: `@import "@/styles/variables.scss";@import "@/styles/variables2.scss";`
+        }
+    }
+}
+```
 
 
 
@@ -47,6 +70,28 @@ src\assets\icons\dynamic-avatar-2.svg
 ---------------------------------------------------------
 
 ## 提升
+
+
+
+### 插槽Slot样式传递
+
+```scss
+::v-slotted(.slot-class) {
+    background-color: #000;
+}
+```
+
+
+
+### 组件内注册全局样式
+
+```scss
+::v-global(.my-class) {
+    background-color: #000;
+}
+```
+
+
 
 ### typescript版本
 

@@ -97,4 +97,10 @@ export default defineComponent({
   width: 300px;
   height: 200px;
 }
+::v-deep(.deep-test) {
+  color: red;
+  .c1 {
+    color: wheat;
+  }
+}
 </style>
