@@ -60,6 +60,79 @@ src\assets\icons\dynamic-avatar-2.svg
 
 
 
+### VueEcharts使用
+
+```vue
+<template>
+    <div class="echarts">
+      <vue-echarts :options="options"></vue-echarts>
+    </div>
+    <div>
+      <a-button type="primary" @click="changeSeriesData">改变echarts数据</a-button>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { computed, defineComponent, ref } from 'vue'
+
+import VueEcharts, { OptionType } from '@/components/echarts'
+
+export default defineComponent({
+  name: 'useEcharts',
+  components: {
+    VueEcharts
+  },
+  setup() {
+    const seriesData = ref([120, 200, 150, 80, 70, 110, 130])
+    const options = computed((): OptionType => ({
+        // tooltip: {},
+        color: ['red', '#006cff'],
+        // legend: {},
+        title: {
+          text: '柱状图',
+          borderWidth: 1,
+          borderType: 'solid'
+        },
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            data: seriesData.value,
+            type: 'bar',
+            showBackground: true,
+            backgroundStyle: {
+              color: 'rgba(180, 180, 180, 0.2)'
+            }
+          }
+        ]
+      })
+    )
+
+    function changeSeriesData() {
+      seriesData.value = [80, 70, 110, 130, 120, 200, 150]
+    }
+    
+    return { options, changeSeriesData }
+  }
+})
+</script>
+<style lang="scss" scoped>
+.echarts {
+  width: 300px;
+  height: 200px;
+}
+</style>
+
+```
+
+
+
 ### vue3的vetur
 
 - Volar（vscode插件）
@@ -89,6 +162,16 @@ src\assets\icons\dynamic-avatar-2.svg
 ::v-global(.my-class) {
     background-color: #000;
 }
+```
+
+
+
+### 环境变量
+
+- 客服端使用
+
+```js
+import.meta.env.VITE_BASE_URL
 ```
 
 
@@ -161,14 +244,6 @@ module.exports = {
 - 正常情况下安装 yorkie 后会自动安装提交钩子
 - 如果提交钩子未生效可以手动运行 node node_modules/yorkie/bin/install.js 来安装。
 - 当然，你也可以运行 node node_modules/yorkie/bin/uninstall.js 来卸载提交钩子。
-
-
-
-### 环境变量
-- 客服端使用
-```js
-import.meta.env.VITE_BASE_URL
-```
 
 
 
