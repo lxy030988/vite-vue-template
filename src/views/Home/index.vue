@@ -33,7 +33,7 @@ import { computed, defineComponent, ref } from 'vue'
 // import { useStore } from 'vuex'
 import { useMyStore } from '@/hooks/use-store'
 
-import VueEcharts, { OptionType } from '@/components/echarts/vue3-echarts'
+import VueEcharts, { OptionType } from '@/components/echarts'
 
 export default defineComponent({
   name: 'App',
