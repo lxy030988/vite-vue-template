@@ -33,7 +33,7 @@ import { computed, defineComponent, ref } from 'vue'
 // import { useStore } from 'vuex'
 import { useMyStore } from '@/hooks/use-store'
 
-import VueEcharts, { ECOption } from '@/components/echarts/vue3-echarts'
+import VueEcharts, { OptionType } from '@/components/echarts/vue3-echarts'
 
 export default defineComponent({
   name: 'App',
@@ -52,8 +52,10 @@ export default defineComponent({
     console.log('getters', getters['user/isLogin'])
     const installData = ref([120, 200, 150, 80, 70, 110, 130])
     const options = computed(
-      (): ECOption => ({
-        tooltip: {},
+      (): OptionType => ({
+        // tooltip: {},
+        color: ['red', '#006cff'],
+        // legend: {},
         title: {
           text: '柱状图',
           borderWidth: 1,
