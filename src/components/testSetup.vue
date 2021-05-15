@@ -8,28 +8,9 @@
     </li>
   </ul>
 
-  <div>
-    <label>{{ t('language') }}</label>
-    <select v-model="locale">
-      <option value="en">en</option>
-      <option value="zh">zh</option>
-    </select>
-    <p>{{ t('hello') }}</p>
-  </div>
+  <div class="test">test</div>
+  <a-button type="primary" @click="test">测试</a-button>
 </template>
-
-<i18n>
-{
-  "en":{
-    "language":"labguage",
-    "hello":"hello,word"
-  },
-  "zh":{
-    "language":"语言",
-    "hello":"你好"
-  }
-}
-</i18n>
 
 <script setup lang="ts">
 import logo from '@/assets/logo.png'
@@ -40,19 +21,24 @@ type c = {
   title: string
 }
 
-const list = reactive<c[]>([{ id: 1, title: 'aaa' }])
+const list = reactive<c[]>([
+  { id: 1, title: 'aaa' },
+  { id: 2, title: 'aaa2' }
+])
 
-const ins = getCurrentInstance()
-function useI18n() {
-  const locale = ref('en')
-  const i18n = (ins?.type as any).i18n
-  const t = key => {
-    return computed(() => i18n[locale.value][key]).value
-  }
-  return { locale, t }
+const color = ref('red')
+const font = reactive({ size: '30px' })
+
+function test() {
+  console.log('test')
+  color.value = 'green'
+  font.size = '18px'
 }
-
-const { locale, t } = useI18n()
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.test {
+  color: v-bind(color);
+  font-size: v-bind('font.size');
+}
+</style>

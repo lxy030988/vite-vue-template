@@ -25,6 +25,53 @@ vite2+vue3+antd后台管理系统模板
 
 
 
+### css变量
+
+```css
+:root {
+  --color: rgb(0, 38, 255);
+}
+
+.plan {
+  color: var(--color);
+}
+```
+
+
+
+### css使用js变量
+
+```vue
+<div class="plan3">plan</div>
+<a-button type="primary" @click="test">测试</a-button>
+
+<script lang="ts">
+export default defineComponent({
+  name: 'Plan',
+  setup() {
+    const color = ref('red')
+    const font = reactive({ size: '30px' })
+
+    function test() {
+      console.log('test')
+      color.value = 'green'
+      font.size = '18px'
+    }
+    return { color, font, test }
+  }
+})
+</script>
+
+<style lang="scss" scoped>
+.plan3 {
+  color: v-bind(color);
+  font-size: v-bind('font.size');
+}
+</style>
+```
+
+
+
 ### scss变量全局使用
 
 - src\styles\variables.scss 在此文件里定义变量
@@ -276,3 +323,18 @@ module.exports = {
   - `ci` 持续集成
   - `types` 类型定义文件更改
   - `wip` 开发中
+
+
+
+## 试验
+
+### script setup
+
+```vue
+//
+ref :num=100
+onMounted:{
+  console.log('onMounted',num) 
+}
+```
+
