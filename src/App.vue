@@ -15,15 +15,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, provide, reactive, ref } from 'vue'
 import HelloWorld from '@/components/HelloWorld.vue'
 
 export default defineComponent({
   components: {
     HelloWorld
   },
-  setup() {
+  setup(props, ctx) {
+    ctx.expose
     const selectedKeys = ref(['/'])
+
+    const name = ref('lxy')
+    provide('name', name)
+    setTimeout(() => {
+      name.value = 'lxy hhh'
+    }, 1000)
     return { selectedKeys }
   }
 })

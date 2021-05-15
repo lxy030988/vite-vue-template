@@ -1,6 +1,7 @@
 <template>
   <img alt="Vue logo" src="@/assets/logo.png" />
   <img alt="Vue logo" src="../../assets/logo.png" />
+  <img src="@/assets/icons/sun.svg" alt="" style="width: 20px" />
   <HelloWorld msg="Hello Vue 3.0 + Vite1" />
   <Messagea></Messagea>
   <div class="jc-svg-icon">

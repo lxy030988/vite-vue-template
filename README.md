@@ -3,10 +3,21 @@ vite2+vue3+antd后台管理系统模板
 
 ## 基础
 
+### vue3基础
+
+- https://v3.cn.vuejs.org/
+
+```js
+import { defineComponent, inject, provide, onMounted, PropType, reactive, Ref, ref, toRefs, watch, watchEffect } from 'vue'
+
+setup(props,ctx) {}
+```
+
+
+
 ### 文件引入
 
 - @ = src目录
-
 - 相对路径   ./assets/logo.png
 - 绝对路径   @/assets/logo.png
 
@@ -234,6 +245,14 @@ import.meta.env.VITE_BASE_URL
 ### lint
 
 ```json
+"build": "vue-tsc --noEmit && vite build"
+"vue-tsc":"https://www.npmjs.com/package/vue-tsc "
+Vue 3 command line Type-Checking tool base on IDE plugin Volar
+```
+
+
+
+```json
 "lint": "eslint --fix \"src/**/*([^d]|[^.]d).{ts,vue}\""
 "lint": "eslint --ext .ts,.vue src/** --error-on-unmatched-pattern"   --quiet(不报警告)
 "lint:fix": "eslint --ext .ts,.vue src/** --error-on-unmatched-pattern --fix"
@@ -328,11 +347,15 @@ module.exports = {
 
 ## 试验
 
-### script setup
+### script setup (eslint支持不友好)
 
-```vue
-//
-ref :num=100
+```js
+import { defineProps, getCurrentInstance, useContext } from 'vue'
+const { expose } = useContext()
+
+
+//ref sugar 语法糖
+ref :num = 100  //==>  const num = ref(100)
 onMounted:{
   console.log('onMounted',num) 
 }
