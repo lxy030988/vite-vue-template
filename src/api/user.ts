@@ -18,3 +18,23 @@ export function getSystemDomainLogo<T>() {
 //     }
 //   })
 // }
+
+import service from '@/utils/http'
+interface T1 {
+  pageNum: number
+  pageSize: number
+  pages: number
+  resultList: any[]
+  total: number
+}
+
+function test() {
+  return service.request<any, T1>({
+    url: '/user-service/domainLogo/getSystemDomainLogo',
+    method: 'GET'
+  })
+}
+async function name() {
+  const red = await test()
+  // red.
+}
