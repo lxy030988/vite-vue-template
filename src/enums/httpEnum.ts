@@ -1,21 +1,10 @@
 /**
- * @description: 请求结果集
+ * @description: 请求结果 code
  */
-export enum ResultEnum {
+export enum ResCodeEnum {
   SUCCESS = 1,
   AUTH_ERROR = '10003', //非法token
   AUTH_EXPIRE = '10002' //token已过期
-}
-
-/**
- * @description: 请求方法
- */
-export enum RequestEnum {
-  GET = 'GET',
-  POST = 'POST',
-  PATCH = 'PATCH',
-  PUT = 'PUT',
-  DELETE = 'DELETE'
 }
 
 /**

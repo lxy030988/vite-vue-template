@@ -23,6 +23,12 @@ setup(props,ctx) {}
 
 
 
+### http数据请求
+
+- 例子 src/api/user/index.ts
+
+
+
 ### css深度选择器
 
 ```scss

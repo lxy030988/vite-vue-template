@@ -1,9 +1,10 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosPromise } from 'axios'
+import axios from 'axios'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-import { ResultEnum } from '@/enums/httpEnum'
+import { ResCodeEnum } from '@/enums/httpEnum'
 import { TRes } from './model'
 
-const service: AxiosInstance = axios.create({
+const http: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL as string,
   timeout: 20000,
   headers: {
@@ -12,7 +13,7 @@ const service: AxiosInstance = axios.create({
   }
 })
 
-service.interceptors.request.use(
+http.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     return config
   },
@@ -21,15 +22,16 @@ service.interceptors.request.use(
   }
 )
 
-service.interceptors.response.use(
+http.interceptors.response.use(
   (res: AxiosResponse<TRes>) => {
     if (res.status === 200) {
-      if (res.data.resCode === ResultEnum.SUCCESS) {
+      if (res.data.resCode === ResCodeEnum.SUCCESS) {
         return res.data.resData
       } else {
-        if (res.data.resMsg.msgCode === ResultEnum.AUTH_ERROR || res.data.resMsg.msgCode === ResultEnum.AUTH_EXPIRE) {
+        if (res.data.resMsg.msgCode === ResCodeEnum.AUTH_ERROR || res.data.resMsg.msgCode === ResCodeEnum.AUTH_EXPIRE) {
           // Message({ message: '您未登录或登录已失效', type: 'error', offset: 20 })
           // router.push({ name: 'login' })
+          console.log('您未登录或登录已失效')
         } else {
           console.error(res.data.resMsg.msgText)
         }
@@ -44,4 +46,4 @@ service.interceptors.response.use(
   }
 )
 
-export default service
+export default http

@@ -1,4 +1,4 @@
-import { ResultEnum } from '@/enums/httpEnum'
+import { ResCodeEnum } from '@/enums/httpEnum'
 
 interface TResMsg {
   msgCode: string
@@ -6,7 +6,7 @@ interface TResMsg {
 }
 
 export interface TRes {
-  resCode: ResultEnum
+  resCode: ResCodeEnum
   resData: any
   resMsg: TResMsg
 }
