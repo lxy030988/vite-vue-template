@@ -50,39 +50,6 @@ setup(props,ctx) {}
 
 
 
-### css使用js变量
-
-```vue
-<div class="plan3">plan</div>
-<a-button type="primary" @click="test">测试</a-button>
-
-<script lang="ts">
-export default defineComponent({
-  name: 'Plan',
-  setup() {
-    const color = ref('red')
-    const font = reactive({ size: '30px' })
-
-    function test() {
-      console.log('test')
-      color.value = 'green'
-      font.size = '18px'
-    }
-    return { color, font, test }
-  }
-})
-</script>
-
-<style lang="scss" scoped>
-.plan3 {
-  color: v-bind(color);
-  font-size: v-bind('font.size');
-}
-</style>
-```
-
-
-
 ### scss变量全局使用
 
 - src\styles\variables.scss 在此文件里定义变量
@@ -194,6 +161,12 @@ export default defineComponent({
 ### vue3的vetur
 
 - Volar（vscode插件）
+
+
+
+### quicktype根据json生成ts interface
+
+- https://app.quicktype.io/
 
 
 
@@ -345,7 +318,44 @@ module.exports = {
 
 
 
-## 试验
+## 实验
+
+### css使用js变量
+
+```vue
+<div class="plan3">plan</div>
+<a-button type="primary" @click="test">测试</a-button>
+
+<script lang="ts">
+export default defineComponent({
+  name: 'Plan',
+  setup() {
+    const color = ref('red')
+    const font = reactive({ size: '30px' })
+
+    function test() {
+      console.log('test')
+      color.value = 'green'
+      font.size = '18px'
+    }
+    return { color, font, test }
+  }
+})
+</script>
+
+<style lang="scss" scoped>
+.plan3 {
+  color: v-bind(color);
+  font-size: v-bind('font.size');
+}
+</style>
+```
+
+
+
+### Suspense
+
+
 
 ### script setup (eslint支持不友好)
 
