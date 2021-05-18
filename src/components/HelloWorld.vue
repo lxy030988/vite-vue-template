@@ -2,7 +2,7 @@
   <h1>{{ msg }}</h1>
   <img alt="Vue logo" src="@/assets/logo.png" />
 
-  <a-button type="primary" @click="onSubmit">测试按钮</a-button>
+  <a-button type="primary" @click="onSubmit">测试HTTP</a-button>
 </template>
 
 <script lang="ts">
@@ -19,7 +19,7 @@ export default defineComponent({
   },
   setup() {
     async function onSubmit() {
-      const res = await getSystemDomainLogo<any>()
+      const res = await getSystemDomainLogo()
 
       console.log('onSubmit', res)
     }

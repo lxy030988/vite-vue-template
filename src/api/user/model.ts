@@ -7,3 +7,15 @@ export interface TPageResItemTest {
 export interface TParamsTest {
   name?: string
 }
+
+export interface TResItemDomainLogo {
+  domain: string
+  domainLogo: string
+  domainLogoChar: string
+  entranceRouter: string
+  firstPageLoginLogo: string
+  firstPageLogo: string
+  id: string
+  loginLogoLocation: number
+  systemName: string
+}
