@@ -83,20 +83,16 @@ export default defineComponent({
 
     function resize() {
       console.log('chart size Change')
-      if (mychart) {
-        mychart.resize()
-      }
+      mychart?.resize()
     }
 
     if (options.value) {
       watch(
         options,
         newValue => {
-          if (mychart) {
-            // console.log('watch options', newValue)
-            mychart.setOption(newValue)
-            emit('updated')
-          }
+          // console.log('watch options', newValue)
+          mychart?.setOption(newValue)
+          emit('updated')
         },
         {
           deep: true
