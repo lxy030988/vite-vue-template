@@ -1,2 +1,3 @@
 const GET_DATA = 'GET_DATA'
-export { GET_DATA }
+const GET_DATA1 = 'GET_DATA1'
+export { GET_DATA, GET_DATA1 }

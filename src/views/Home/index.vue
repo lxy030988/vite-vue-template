@@ -2,6 +2,9 @@
   <img alt="Vue logo" src="@/assets/logo.png" />
   <img alt="Vue logo" src="../../assets/logo.png" />
   <img src="@/assets/icons/sun.svg" alt="" style="width: 20px" />
+  <div>
+    <a-button type="primary" @click="testVuex">测试Vuex</a-button>
+  </div>
   <HelloWorld msg="Hello Vue 3.0 + Vite1" />
   <Messagea></Messagea>
   <div class="jc-svg-icon">
@@ -48,7 +51,7 @@ export default defineComponent({
     // const store = useStore<GlobleState>()
     // console.log(store.state.home.name)
 
-    const { state, getters } = useMyStore()
+    const { state, getters, commit, dispatch } = useMyStore()
     console.log('vuex state', state.user.loading)
     console.log('getters', getters['user/isLogin'])
     const installData = ref([120, 200, 150, 80, 70, 110, 130])
@@ -86,7 +89,18 @@ export default defineComponent({
       console.log('test')
       installData.value = [80, 70, 110, 130, 120, 200, 150]
     }
-    return { options, test }
+
+    function testVuex() {
+      console.log('testVuex')
+      // commit('wechat/GET_DATA', false)
+      dispatch('user/GET_DATA', false)
+      console.log('vuex state', state.user.loading)
+
+      setTimeout(() => {
+        console.log('vuex state', state.user.loading)
+      }, 3000)
+    }
+    return { options, test, testVuex }
   }
 })
 </script>

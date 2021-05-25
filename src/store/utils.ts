@@ -38,3 +38,21 @@ type Getters = {
 }
 
 export { Getters }
+
+//增强Commit type 类型
+type GetMutation<M> = M extends { mutations: infer T } ? T : unknown
+type GetMutations<MS> = {
+  [K in keyof MS]: GetMutation<MS[K]>
+}
+type ALLMutations = GetMutations<typeof modules>
+type CommitTypes = keyof GetSpliceObj<ALLMutations>
+export { CommitTypes }
+
+//增强Dispatch type 类型
+type GetAction<M> = M extends { actions: infer T } ? T : unknown
+type GetActions<MS> = {
+  [K in keyof MS]: GetAction<MS[K]>
+}
+type ALLActions = GetActions<typeof modules>
+type DispatchTypes = keyof GetSpliceObj<ALLActions>
+export { DispatchTypes }

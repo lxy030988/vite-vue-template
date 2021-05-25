@@ -5,4 +5,4 @@ export const createState = () => {
   return store
 }
 //类型推导
-export type userState = ReturnType<typeof createState>
+export type wxState = ReturnType<typeof createState>
