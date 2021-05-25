@@ -92,7 +92,7 @@ export default defineComponent({
 
     function testVuex() {
       console.log('testVuex')
-      // commit('wechat/GET_DATA', false)
+      // commit('user/GET_DATA', false)
       dispatch('user/GET_DATA', false)
       console.log('vuex state', state.user.loading)
 

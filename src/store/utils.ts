@@ -45,8 +45,14 @@ type GetMutations<MS> = {
   [K in keyof MS]: GetMutation<MS[K]>
 }
 type ALLMutations = GetMutations<typeof modules>
-type CommitTypes = keyof GetSpliceObj<ALLMutations>
-export { CommitTypes }
+type Commits = GetSpliceObj<ALLMutations>
+type CommitTypes = keyof Commits
+
+type CommitPayloads = {
+  [K in keyof Commits]: Parameters<Commits[K]>[1]
+}
+
+export { CommitTypes, CommitPayloads }
 
 //增强Dispatch type 类型
 type GetAction<M> = M extends { actions: infer T } ? T : unknown
@@ -54,5 +60,11 @@ type GetActions<MS> = {
   [K in keyof MS]: GetAction<MS[K]>
 }
 type ALLActions = GetActions<typeof modules>
-type DispatchTypes = keyof GetSpliceObj<ALLActions>
-export { DispatchTypes }
+type Dispatchs = GetSpliceObj<ALLActions>
+type DispatchTypes = keyof Dispatchs
+
+type DispatchPayloads = {
+  [K in keyof Dispatchs]: Parameters<Dispatchs[K]>[1]
+}
+
+export { DispatchTypes, DispatchPayloads }

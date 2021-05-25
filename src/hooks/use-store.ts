@@ -1,12 +1,12 @@
 import { Commit, CommitOptions, Dispatch, DispatchOptions, useStore } from 'vuex'
 import { State } from '@/store'
-import { Getters, CommitTypes, DispatchTypes } from '@/store/utils'
+import { Getters, CommitTypes, DispatchTypes, CommitPayloads, DispatchPayloads } from '@/store/utils'
 
-interface MyCommit extends Commit {
-  (type: CommitTypes, payload?: any, options?: CommitOptions): void
+interface MyCommit {
+  (type: CommitTypes, payload: CommitPayloads[CommitTypes], options?: CommitOptions): void
 }
-interface MyDispatch extends Dispatch {
-  (type: DispatchTypes, payload?: any, options?: DispatchOptions): Promise<any>
+interface MyDispatch {
+  (type: DispatchTypes, payload?: DispatchPayloads[DispatchTypes], options?: DispatchOptions): Promise<any>
 }
 interface IUserMyStore {
   state: State
