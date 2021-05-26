@@ -49,6 +49,8 @@ type Commits = GetSpliceObj<ALLMutations>
 type CommitTypes = keyof Commits
 
 type CommitPayloads = {
+  //Parameters<Commits[K]>[1] 重写
+  // https://www.npmjs.com/package/utility-types#propertytypet-k
   [K in keyof Commits]: Parameters<Commits[K]>[1]
 }
 
