@@ -1,6 +1,6 @@
 module.exports = {
   eslintIntegration: true, //启用eslint相同规则
-  printWidth: 800, // 每行代码长度（默认80）
+  // printWidth: 80, // 每行代码长度（默认80）
   tabWidth: 2, // 每个tab相当于多少个空格（默认2）
   useTabs: false, // 是否使用tab进行缩进（默认false）
   singleQuote: true, // 使用单引号（默认false）
@@ -14,5 +14,10 @@ module.exports = {
   bracketSpacing: true, // 对象字面量的大括号间使用空格（默认true）
   arrowParens: "avoid", // 只有一个参数的箭头函数的参数是否带圆括号always|avoid（默认avoid）
   proseWrap: 'never',
+
+  // quoteProps: 'as-needed',
+  // insertPragma: false,
+  // requirePragma: false,
+  // rangeStart: 0,
 
 }

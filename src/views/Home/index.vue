@@ -1,29 +1,33 @@
 <template>
-  <img alt="Vue logo" src="@/assets/logo.png" />
-  <img alt="Vue logo" src="../../assets/logo.png" />
-  <img src="@/assets/icons/sun.svg" alt="" style="width: 20px" />
+  <img alt="Vue logo" src="@/assets/logo.png">
+  <img alt="Vue logo" src="../../assets/logo.png">
+  <img src="@/assets/icons/sun.svg" alt="" style="width: 20px">
   <div>
-    <a-button type="primary" @click="testVuex">测试Vuex</a-button>
+    <a-button type="primary" @click="testVuex">
+      测试Vuex
+    </a-button>
   </div>
   <HelloWorld msg="Hello Vue 3.0 + Vite1" />
-  <Messagea></Messagea>
-  <div class="jc-svg-icon">
+  <Messagea />
+  <div class="jc-svg-icon assd  s s s s ">
     <div>图标测试</div>
-    <svg-icon name="qingsaoche-3"></svg-icon>
-    <svg-icon name="sun"></svg-icon>
-    <svg-icon name="moon"></svg-icon>
-    <hr />
-    <svg-icon name="test2-dynamic-avatar-2"></svg-icon>
-    <svg-icon name="test2-dynamic-avatar-3"></svg-icon>
-    <hr />
-    <svg-icon name="test1-dynamic-avatar-1"></svg-icon>
-    <hr />
-    <svg-icon name="test1-test11-download-count"></svg-icon>
+    <svg-icon name="qingsaoche-3" />
+    <svg-icon name="sun" />
+    <svg-icon name="moon" />
+    <hr>
+    <svg-icon name="test2-dynamic-avatar-2" />
+    <svg-icon name="test2-dynamic-avatar-3" />
+    <hr>
+    <svg-icon name="test1-dynamic-avatar-1" />
+    <hr>
+    <svg-icon name="test1-test11-download-count" />
     <div class="echarts">
-      <vue-echarts :options="options"></vue-echarts>
+      <vue-echarts :options="options" />
     </div>
     <div>
-      <a-button type="primary" @click="test">测试</a-button>
+      <a-button type="primary" @click="test">
+        测试
+      </a-button>
     </div>
   </div>
 </template>

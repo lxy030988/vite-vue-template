@@ -1,7 +1,7 @@
 <template>
   <!-- /src   src   ~assets  ~/assets -->
-  <img alt="Vue logo" src="@/assets/logo.png" />
-  <div class="bg">bg</div>
+  <img alt="Vue logo" src="@/assets/logo.png">
+  <div class="bg"> bg </div>
   <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="horizontal" :style="{ lineHeight: '64px' }">
     <a-menu-item key="/">
       <router-link to="/">首页</router-link>
@@ -10,7 +10,7 @@
       <router-link to="/plan">计划</router-link>
     </a-menu-item>
   </a-menu>
-  <router-view></router-view>
+  <router-view />
   <!-- <HelloWorld msg="Hello Vue 3.0 + Vite1 ----APP 页面" /> -->
 </template>
 
@@ -31,7 +31,9 @@ export default defineComponent({
     setTimeout(() => {
       name.value = 'lxy hhh'
     }, 1000)
-    return { selectedKeys }
+    return {
+      selectedKeys
+    }
   }
 })
 </script>

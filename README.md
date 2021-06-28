@@ -176,6 +176,20 @@ export default defineComponent({
 
 
 
+### vscode设置
+
+```json
+//vscode Vue格式化HTML标签换行问题
+"vetur.format.defaultFormatterOptions": {
+    "js-beautify-html": {
+        "wrap_attributes": "force-expand-multiline" //auto
+    }
+}
+
+```
+
+
+
 
 ---------------------------------------------------------
 
