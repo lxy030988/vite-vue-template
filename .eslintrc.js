@@ -42,6 +42,9 @@ module.exports = defineConfig({
     '@typescript-eslint/no-unused-wars': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/camelcase': 'off',
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
 
     // https://eslint.vuejs.org/rules/
     'vue/no-unused-components': 'off',

@@ -5,6 +5,8 @@ declare module '*.vue' {
   export default component
 }
 
+declare type Nullable<T> = T | null
+
 // declare module '*.scss' {
 //   const classes: {
 //     [key: string]: string
