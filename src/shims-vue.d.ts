@@ -13,3 +13,21 @@ declare type Nullable<T> = T | null
 //   }
 //   export default classes
 // }
+
+type RequestIdleCallbackHandle = any
+type RequestIdleCallbackOptions = {
+  timeout: number
+}
+type RequestIdleCallbackDeadline = {
+  readonly didTimeout: boolean
+  timeRemaining: () => number
+}
+
+declare interface Window {
+  requestIdleCallback: (
+    callback: (deadline: RequestIdleCallbackDeadline) => void,
+    opts?: RequestIdleCallbackOptions
+  ) => RequestIdleCallbackHandle
+  cancelIdleCallback: (handle: RequestIdleCallbackHandle) => void
+  [key: string]: any
+}

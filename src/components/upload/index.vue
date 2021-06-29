@@ -27,7 +27,8 @@ import {
   isImage,
   isJpg,
   createFileChunk,
-  calculateHashWorker
+  calculateHashWorker,
+  calculateHashIdle
 } from './hooks'
 
 export default defineComponent({
@@ -48,7 +49,12 @@ export default defineComponent({
 
       const chunks = createFileChunk(file.value!)
       console.log('chunks', chunks)
-      const hash = await calculateHashWorker(chunks, (progress: any) => {
+
+      // const hash = await calculateHashWorker(chunks, (progress: any) => {
+      //   console.log('hash progress', progress)
+      //   hashProgress.value = progress
+      // })
+      const hash = await calculateHashIdle(chunks, (progress: any) => {
         console.log('hash progress', progress)
         hashProgress.value = progress
       })

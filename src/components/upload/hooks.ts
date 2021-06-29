@@ -1,3 +1,5 @@
+import sparkMD5 from 'spark-md5'
+
 export function bindEvents(drag: HTMLElement, cb: Function) {
   drag.addEventListener('dragover', e => {
     drag.style.borderColor = 'red'
@@ -60,7 +62,7 @@ export async function isImage(file: File) {
 }
 
 //文件切片
-const CHUNK_SIZE = 10 * 1024 * 1024
+const CHUNK_SIZE = 1 * 1024 * 1024
 export function createFileChunk(file: File, size = CHUNK_SIZE) {
   const chunks = []
   let cur = 0
@@ -83,5 +85,41 @@ export async function calculateHashWorker(chunks: any[], cb: Function) {
         resolve(hash)
       }
     }
+  })
+}
+
+//时间切片  利用浏览器空余时间计算
+export async function calculateHashIdle(chunks: any[], cb: Function) {
+  return new Promise(resolve => {
+    const spark = new sparkMD5.ArrayBuffer()
+    let count = 0
+
+    const appendToSpark = async (file: File) => {
+      return new Promise(resolve => {
+        const reader = new FileReader()
+        reader.readAsArrayBuffer(file)
+        reader.onload = e => {
+          spark.append(e.target!.result as ArrayBuffer)
+          resolve(1)
+        }
+      })
+    }
+    const workLoop = async (deadline: any) => {
+      // timeRemaining获取当前帧的剩余时间
+      while (count < chunks.length && deadline.timeRemaining() > 1) {
+        // 空闲时间，且有任务
+        await appendToSpark(chunks[count].file)
+        count++
+        if (count < chunks.length) {
+          cb(Number(((100 * count) / chunks.length).toFixed(2)))
+        } else {
+          cb(100)
+          resolve(spark.end())
+        }
+      }
+      window.requestIdleCallback(workLoop)
+    }
+    // 浏览器一旦空闲，就会调用workLoop
+    window.requestIdleCallback(workLoop)
   })
 }
