@@ -2,7 +2,7 @@
   <div>
     <h1>upload</h1>
   </div>
-  <div ref='drag'>
+  <div ref='drag' class="drag">
     <input type="file" name="file" @change="handleFileChange">
   </div>
   <div>
@@ -11,14 +11,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, ref } from 'vue'
+import { defineComponent, onMounted, Ref, ref } from 'vue'
 
 import { utest, uploadFile } from '@/api/upload'
+
+import { bindEvents } from './hooks'
+
 export default defineComponent({
   async setup() {
-    const res = await utest()
-    console.log('utest1222', res)
-
     let file: Ref<Nullable<File>> = ref(null)
 
     function handleFileChange(e: any) {
@@ -38,13 +38,33 @@ export default defineComponent({
       console.log(res)
     }
 
+    const drag = ref<HTMLElement>()
+
+    onMounted(() => {
+      bindEvents(drag.value!, (f: File) => {
+        file.value = f
+      })
+    })
+
+    const res = await utest()
+    console.log('utest1222', res)
+
     return {
       handleFileChange,
-      uploadBtn
+      uploadBtn,
+      drag
     }
   }
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.drag {
+  margin: 0 auto;
+  width: 400px;
+  height: 100px;
+  // line-height: 100px;
+  border: 2px dashed #eee;
+  text-align: center;
+}
 </style>
