@@ -58,3 +58,30 @@ export async function isJpg(file: File) {
 export async function isImage(file: File) {
   return (await isGif(file)) || (await isPng(file)) || (await isJpg(file))
 }
+
+//文件切片
+const CHUNK_SIZE = 10 * 1024 * 1024
+export function createFileChunk(file: File, size = CHUNK_SIZE) {
+  const chunks = []
+  let cur = 0
+  while (cur < file.size) {
+    chunks.push({ index: cur, file: file.slice(cur, cur + size) })
+    cur += size
+  }
+  return chunks
+}
+
+//web worker 计算hash值
+export async function calculateHashWorker(chunks: any[], cb: Function) {
+  return new Promise(resolve => {
+    const worker = new Worker('/src/components/upload/worker.js')
+    worker.postMessage({ chunks })
+    worker.onmessage = e => {
+      const { progress, hash } = e.data
+      cb(Number(progress.toFixed(2)))
+      if (hash) {
+        resolve(hash)
+      }
+    }
+  })
+}

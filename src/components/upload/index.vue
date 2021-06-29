@@ -6,6 +6,10 @@
     <input type="file" name="file" accept="image/*" @change="handleFileChange">
   </div>
   <div>
+    <div>计算hash进度</div>
+    <a-progress :percent="hashProgress" />
+  </div>
+  <div>
     <a-progress :percent="progressPercent" />
   </div>
   <div>
@@ -18,11 +22,18 @@ import { defineComponent, onMounted, Ref, ref } from 'vue'
 
 import { utest, uploadFile } from '@/api/upload'
 
-import { bindEvents, isImage, isJpg } from './hooks'
+import {
+  bindEvents,
+  isImage,
+  isJpg,
+  createFileChunk,
+  calculateHashWorker
+} from './hooks'
 
 export default defineComponent({
   async setup() {
     let progressPercent = ref(0)
+    let hashProgress = ref(0)
     let file: Ref<Nullable<File>> = ref(null)
 
     async function handleFileChange(e: any) {
@@ -34,6 +45,16 @@ export default defineComponent({
 
     async function uploadBtn() {
       console.log('uploadBtn', file.value)
+
+      const chunks = createFileChunk(file.value!)
+      console.log('chunks', chunks)
+      const hash = await calculateHashWorker(chunks, (progress: any) => {
+        console.log('hash progress', progress)
+        hashProgress.value = progress
+      })
+      console.log('hash', hash)
+
+      return
 
       const form = new FormData()
       form.append('name', 'file')
@@ -63,7 +84,8 @@ export default defineComponent({
       handleFileChange,
       uploadBtn,
       drag,
-      progressPercent
+      progressPercent,
+      hashProgress
     }
   }
 })
