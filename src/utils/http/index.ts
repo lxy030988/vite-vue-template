@@ -6,7 +6,7 @@ import { TRes } from './model'
 
 const http: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL as string,
-  timeout: 20000,
+  timeout: 200_000,
   headers: {
     token: 'token'
     // 'Content-Security-Policy': 'upgrade-insecure-requests'
@@ -28,7 +28,10 @@ http.interceptors.response.use(
       if (res.data.resCode === ResCodeEnum.SUCCESS) {
         return res.data.resData
       } else {
-        if (res.data.resMsg.msgCode === ResCodeEnum.AUTH_ERROR || res.data.resMsg.msgCode === ResCodeEnum.AUTH_EXPIRE) {
+        if (
+          res.data.resMsg.msgCode === ResCodeEnum.AUTH_ERROR ||
+          res.data.resMsg.msgCode === ResCodeEnum.AUTH_EXPIRE
+        ) {
           // Message({ message: '您未登录或登录已失效', type: 'error', offset: 20 })
           // router.push({ name: 'login' })
           console.log('您未登录或登录已失效')

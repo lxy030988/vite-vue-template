@@ -6,6 +6,9 @@
     <input type="file" name="file" @change="handleFileChange">
   </div>
   <div>
+    <a-progress :percent="progressPercent" />
+  </div>
+  <div>
     <a-button type="primary" @click="uploadBtn">上传</a-button>
   </div>
 </template>
@@ -19,6 +22,7 @@ import { bindEvents } from './hooks'
 
 export default defineComponent({
   async setup() {
+    let progressPercent = ref(0)
     let file: Ref<Nullable<File>> = ref(null)
 
     function handleFileChange(e: any) {
@@ -34,7 +38,12 @@ export default defineComponent({
       form.append('name', 'file')
       form.append('file', file.value as Blob)
 
-      const res = await uploadFile(form)
+      const res = await uploadFile(form, (progress: any) => {
+        console.log('progress', progress)
+        progressPercent.value = Number(
+          ((progress.loaded / progress.total) * 100).toFixed(2)
+        )
+      })
       console.log(res)
     }
 
@@ -52,7 +61,8 @@ export default defineComponent({
     return {
       handleFileChange,
       uploadBtn,
-      drag
+      drag,
+      progressPercent
     }
   }
 })
@@ -60,8 +70,8 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .drag {
-  margin: 0 auto;
-  width: 400px;
+  // margin: 0 auto;
+  // width: 400px;
   height: 100px;
   // line-height: 100px;
   border: 2px dashed #eee;

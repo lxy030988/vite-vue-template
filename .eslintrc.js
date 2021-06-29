@@ -45,6 +45,7 @@ module.exports = defineConfig({
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/ban-types": "off",
 
     // https://eslint.vuejs.org/rules/
     'vue/no-unused-components': 'off',
