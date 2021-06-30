@@ -210,11 +210,11 @@ export async function sendRequest(requests: any[], chunks: any[], limit = 5) {
   return new Promise((resolve, reject) => {
     const len = requests.length
     let counter = 0 //已完成任务数
-    // let isStop = false
+    let isStop = false
     const start = async () => {
-      // if (isStop) {
-      //   return
-      // }
+      if (isStop) {
+        return
+      }
       const task = requests.shift()
       if (task) {
         const { form, index } = task
@@ -236,16 +236,19 @@ export async function sendRequest(requests: any[], chunks: any[], limit = 5) {
             start()
           }
         } catch (e) {
-          // chunks[index].progress = -1
-          // if (task.error < 3) {
-          //   task.error++
-          //   requests.unshift(task)
-          //   start()
-          // } else {
-          //   // 错误三次
-          //   isStop = true
-          //   reject()
-          // }
+          // 报错之后，进度条变红，开始重试
+          // 一个切片重试失败三次，整体全部终止
+          console.error(e)
+          chunks[index].progress = -1
+          if (task.error < 3) {
+            task.error++
+            requests.unshift(task)
+            start()
+          } else {
+            // 错误三次
+            isStop = true
+            reject()
+          }
         }
       }
     }
