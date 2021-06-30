@@ -1,4 +1,4 @@
-import { uploadFile } from '@/api/upload'
+import { mergeFile, uploadFile } from '@/api/upload'
 import sparkMD5 from 'spark-md5'
 
 export function bindEvents(drag: HTMLElement, cb: Function) {
@@ -189,4 +189,13 @@ export async function uploadChunks(chunks: any[]) {
       })
     )
   await Promise.all(requests)
+}
+
+export async function mergeRequest(ext: string, hash: string) {
+  const res = await mergeFile({
+    ext,
+    size: CHUNK_SIZE,
+    hash
+  })
+  console.log('mergeRequest', res)
 }

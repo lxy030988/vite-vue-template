@@ -62,7 +62,8 @@ import {
   calculateHashWorker,
   calculateHashIdle,
   calculateHashSample,
-  uploadChunks
+  uploadChunks,
+  mergeRequest
 } from './hooks'
 
 export default defineComponent({
@@ -132,6 +133,8 @@ export default defineComponent({
       })
       console.log('uploadedChunks', state.uploadedChunks)
       await uploadChunks(state.uploadedChunks)
+      await mergeRequest((file.value!.name as any).split('.').pop(), hash.value)
+
       return
 
       const form = new FormData()

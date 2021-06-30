@@ -17,3 +17,11 @@ export function uploadFile(data: FormData, cb?: Function) {
     }
   })
 }
+
+export function mergeFile(data: any) {
+  return http.request<any, any>({
+    url: '/mergefile',
+    method: 'POST',
+    data
+  })
+}
