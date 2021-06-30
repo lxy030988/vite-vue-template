@@ -25,3 +25,11 @@ export function mergeFile(data: any) {
     data
   })
 }
+
+export function checkFile(data: any) {
+  return http.request<any, any>({
+    url: '/checkfile',
+    method: 'POST',
+    data
+  })
+}

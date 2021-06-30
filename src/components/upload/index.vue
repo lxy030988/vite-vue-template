@@ -51,7 +51,7 @@ import {
   toRefs
 } from 'vue'
 
-import { utest, uploadFile } from '@/api/upload'
+import { utest, uploadFile, checkFile } from '@/api/upload'
 import { LoadingOutlined } from '@ant-design/icons-vue'
 
 import {
@@ -121,6 +121,17 @@ export default defineComponent({
       // })
       // console.log('hash2', hash2)
       hash.value = hash1
+
+      const ext = (file.value!.name as any).split('.').pop() //文件后缀名
+
+      //1.检查文件是否已存在
+      //2.文件不存在,是否有存在的切片
+      const { uploaded, uploadedList } = await checkFile({ hash: hash1, ext })
+      if (uploaded) {
+        console.log('秒传成功')
+        return
+      }
+
       state.uploadedChunks = chunks.map((chunk, index) => {
         // 切片的名字 hash+index
         return {
@@ -133,7 +144,7 @@ export default defineComponent({
       })
       console.log('uploadedChunks', state.uploadedChunks)
       await uploadChunks(state.uploadedChunks)
-      await mergeRequest((file.value!.name as any).split('.').pop(), hash.value)
+      await mergeRequest(ext, hash.value)
 
       return
 
