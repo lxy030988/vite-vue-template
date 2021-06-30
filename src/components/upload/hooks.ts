@@ -123,3 +123,43 @@ export async function calculateHashIdle(chunks: any[], cb: Function) {
     window.requestIdleCallback(workLoop)
   })
 }
+
+//抽样hash
+export async function calculateHashSample(file: File, cb: Function) {
+  // 布隆过滤器  判断一个数据存在与否
+  // 1个G的文件，抽样后5M以内
+  // hash一样，文件不一定一样
+  // hash不一样，文件一定不一样
+  return new Promise(resolve => {
+    const spark = new sparkMD5.ArrayBuffer()
+    const reader = new FileReader()
+
+    const size = file.size
+    const offset = 2 * 1024 * 1024
+    // 第一个2M，最后一个区块数据全要
+    const chunks = [file.slice(0, offset)]
+
+    let cur = offset
+    while (cur < size) {
+      if (cur + offset >= size) {
+        // 最后一个区快
+        chunks.push(file.slice(cur, cur + offset))
+      } else {
+        // 中间的区块
+        const mid = cur + offset / 2
+        const end = cur + offset
+        chunks.push(file.slice(cur, cur + 2))
+        chunks.push(file.slice(mid, mid + 2))
+        chunks.push(file.slice(end - 2, end))
+      }
+      cur += offset
+    }
+    // 中间的，取前中后各2各字节
+    reader.readAsArrayBuffer(new Blob(chunks))
+    reader.onload = e => {
+      spark.append(e.target!.result as ArrayBuffer)
+      cb(100)
+      resolve(spark.end())
+    }
+  })
+}

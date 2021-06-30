@@ -28,7 +28,8 @@ import {
   isJpg,
   createFileChunk,
   calculateHashWorker,
-  calculateHashIdle
+  calculateHashIdle,
+  calculateHashSample
 } from './hooks'
 
 export default defineComponent({
@@ -50,15 +51,23 @@ export default defineComponent({
       const chunks = createFileChunk(file.value!)
       console.log('chunks', chunks)
 
-      // const hash = await calculateHashWorker(chunks, (progress: any) => {
-      //   console.log('hash progress', progress)
-      //   hashProgress.value = progress
-      // })
-      const hash = await calculateHashIdle(chunks, (progress: any) => {
-        console.log('hash progress', progress)
+      const hash = await calculateHashWorker(chunks, (progress: any) => {
+        // console.log('hash progress', progress)
         hashProgress.value = progress
       })
-      console.log('hash', hash)
+      console.log('hash0', hash)
+
+      const hash1 = await calculateHashIdle(chunks, (progress: any) => {
+        // console.log('hash progress', progress)
+        hashProgress.value = progress
+      })
+      console.log('hash1', hash1)
+
+      const hash2 = await calculateHashSample(file.value!, (progress: any) => {
+        // console.log('hash progress', progress)
+        hashProgress.value = progress
+      })
+      console.log('hash2', hash2)
 
       return
 
