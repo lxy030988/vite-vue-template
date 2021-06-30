@@ -1,3 +1,4 @@
+import { uploadFile } from '@/api/upload'
 import sparkMD5 from 'spark-md5'
 
 export function bindEvents(drag: HTMLElement, cb: Function) {
@@ -89,7 +90,10 @@ export async function calculateHashWorker(chunks: any[], cb: Function) {
 }
 
 //时间切片  利用浏览器空余时间计算
-export async function calculateHashIdle(chunks: any[], cb: Function) {
+export async function calculateHashIdle(
+  chunks: any[],
+  cb: Function
+): Promise<string> {
   return new Promise(resolve => {
     const spark = new sparkMD5.ArrayBuffer()
     let count = 0
@@ -162,4 +166,27 @@ export async function calculateHashSample(file: File, cb: Function) {
       resolve(spark.end())
     }
   })
+}
+
+export async function uploadChunks(chunks: any[]) {
+  const requests = chunks
+    // .filter(chunk => uploadedList.indexOf(chunk.name) == -1)
+    .map((chunk, index) => {
+      // 转成promise
+      const form = new FormData()
+      form.append('chunk', chunk.chunk)
+      form.append('hash', chunk.hash)
+      form.append('name', chunk.name)
+      // form.append('index',chunk.index)
+      return { form, index: chunk.index, error: 0 }
+    })
+    .map(({ form, index }) =>
+      uploadFile(form, (progress: any) => {
+        // console.log('progress', progress)
+        chunks[index].progress = Number(
+          ((progress.loaded / progress.total) * 100).toFixed(2)
+        )
+      })
+    )
+  await Promise.all(requests)
 }
