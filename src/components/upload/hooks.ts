@@ -180,15 +180,18 @@ export async function uploadChunks(chunks: any[], uploadedList: any[]) {
       // form.append('index',chunk.index)
       return { form, index: chunk.index, error: 0 }
     })
-    .map(({ form, index }) =>
-      uploadFile(form, (progress: any) => {
-        // console.log('progress', progress)
-        chunks[index].progress = Number(
-          ((progress.loaded / progress.total) * 100).toFixed(2)
-        )
-      })
-    )
-  await Promise.all(requests)
+  // .map(({ form, index }) =>
+  //   uploadFile(form, (progress: any) => {
+  //     // console.log('progress', progress)
+  //     chunks[index].progress = Number(
+  //       ((progress.loaded / progress.total) * 100).toFixed(2)
+  //     )
+  //   })
+  // )
+  //尝试申请tcp链接过多，也会造成卡顿
+  // await Promise.all(requests)
+  //异步并发数控制
+  await sendRequest(requests, chunks)
 }
 
 export async function mergeRequest(ext: string, hash: string) {
@@ -198,4 +201,63 @@ export async function mergeRequest(ext: string, hash: string) {
     hash
   })
   console.log('mergeRequest', res)
+}
+
+export async function sendRequest(requests: any[], chunks: any[], limit = 5) {
+  // limit 并发数
+  // 一个数组,长度 limit
+  // [task1,task2,task4,task4,task5]
+  return new Promise((resolve, reject) => {
+    const len = requests.length
+    let counter = 0 //已完成任务数
+    // let isStop = false
+    const start = async () => {
+      // if (isStop) {
+      //   return
+      // }
+      const task = requests.shift()
+      if (task) {
+        const { form, index } = task
+
+        try {
+          await uploadFile(form, (progress: any) => {
+            // console.log('progress', progress)
+            chunks[index].progress = Number(
+              ((progress.loaded / progress.total) * 100).toFixed(2)
+            )
+          })
+
+          if (counter == len - 1) {
+            // 最后一个任务
+            resolve(1)
+          } else {
+            counter++
+            // 启动下一个任务
+            start()
+          }
+        } catch (e) {
+          // chunks[index].progress = -1
+          // if (task.error < 3) {
+          //   task.error++
+          //   requests.unshift(task)
+          //   start()
+          // } else {
+          //   // 错误三次
+          //   isStop = true
+          //   reject()
+          // }
+        }
+      }
+    }
+
+    while (limit > 0) {
+      // 启动limit个任务
+
+      // 模拟一下延迟
+      setTimeout(() => {
+        start()
+      }, Math.random() * 2000)
+      limit -= 1
+    }
+  })
 }
