@@ -3,13 +3,15 @@
     <h1>upload</h1>
   </div>
   <div ref='drag' class="drag">
-    <input type="file" name="file" accept="image/*" @change="handleFileChange">
+    <!-- accept="image/*" -->
+    <input type="file" name="file" @change="handleFileChange">
   </div>
   <div>
     <div>计算hash进度</div>
     <a-progress :percent="hashProgress" />
   </div>
   <div>
+    <div>文件上传进度</div>
     <a-progress :percent="progressPercent" />
   </div>
   <div>
@@ -80,14 +82,14 @@ export default defineComponent({
     })
 
     let progressPercent = computed(() => {
-      if (!file.value || state.uploadedChunks.length) {
+      if (!file.value || !state.uploadedChunks.length) {
         return 0
       }
-      console.log('progressPercent computed')
       const loaded = state.uploadedChunks
         .map((item: any) => item.chunk.size * item.progress)
         .reduce((acc: any, cur: any) => acc + cur, 0)
-      return parseInt(((loaded * 100) / file.value.size).toFixed(2))
+      // console.log('progressPercent computed', loaded, file.value.size)
+      return parseInt((loaded / file.value.size).toFixed(2))
     })
 
     async function handleFileChange(e: any) {
