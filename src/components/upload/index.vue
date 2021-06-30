@@ -134,16 +134,18 @@ export default defineComponent({
 
       state.uploadedChunks = chunks.map((chunk, index) => {
         // 切片的名字 hash+index
+        const name = hash1 + '-' + index
+        const progress = uploadedList.indexOf(name) > -1 ? 100 : 0
         return {
           hash: hash1,
-          name: hash1 + '-' + index,
+          name,
           index,
           chunk: chunk.file,
-          progress: 0
+          progress
         }
       })
       console.log('uploadedChunks', state.uploadedChunks)
-      await uploadChunks(state.uploadedChunks)
+      await uploadChunks(state.uploadedChunks, uploadedList)
       await mergeRequest(ext, hash.value)
 
       return
