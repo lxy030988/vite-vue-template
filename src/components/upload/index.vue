@@ -19,22 +19,17 @@
   </div>
   <div>
     <!-- chunk.progress 
-      progress<0 报错 显示红色
-      == 100 成功
-      别的数字 方块高度显示 -->
-    <!-- 尽可能让方块看起来仕真方形
-      比如10各方块 4*4
-      9 3*3
-      100 10*10 -->
-    <div class="cube-container" :style="{width:cubeWidth+'px'}">
+      <0  报错 显示红色
+      100 成功 显示绿色
+      0-100 上传中 小方块(切片)高度 -->
+    <div class="cube-container">
       <div v-for="chunk in uploadedChunks" :key="chunk.name" class="cube">
         <div :class="{
               'uploading':chunk.progress>0&&chunk.progress<100,
               'success':chunk.progress==100,
               'error':chunk.progress<0
             }" :style="{height:chunk.progress+'%'}">
-          <LoadingOutlined v-if="chunk.progress<100 && chunk.progress>0" style="color:#f56c6c" />
-          <!-- <i v-if="chunk.progress<100 && chunk.progress>0" class="el-icon-loading" style="color:#f56c6c"></i> -->
+          <LoadingOutlined v-if="chunk.progress<100 && chunk.progress>0" />
         </div>
       </div>
     </div>
@@ -78,7 +73,7 @@ export default defineComponent({
     let state = reactive<any>({ uploadedChunks: [] })
 
     let cubeWidth = computed(() => {
-      return Math.ceil(Math.sqrt(state.uploadedChunks.length)) * 30
+      return Math.ceil(Math.sqrt(state.uploadedChunks.length)) * 30 + 'px'
     })
 
     let progressPercent = computed(() => {
@@ -192,15 +187,14 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .drag {
-  // margin: 0 auto;
-  // width: 400px;
   height: 100px;
-  // line-height: 100px;
   border: 2px dashed #eee;
   text-align: center;
 }
 
 .cube-container {
+  width: v-bind(cubeWidth);
+
   .cube {
     width: 28px;
     height: 28px;
