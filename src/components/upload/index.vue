@@ -60,7 +60,8 @@ import {
   calculateHashIdle,
   calculateHashSample,
   uploadChunks,
-  mergeRequest
+  mergeRequest,
+  TCPSlowStart
 } from './hooks'
 
 export default defineComponent({
@@ -142,7 +143,8 @@ export default defineComponent({
         }
       })
       console.log('uploadedChunks', state.uploadedChunks)
-      await uploadChunks(state.uploadedChunks, uploadedList)
+      // await uploadChunks(state.uploadedChunks, uploadedList)
+      await TCPSlowStart(file.value!, hash.value)
       await mergeRequest(ext, hash.value)
 
       return

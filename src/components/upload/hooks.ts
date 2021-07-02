@@ -264,3 +264,52 @@ export async function sendRequest(requests: any[], chunks: any[], limit = 5) {
     }
   })
 }
+
+/**
+ * TCP慢启动
+ * 默认每个切片上传时间为 100ms (理想时间)
+ * 第一个切片大小为 10M
+ * 如果第一次时间小于 100ms 则增大第二个切片大小；反之减小第二个切片大小；以此类推
+ */
+export async function TCPSlowStart(file: File, hash: string) {
+  if (!file) return
+
+  const fileSize = file.size
+  let offset = 10 * 1024 * 1024
+  let cur = 0
+  let count = 0
+
+  while (cur < fileSize) {
+    // 切割offfset大小
+    const chunk = file.slice(cur, cur + offset)
+    cur += offset
+    const chunkName = hash + '-' + count
+
+    const start = new Date().getTime()
+
+    const form = new FormData()
+    form.append('chunk', chunk)
+    form.append('hash', hash)
+    form.append('name', chunkName)
+
+    await uploadFile(form, (progress: any) => {
+      console.log('progress', progress)
+    })
+    const end = new Date().getTime()
+
+    const time = end - start
+    const rate = time / 100 //实际用时 是理想用时的 多少倍
+
+    // 新的切片大小等比变化
+    console.log(
+      `切片${count}大小是${offset},耗时${time} ms，是100ms的${rate}倍，修正大小为${
+        offset / rate
+      }`
+    )
+
+    // 动态调整offset
+    offset = Math.floor(offset / rate)
+
+    count++
+  }
+}
