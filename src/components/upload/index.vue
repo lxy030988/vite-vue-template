@@ -107,11 +107,14 @@ export default defineComponent({
       // })
       // console.log('hash0', hash0)
 
+      const start = new Date().getTime()
       const hash1 = await calculateHashIdle(chunks, (progress: any) => {
         // console.log('hash progress', progress)
         hashProgress.value = progress
       })
-      console.log('hash1', hash1)
+      const end = new Date().getTime()
+
+      console.log('hash1', hash1, end - start)
 
       // const hash2 = await calculateHashSample(file.value!, (progress: any) => {
       //   // console.log('hash progress', progress)
@@ -146,6 +149,8 @@ export default defineComponent({
       // await uploadChunks(state.uploadedChunks, uploadedList)
       await TCPSlowStart(file.value!, hash.value)
       await mergeRequest(ext, hash.value)
+      const end2 = new Date().getTime()
+      console.log('上传时间', end2 - start)
 
       return
 

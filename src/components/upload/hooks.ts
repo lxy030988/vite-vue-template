@@ -63,7 +63,7 @@ export async function isImage(file: File) {
 }
 
 //文件切片
-const CHUNK_SIZE = 1 * 1024 * 1024
+const CHUNK_SIZE = 10 * 1024 * 1024
 export function createFileChunk(file: File, size = CHUNK_SIZE) {
   const chunks = []
   let cur = 0
@@ -278,6 +278,7 @@ export async function TCPSlowStart(file: File, hash: string) {
   let offset = 10 * 1024 * 1024
   let cur = 0
   let count = 0
+  const forms: any[] = []
 
   while (cur < fileSize) {
     // 切割offfset大小
@@ -287,12 +288,21 @@ export async function TCPSlowStart(file: File, hash: string) {
 
     const start = new Date().getTime()
 
-    const form = new FormData()
-    form.append('chunk', chunk)
-    form.append('hash', hash)
-    form.append('name', chunkName)
+    forms[count] = new FormData()
+    forms[count].append('chunk', chunk)
+    forms[count].append('hash', hash)
+    forms[count].append('name', chunkName)
+    forms[count].append('size', offset)
+    // console.log(
+    //   'form',
+    //   count,
+    //   forms[count].get('chunk'),
+    //   forms[count].get('hash'),
+    //   forms[count].get('name'),
+    //   forms[count].get('size')
+    // )
 
-    await uploadFile(form, (progress: any) => {
+    await uploadFile(forms[count], (progress: any) => {
       console.log('progress', progress)
     })
     const end = new Date().getTime()
