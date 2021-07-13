@@ -8,6 +8,12 @@
     </a-button>
   </div>
   <HelloWorld msg="Hello Vue 3.0 + Vite1" />
+  <HelloWorld msg="Hello Vue 3.0 + Vite1" />
+  <HelloWorld msg="Hello Vue 3.0 + Vite1" />
+  <HelloWorld msg="Hello Vue 3.0 + Vite1" />
+  <HelloWorld msg="Hello Vue 3.0 + Vite1" />
+  <HelloWorld msg="Hello Vue 3.0 + Vite1" />
+  <HelloWorld msg="Hello Vue 3.0 + Vite1" />
   <Messagea />
   <div class="jc-svg-icon assd  s s s s ">
     <div>图标测试</div>

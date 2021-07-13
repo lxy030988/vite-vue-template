@@ -10,7 +10,8 @@ import {
   Card,
   Checkbox,
   Radio,
-  Progress
+  Progress,
+  Dropdown
 } from 'ant-design-vue'
 
 import 'ant-design-vue/dist/antd.css'
@@ -27,4 +28,5 @@ export function setupAntd(app: App<Element>) {
     .use(Checkbox)
     .use(Radio)
     .use(Progress)
+    .use(Dropdown)
 }
