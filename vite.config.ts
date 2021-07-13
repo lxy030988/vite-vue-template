@@ -64,6 +64,7 @@ module.exports = ({ mode }) => {
     ], //, vm(), i18n
     build: {
       target: 'es2015',
+      // polyfillDynamicImport: true,
       terserOptions: {
         compress: {
           keep_infinity: true,
