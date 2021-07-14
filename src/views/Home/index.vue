@@ -42,7 +42,7 @@ import { useMyStore } from '@/hooks/use-store'
 import VueEcharts, { OptionType } from '@/components/echarts'
 
 export default defineComponent({
-  name: 'App',
+  name: 'Home',
   components: {
     HelloWorld,
     Messagea,

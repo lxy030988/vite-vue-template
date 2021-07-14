@@ -14,6 +14,7 @@ import { MenuInfo } from '../model'
 import SidebarItem from './SidebarItem.vue'
 
 export default defineComponent({
+  name: 'Sidebar',
   components: {
     SidebarItem
   },

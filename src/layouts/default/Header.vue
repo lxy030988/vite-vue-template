@@ -12,9 +12,9 @@
           </span>
           <template #overlay>
             <a-menu @click="onClick">
-              <a-menu-item key="1">个人信息</a-menu-item>
-              <a-menu-item key="2">修改密码</a-menu-item>
-              <a-menu-item key="3">退出登录</a-menu-item>
+              <a-menu-item :key="DropdownEnum.USER_INFO">个人信息</a-menu-item>
+              <a-menu-item :key="DropdownEnum.UPDATE_PASSWORD">修改密码</a-menu-item>
+              <a-menu-item :key="DropdownEnum.LOGOUT">退出登录</a-menu-item>
             </a-menu>
           </template>
         </a-dropdown>
@@ -28,19 +28,27 @@ import { defineComponent, ref } from 'vue'
 
 import { DownOutlined } from '@ant-design/icons-vue'
 import { MenuInfo } from './model'
+import { DropdownEnum } from './enum'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
+  name: 'Header',
   components: {
     DownOutlined
   },
   setup() {
+    const router = useRouter()
     let username = ref('admin')
     const onClick = ({ key }: MenuInfo) => {
       console.log(`Click on item ${key}`)
+      if (key === DropdownEnum.LOGOUT) {
+        router.push({ path: '/login' })
+      }
     }
     return {
       username,
-      onClick
+      onClick,
+      DropdownEnum
     }
   }
 })

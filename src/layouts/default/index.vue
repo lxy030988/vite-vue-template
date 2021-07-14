@@ -7,11 +7,15 @@
       </div>
       <div class="right">
         <div class="content-box">
-          <div class="content">
-            <keep-alive>
-              <router-view />
-            </keep-alive>
-          </div>
+          <router-view v-slot="{ Component }">
+            <transition>
+              <div class="content">
+                <keep-alive>
+                  <component :is="Component" />
+                </keep-alive>
+              </div>
+            </transition>
+          </router-view>
         </div>
       </div>
     </div>
@@ -25,6 +29,7 @@ import VSidebar from './Sidebar/index.vue'
 import VHead from './Header.vue'
 
 export default defineComponent({
+  name: 'DefaultLayout',
   components: {
     VSidebar,
     VHead

@@ -1,6 +1,6 @@
-import { defineComponent, reactive } from 'vue'
+import { defineComponent } from 'vue'
 export default defineComponent({
-  name: "MenuItem",
+  name: "RItem",
   props: {
     icon: {
       type: String,
