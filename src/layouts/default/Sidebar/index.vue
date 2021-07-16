@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <a-menu v-model:selectedKeys="selectedKeys" v-model:openKeys="openKeys" class="sidebar-el-menu" mode="inline" theme="dark" @click="clickMenu">
-      <sidebar-item v-for="item in navs" :key="item.id" :item="item" />
+      <sidebar-item v-for="item in menus" :key="item.id" :item="item" />
     </a-menu>
   </div>
 </template>
@@ -22,38 +22,54 @@ export default defineComponent({
     const state = reactive({
       collapsed: false,
       selectedKeys: ['home'],
-      openKeys: [''],
-      navs: [
-        {
-          id: 1,
-          parentId: 0,
-          icon: 'home',
-          path: 'home',
-          name: '系统首页'
-        },
-        {
-          id: 2,
-          parentId: 0,
-          icon: 'setting',
-          path: 'setting',
-          name: '系统设置',
-          children: [
-            {
-              id: 26,
-              parentId: 2,
-              path: 'plan',
-              name: '计划页面'
-            },
-            {
-              id: 27,
-              parentId: 2,
-              path: 'upload',
-              name: '文件上传'
-            }
-          ]
-        }
-      ]
+      openKeys: ['']
     })
+
+    const menus = [
+      {
+        id: 1,
+        parentId: 0,
+        icon: 'home',
+        path: 'home',
+        name: '系统首页'
+      },
+      {
+        id: 2,
+        parentId: 0,
+        icon: 'setting',
+        path: 'setting',
+        name: '系统设置',
+        children: [
+          {
+            id: 26,
+            parentId: 2,
+            path: 'plan',
+            name: '计划页面'
+          },
+          {
+            id: 27,
+            parentId: 2,
+            path: 'upload',
+            name: '文件上传'
+          }
+        ]
+      },
+      {
+        id: 3,
+        parentId: 0,
+        icon: 'setting',
+        path: 'internalAuthorization',
+        name: '内部授权',
+        children: [
+          {
+            id: 31,
+            parentId: 3,
+            path: 'authorizationManagement',
+            name: '授权管理'
+          }
+        ]
+      }
+    ]
 
     const router = useRouter()
     function clickMenu(v: MenuInfo) {
@@ -69,6 +85,7 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+      menus,
       clickMenu
     }
   }

@@ -43,6 +43,17 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: '文件上传'
         }
+      },
+      {
+        path: 'internalAuthorization/authorizationManagement',
+        name: 'AuthorizationManagement',
+        component: () =>
+          import(
+            /* webpackChunkName: "authorizationManagement" */ '../views/AuthorizationManagement/index.vue'
+          ),
+        meta: {
+          title: '授权管理'
+        }
       }
     ]
   },

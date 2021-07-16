@@ -76,7 +76,8 @@ export default defineComponent({
     overflow: auto;
     .content {
       box-sizing: border-box;
-      background: white;
+      // background: white;
+      // padding: $jc-default-dis;
     }
   }
 }
