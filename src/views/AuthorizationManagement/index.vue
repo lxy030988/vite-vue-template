@@ -5,20 +5,16 @@
       <a-button type="primary">添加授权</a-button>
     </template>
     <a-table :data-source="list" :columns="columns" :pagination="false" />
-    <a-pagination v-model:current="currentPage" v-model:pageSize="pageSize" show-quick-jumper show-size-changer :total="100" @showSizeChange="changeSize" @change="changePage" />
+    <jc-pagination :pages="pages" @currentChange="currentChange" @sizeChange="sizeChange" />
   </a-card>
   <!-- <jc-manage /> -->
   <!-- <jc-detail /> -->
 </template>
 
 <script lang="ts">
-import {
-  defineAsyncComponent,
-  defineComponent,
-  reactive,
-  ref,
-  toRefs
-} from 'vue'
+import { usePage } from '@/hooks'
+import { defineAsyncComponent, defineComponent, reactive, toRefs } from 'vue'
+
 const columns = [
   {
     title: '姓名',
@@ -36,9 +32,13 @@ const columns = [
     key: 'address'
   }
 ]
+
 export default defineComponent({
   name: 'AuthorizationManagementIndex',
   components: {
+    JcPagination: defineAsyncComponent(
+      () => import('@/components/pagination/index.vue')
+    ),
     JcFilter: defineAsyncComponent(() => import('./modules/Filter/index.vue')),
     JcManage: defineAsyncComponent(() => import('./modules/Manage/index.vue')),
     JcDetail: defineAsyncComponent(() => import('./modules/Detail/index.vue'))
@@ -47,42 +47,43 @@ export default defineComponent({
     const state = reactive({
       list: [
         {
-          key: '1',
+          key: 0,
           name: '胡彦斌',
           age: 32,
-          address: '西湖区湖底公园1号'
-        },
-        {
-          key: '2',
-          name: '胡彦祖',
-          age: 42,
           address: '西湖区湖底公园1号'
         }
       ]
     })
 
-    const pageSize = ref(10)
-    const currentPage = ref(1)
+    const initData = () => {
+      console.log('initData')
+      for (let index = 1; index < 10; index++) {
+        state.list.push({
+          key: index,
+          name: '胡彦祖',
+          age: 42,
+          address: '西湖区湖底公园1号'
+        })
+      }
+      pages.total = 100
+    }
+
+    const { pages, currentChange, sizeChange } = usePage(initData)
 
     const goFilter = (v: any) => {
       console.log('goFilter', v)
+      currentChange(1)
     }
 
-    const changePage = (page: number, pageSize: number) => {
-      console.log(page, pageSize)
-    }
-    const changeSize = (current: number, pageSize: number) => {
-      console.log(current, pageSize)
-    }
+    initData()
 
     return {
       columns,
-      pageSize,
-      currentPage,
+      pages,
+      currentChange,
+      sizeChange,
       ...toRefs(state),
-      goFilter,
-      changePage,
-      changeSize
+      goFilter
     }
   }
 })

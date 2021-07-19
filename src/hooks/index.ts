@@ -1,1 +1,2 @@
-export { useMyStore } from './use-store'
+export { useMyStore } from './useStore'
+export { usePage } from './usePage'
