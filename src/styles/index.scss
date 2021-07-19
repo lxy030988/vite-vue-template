@@ -199,3 +199,9 @@ body,
     float: right;
   }
 }
+
+.jc-manage-form {
+  .ant-calendar-picker {
+    width: 100% !important;
+  }
+}

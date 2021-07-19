@@ -2,18 +2,24 @@
   <jc-filter @filter="goFilter" />
   <a-card class="jc-mt" title="列表内容" :bordered="false">
     <template #extra>
-      <a-button type="primary">添加授权</a-button>
+      <a-button type="primary" @click="magage">添加授权</a-button>
     </template>
     <a-table :data-source="list" :columns="columns" :pagination="false" />
     <jc-pagination :pages="pages" @currentChange="currentChange" @sizeChange="sizeChange" />
   </a-card>
-  <!-- <jc-manage /> -->
+  <jc-manage v-model:visible="visible" />
   <!-- <jc-detail /> -->
 </template>
 
 <script lang="ts">
 import { usePage } from '@/hooks'
-import { defineAsyncComponent, defineComponent, reactive, toRefs } from 'vue'
+import {
+  defineAsyncComponent,
+  defineComponent,
+  reactive,
+  ref,
+  toRefs
+} from 'vue'
 
 const columns = [
   {
@@ -54,6 +60,7 @@ export default defineComponent({
         }
       ]
     })
+    const visible = ref(false)
 
     const initData = () => {
       console.log('initData')
@@ -77,13 +84,19 @@ export default defineComponent({
 
     initData()
 
+    const magage = () => {
+      visible.value = true
+    }
+
     return {
       columns,
       pages,
       currentChange,
       sizeChange,
       ...toRefs(state),
-      goFilter
+      visible,
+      goFilter,
+      magage
     }
   }
 })
