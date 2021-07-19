@@ -26,9 +26,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRaw } from 'vue'
-
-import { Form } from 'ant-design-vue'
-const useForm = Form.useForm
+import { useForm } from '@/hooks'
 
 export default defineComponent({
   name: 'AuthorizationManagementFilter',
