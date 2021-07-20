@@ -19,8 +19,8 @@
       <a-form-item label="购买公司" name="name">
         <a-input v-model:value="formState.name" />
       </a-form-item>
-      <a-form-item label="批次设备总数" name="name">
-        <a-input v-model:value="formState.name" />
+      <a-form-item label="批次设备总数" name="count">
+        <a-input v-model:value.number="formState.count" />
       </a-form-item>
       <a-form-item label="设备信息导入" name="name">
 
@@ -43,15 +43,18 @@
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import { Moment } from 'moment'
 import { defineComponent, reactive, ref, toRaw, UnwrapRef } from 'vue'
-
+import { getIntegerRule, SELECT_NOT_NULL } from '@/utils/rule'
+import { useForm } from '@/hooks'
+import { FormRefType } from '@/hooks/useForm'
 interface FormState {
   name: string
   region: string | undefined
-  date1: Moment | undefined
+  date1: string | undefined
   delivery: boolean
   type: string[]
   resource: string
   desc: string
+  count: number | null
 }
 
 export default defineComponent({
@@ -68,7 +71,7 @@ export default defineComponent({
       emit('update:visible', false)
     }
 
-    const formRef = ref()
+    const formRef = ref<FormRefType>()
     const formState = reactive<FormState>({
       name: '',
       region: undefined,
@@ -76,14 +79,15 @@ export default defineComponent({
       delivery: false,
       type: [],
       resource: '',
-      desc: ''
+      desc: '',
+      count: null
     })
     const rules = {
+      count: getIntegerRule(),
       name: [
         {
           required: true,
-          message: 'Please input Activity name',
-          trigger: 'blur'
+          message: 'Please input Activity name'
         },
         { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
       ],
@@ -94,42 +98,25 @@ export default defineComponent({
           trigger: 'change'
         }
       ],
-      date1: [
-        {
-          required: true,
-          message: 'Please pick a date',
-          trigger: 'change',
-          type: 'object'
-        }
-      ],
-      type: [
-        {
-          type: 'array',
-          required: true,
-          message: 'Please select at least one activity type',
-          trigger: 'change'
-        }
-      ],
-      resource: [
-        {
-          required: true,
-          message: 'Please select activity resource',
-          trigger: 'change'
-        }
-      ]
+      date1: SELECT_NOT_NULL
     }
+
+    const { resetFields, validate } = useForm(formState, rules)
+
     const onSubmit = () => {
-      formRef.value
-        .validate()
+      formRef
+        .value!.validate()
         .then(() => {
           console.log('values', formState, toRaw(formState))
+          resetForm()
         })
         .catch((error: ValidateErrorEntity<FormState>) => {
           console.log('error', error)
         })
     }
+
     const resetForm = () => {
-      formRef.value.resetFields()
+      resetFields()
       emit('update:visible', false)
     }
 
@@ -138,7 +125,6 @@ export default defineComponent({
       formRef,
       labelCol: { span: 4 },
       wrapperCol: { span: 20 },
-      other: '',
       formState,
       rules,
       onSubmit,

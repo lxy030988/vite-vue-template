@@ -37,7 +37,7 @@ import { computed, defineComponent, ref } from 'vue'
 
 // import { GlobleState } from '@/store'
 // import { useStore } from 'vuex'
-import { useMyStore } from '@/hooks/use-store'
+import { useMyStore } from '@/hooks'
 
 import VueEcharts, { OptionType } from '@/components/echarts'
 
