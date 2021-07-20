@@ -51,7 +51,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .jc-login-wrap {
-  background: url('@/assets/BG.png');
+  background: url('@/assets/bground.jpg');
   height: 100%;
   .jc-login-contain {
     float: right;
@@ -89,8 +89,6 @@ export default defineComponent({
       .ant-form {
         padding: 0 70px;
         .ant-form-item {
-          // border: 1px solid #e5e5e5;
-          // border-radius: 8px;
           .ant-input-affix-wrapper {
             background: #f9f9f9;
             padding: 13px 10px 13px 24px;
