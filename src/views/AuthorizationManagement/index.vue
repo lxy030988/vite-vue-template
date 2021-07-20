@@ -4,11 +4,32 @@
     <template #extra>
       <a-button type="primary" @click="magage">添加授权</a-button>
     </template>
-    <a-table :data-source="list" :columns="columns" :pagination="false" />
+    <a-table :data-source="list" :columns="columns" :pagination="false">
+      <template #operation="{ record }">
+        <a-button type="link" title="详情" @click="showDetail(record)">
+          <template #icon>
+            <InfoCircleOutlined />
+          </template>
+        </a-button>
+        <a-button type="link" title="编辑">
+          <template #icon>
+            <FormOutlined />
+          </template>
+        </a-button>
+        <a-popconfirm title="Sure to delete?" @confirm="onDelete(record)">
+          <a-button type="link" title="删除">
+            <template #icon>
+              <DeleteOutlined />
+            </template>
+          </a-button>
+        </a-popconfirm>
+      </template>
+    </a-table>
+
     <jc-pagination :pages="pages" @currentChange="currentChange" @sizeChange="sizeChange" />
   </a-card>
   <jc-manage v-model:visible="visible" />
-  <!-- <jc-detail /> -->
+  <jc-detail :id="detailId" v-model:visible="detailVisible" />
 </template>
 
 <script lang="ts">
@@ -18,8 +39,15 @@ import {
   defineComponent,
   reactive,
   ref,
+  toRaw,
   toRefs
 } from 'vue'
+
+import {
+  DeleteOutlined,
+  FormOutlined,
+  InfoCircleOutlined
+} from '@ant-design/icons-vue'
 
 const columns = [
   {
@@ -36,12 +64,20 @@ const columns = [
     title: '住址',
     dataIndex: 'address',
     key: 'address'
+  },
+  {
+    title: '操作',
+    dataIndex: 'operation',
+    slots: { customRender: 'operation' }
   }
 ]
 
 export default defineComponent({
   name: 'AuthorizationManagementIndex',
   components: {
+    DeleteOutlined,
+    FormOutlined,
+    InfoCircleOutlined,
     JcPagination: defineAsyncComponent(
       () => import('@/components/pagination/index.vue')
     ),
@@ -60,7 +96,9 @@ export default defineComponent({
         }
       ]
     })
-    const visible = ref(false)
+    let visible = ref(false)
+    let detailVisible = ref(false)
+    let detailId = ref('')
 
     const initData = () => {
       console.log('initData')
@@ -88,6 +126,15 @@ export default defineComponent({
       visible.value = true
     }
 
+    const showDetail = (record: any) => {
+      console.log('record', record.key)
+      detailId.value = record.key
+      detailVisible.value = true
+    }
+    const onDelete = (record: any) => {
+      console.log('record', record.key)
+    }
+
     return {
       columns,
       pages,
@@ -95,8 +142,12 @@ export default defineComponent({
       sizeChange,
       ...toRefs(state),
       visible,
+      detailVisible,
       goFilter,
-      magage
+      magage,
+      onDelete,
+      showDetail,
+      detailId
     }
   }
 })

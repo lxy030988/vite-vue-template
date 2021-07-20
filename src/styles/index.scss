@@ -205,3 +205,12 @@ body,
     width: 100% !important;
   }
 }
+
+.jc-detail {
+  .ant-row {
+    margin-bottom: $jc-default-dis;
+    .ant-col:first-child {
+      text-align: right;
+    }
+  }
+}
