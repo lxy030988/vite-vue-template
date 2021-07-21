@@ -8,7 +8,7 @@
       <a-col :span="4">批次号</a-col>
       <a-col :span="20">合同号</a-col>
     </a-row>
-    <a-row :gutter="20">
+    <a-row v-if="AuthorizationTypes.OUTSIDE===type" :gutter="20">
       <a-col :span="4">授权码</a-col>
       <a-col :span="20">合同号</a-col>
     </a-row>
@@ -62,11 +62,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watchEffect } from 'vue'
+import { defineComponent, PropType, watchEffect } from 'vue'
+import { AuthorizationTypes } from '../../CONST'
 
 export default defineComponent({
   name: 'AuthorizationManagementDetail',
   props: {
+    type: {
+      type: String as PropType<AuthorizationTypes>,
+      required: true
+    },
     visible: {
       type: Boolean,
       required: true
@@ -86,7 +91,10 @@ export default defineComponent({
       console.log('id', props.id)
     })
 
-    return { handleCancel }
+    return {
+      AuthorizationTypes,
+      handleCancel
+    }
   }
 })
 </script>

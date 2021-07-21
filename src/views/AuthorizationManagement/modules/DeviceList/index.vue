@@ -10,6 +10,9 @@
         <a-button type="primary" class="jc-ml" @click="magageImport">批量导入</a-button>
       </template>
       <a-table :data-source="list" :columns="columns" :pagination="false">
+        <template #index="{ index }">
+          {{tableIndex(index)}}
+        </template>
         <template #operation="{ record }">
           <a-button type="link" title="禁用">
             <template #icon>
@@ -46,6 +49,7 @@ import { usePage } from '@/hooks'
 import {
   defineAsyncComponent,
   defineComponent,
+  PropType,
   reactive,
   ref,
   toRefs,
@@ -57,20 +61,25 @@ import {
   UnlockOutlined,
   StopOutlined
 } from '@ant-design/icons-vue'
+import { AuthorizationTypes } from '../../CONST'
 
-const columns = [
+const dcolumns = [
   {
-    title: '姓名',
+    title: '序号',
+    slots: { customRender: 'index' }
+  },
+  {
+    title: '设备号',
     dataIndex: 'name',
     key: 'name'
   },
   {
-    title: '年龄',
+    title: '创建日期',
     dataIndex: 'age',
     key: 'age'
   },
   {
-    title: '住址',
+    title: '设备状态',
     dataIndex: 'address',
     key: 'address'
   },
@@ -97,6 +106,10 @@ export default defineComponent({
     )
   },
   props: {
+    type: {
+      type: String as PropType<AuthorizationTypes>,
+      required: true
+    },
     visible: {
       type: Boolean,
       required: true
@@ -108,6 +121,8 @@ export default defineComponent({
   },
   emits: ['update:visible'],
   setup(props, { emit }) {
+    let columns = ref<any[]>([])
+
     const state = reactive({
       list: [
         {
@@ -133,7 +148,7 @@ export default defineComponent({
       pages.total = 100
     }
 
-    const { pages, currentChange, sizeChange } = usePage(initData)
+    const { pages, tableIndex, currentChange, sizeChange } = usePage(initData)
 
     const goFilter = (v: any) => {
       console.log('goFilter', v)
@@ -155,9 +170,24 @@ export default defineComponent({
       magageImportVisible.value = true
     }
 
+    watchEffect(() => {
+      if (props.type === AuthorizationTypes.INSIDE) {
+        columns.value = [...dcolumns]
+      } else if (props.type === AuthorizationTypes.OUTSIDE) {
+        columns.value = [...dcolumns]
+        columns.value.splice(1, 0, {
+          title: '授权信息',
+          dataIndex: 'age'
+        })
+      }
+
+      initData()
+    })
+
     return {
       columns,
       pages,
+      tableIndex,
       currentChange,
       sizeChange,
       ...toRefs(state),

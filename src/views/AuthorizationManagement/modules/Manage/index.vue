@@ -1,5 +1,5 @@
 <template>
-  <a-modal :visible="visible" title="添加授权" :width="800" :footer="null" :mask-closable="false" @cancel="handleCancel">
+  <a-modal :visible="visible" :title="title" :width="800" :footer="null" :mask-closable="false" @cancel="handleCancel">
     <a-form ref="formRef" class="jc-manage-form" :model="formState" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-item label="合同号" name="name">
         <a-input v-model:value="formState.name" placeholder="请输入" />
@@ -10,7 +10,7 @@
           <a-select-option value="beijing">Zone two</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="授权码" name="name">
+      <a-form-item v-if="AuthorizationTypes.OUTSIDE===type" label="授权码" name="name">
         <a-input v-model:value="formState.name" />
       </a-form-item>
       <a-form-item label="批次日期" name="date1">
@@ -44,8 +44,10 @@
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 // import { Moment } from 'moment'
 import {
+  computed,
   defineAsyncComponent,
   defineComponent,
+  PropType,
   reactive,
   ref,
   toRaw,
@@ -54,6 +56,7 @@ import {
 import { getIntegerRule, NOT_NULL, SELECT_NOT_NULL } from '@/utils/rule'
 import { useForm } from '@/hooks'
 import { FormRefType } from '@/hooks/useForm'
+import { AuthorizationTypes } from '../../CONST'
 interface FormState {
   name: string
   region: string | undefined
@@ -74,6 +77,14 @@ export default defineComponent({
     )
   },
   props: {
+    type: {
+      type: String as PropType<AuthorizationTypes>,
+      required: true
+    },
+    info: {
+      type: Object,
+      required: true
+    },
     visible: {
       type: Boolean,
       required: true
@@ -84,6 +95,8 @@ export default defineComponent({
     const handleCancel = (e: MouseEvent) => {
       emit('update:visible', false)
     }
+
+    let title = ref('添加授权')
 
     const formRef = ref<FormRefType>()
     const formState = reactive<FormState>({
@@ -121,6 +134,15 @@ export default defineComponent({
     const { resetFields, validate } = useForm(formState, rules)
 
     watchEffect(() => {
+      if (props.info) {
+        console.log('props.info', props.info)
+        title.value = '编辑授权'
+      } else {
+        title.value = '添加授权'
+      }
+    })
+
+    watchEffect(() => {
       formState.url = fileList.value[0]?.url || ''
     })
 
@@ -142,6 +164,8 @@ export default defineComponent({
     }
 
     return {
+      title,
+      AuthorizationTypes,
       fileList,
       handleCancel,
       formRef,
