@@ -22,8 +22,9 @@
       <a-form-item label="批次设备总数" name="count">
         <a-input v-model:value.number="formState.count" />
       </a-form-item>
-      <a-form-item label="设备信息导入" name="name">
-
+      <a-form-item label="设备信息导入" name="url">
+        <a href="/public/excel/test.xlsx">设备信息表格模板下载</a>
+        <jc-upload-list v-model:fileList="fileList" />
       </a-form-item>
       <a-form-item label="授权日期" name="date2">
         <a-range-picker v-model:value="formState.date2" value-format="YYYY-MM-DD HH:mm:ss" show-time />
@@ -41,9 +42,16 @@
 
 <script lang="ts">
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
-import { Moment } from 'moment'
-import { defineComponent, reactive, ref, toRaw, UnwrapRef } from 'vue'
-import { getIntegerRule, SELECT_NOT_NULL } from '@/utils/rule'
+// import { Moment } from 'moment'
+import {
+  defineAsyncComponent,
+  defineComponent,
+  reactive,
+  ref,
+  toRaw,
+  watchEffect
+} from 'vue'
+import { getIntegerRule, NOT_NULL, SELECT_NOT_NULL } from '@/utils/rule'
 import { useForm } from '@/hooks'
 import { FormRefType } from '@/hooks/useForm'
 interface FormState {
@@ -53,12 +61,18 @@ interface FormState {
   delivery: boolean
   type: string[]
   resource: string
+  url: string
   desc: string
   count: number | null
 }
 
 export default defineComponent({
   name: 'AuthorizationManagementManage',
+  components: {
+    JcUploadList: defineAsyncComponent(
+      () => import('@/components/upload/uploadList.vue')
+    )
+  },
   props: {
     visible: {
       type: Boolean,
@@ -79,9 +93,11 @@ export default defineComponent({
       delivery: false,
       type: [],
       resource: '',
+      url: '',
       desc: '',
       count: null
     })
+    let fileList = ref<any[]>([])
     const rules = {
       count: getIntegerRule(),
       name: [
@@ -98,10 +114,15 @@ export default defineComponent({
           trigger: 'change'
         }
       ],
+      url: SELECT_NOT_NULL,
       date1: SELECT_NOT_NULL
     }
 
     const { resetFields, validate } = useForm(formState, rules)
+
+    watchEffect(() => {
+      formState.url = fileList.value[0]?.url || ''
+    })
 
     const onSubmit = () => {
       formRef
@@ -121,6 +142,7 @@ export default defineComponent({
     }
 
     return {
+      fileList,
       handleCancel,
       formRef,
       labelCol: { span: 4 },
