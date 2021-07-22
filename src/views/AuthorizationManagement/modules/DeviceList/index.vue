@@ -5,7 +5,7 @@
     </div>
     <jc-filter @filter="goFilter" />
     <a-card class="jc-mt" title="设备列表" :bordered="false">
-      <template #extra>
+      <template v-if="type === AuthorizationTypes.INSIDE" #extra>
         <a-button type="primary" @click="magage">添加设备</a-button>
         <a-button type="primary" class="jc-ml" @click="magageImport">批量导入</a-button>
       </template>
@@ -14,16 +14,18 @@
           {{tableIndex(index)}}
         </template>
         <template #operation="{ record }">
-          <a-button type="link" title="禁用">
-            <template #icon>
-              <StopOutlined />
-            </template>
-          </a-button>
-          <a-button type="link" title="授权">
-            <template #icon>
-              <UnlockOutlined />
-            </template>
-          </a-button>
+          <template v-if="type === AuthorizationTypes.INSIDE">
+            <a-button type="link" title="禁用">
+              <template #icon>
+                <StopOutlined />
+              </template>
+            </a-button>
+            <a-button type="link" title="授权">
+              <template #icon>
+                <UnlockOutlined />
+              </template>
+            </a-button>
+          </template>
           <a-popconfirm title="您确定要删除吗?" @confirm="onDelete(record)">
             <a-button type="link" title="删除">
               <template #icon>
@@ -37,8 +39,8 @@
       <jc-pagination :pages="pages" @currentChange="currentChange" @sizeChange="sizeChange" />
     </a-card>
 
-    <jc-manage v-model:visible="manageVisible" />
-    <jc-manage-import v-model:visible="magageImportVisible" />
+    <jc-manage :id="id" v-model:visible="manageVisible" @success="initData" />
+    <jc-manage-import v-model:visible="magageImportVisible" @success="initData" />
 
   </div>
 
@@ -159,8 +161,8 @@ export default defineComponent({
       currentChange(1)
     }
 
-    const onDelete = (record: any) => {
-      console.log('onDelete', record.key)
+    const onDelete = (record: TDeviceListItem) => {
+      console.log('onDelete', record.id)
     }
 
     const handleCancel = (e: MouseEvent) => {
@@ -181,12 +183,13 @@ export default defineComponent({
         columns.value = [...dcolumns]
         columns.value.splice(1, 0, {
           title: '授权信息',
-          dataIndex: 'age'
+          dataIndex: 'licenseSentence'
         })
       }
     })
 
     return {
+      AuthorizationTypes,
       columns,
       pages,
       tableIndex,

@@ -9,9 +9,9 @@
         <template #index="{ index }">
           {{tableIndex(index)}}
         </template>
-        <template #shouquan="{ record }">
+        <template #count="{ record }">
           <span class="authorized-count-box" @click="showDevice(record)">
-            <span class="authorized-count">10</span>/{{record.age}}
+            <span class="authorized-count">{{record.licenseEquNum}}</span>/{{record.importEquNum}}
           </span>
         </template>
         <template #date="{ record }">
@@ -43,7 +43,7 @@
   </div>
 
   <jc-device-list :id="deviceListId" v-model:visible="deviceListVisible" :type="authorizationType" />
-  <jc-manage v-model:visible="visible" :type="authorizationType" :info="manageInfo" />
+  <jc-manage v-model:visible="visible" :type="authorizationType" :info="manageInfo" @success="initData" />
   <jc-detail :id="detailId" v-model:visible="detailVisible" :type="authorizationType" />
 </template>
 
@@ -98,8 +98,7 @@ const dcolumns: ColumnProps[] = [
   },
   {
     title: '授权设备数',
-    dataIndex: 'shouquan',
-    slots: { customRender: 'shouquan' }
+    slots: { customRender: 'count' }
   },
   {
     title: '授权日期',
@@ -111,7 +110,6 @@ const dcolumns: ColumnProps[] = [
   },
   {
     title: '操作',
-    dataIndex: 'operation',
     slots: { customRender: 'operation' }
   }
 ]
@@ -247,7 +245,8 @@ export default defineComponent({
       detailId,
       deviceListId,
       showDevice,
-      deviceListVisible
+      deviceListVisible,
+      initData
     }
   }
 })

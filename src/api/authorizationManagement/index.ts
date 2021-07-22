@@ -6,7 +6,8 @@ import {
   TParamsManage,
   TParamsList,
   TParamsDeviceList,
-  TDeviceListItem
+  TDeviceListItem,
+  TParamsAddDevice
 } from './model'
 
 export function getAuthManageList(data: TParamsList) {
@@ -40,6 +41,14 @@ export function manageAuthManage(data: TParamsManage) {
 export function getAuthManageDeviceList(data: TParamsDeviceList) {
   return http.request<any, TPageRes<TDeviceListItem>>({
     url: api.authorizationManagement.deviceList,
+    method: 'POST',
+    data
+  })
+}
+
+export function addAuthManageDevice(data: TParamsAddDevice) {
+  return http.request<any, any>({
+    url: api.authorizationManagement.addDevice,
     method: 'POST',
     data
   })

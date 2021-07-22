@@ -78,7 +78,7 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update:visible'],
+  emits: ['update:visible', 'success'],
   setup(props, { emit }) {
     const handleCancel = (e: MouseEvent) => {
       emit('update:visible', false)
@@ -88,7 +88,7 @@ export default defineComponent({
 
     const formRef = ref<FormRefType>()
     const formState = reactive<TParamsManage>({
-      allCount: 0,
+      allCount: null,
       batchNumber: '',
       batchTime: '',
       company: '',
@@ -156,6 +156,7 @@ export default defineComponent({
             await manageAuthManage(toRaw(formState))
 
             resetForm()
+            emit('success')
           } catch (error) {
             console.error(error)
           }

@@ -15,6 +15,5 @@ export const LICENSE_STATUSES = new JcEnum([
 //设备授权状态
 export const DEVICE_LICENSE_STATUSES = new JcEnum([
   { key: 'YSQ', value: 0, label: '已授权' },
-  { key: 'WSQ', value: 1, label: '未授权' },
-  { key: 'YJY', value: 2, label: '已禁用' }
+  { key: 'WSQ', value: 1, label: '未授权' }
 ])

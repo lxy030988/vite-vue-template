@@ -22,10 +22,13 @@ export interface TAuthorizationListItem {
   startTime: string
   licenseStatus: number
   type: number
+  execlUrl: string
+  importEquNum: number
+  licenseEquNum: number
 }
 
 export interface TParamsManage {
-  allCount: number
+  allCount: number | null
   batchNumber: string
   batchTime: string
   company: string
@@ -53,5 +56,12 @@ export interface TDeviceListItem {
   id: string
   createTime: string
   equipmentNum: string
+  licenseSentence: string
   licenseStatus: number
+}
+
+export interface TParamsAddDevice {
+  licenseRecordId: string
+  licenseStatus: number
+  equipmentNum: string
 }
