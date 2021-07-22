@@ -1,4 +1,4 @@
 export enum AuthorizationTypes {
-  INSIDE = '1',
-  OUTSIDE = '2'
+  INSIDE = '0',
+  OUTSIDE = '1'
 }

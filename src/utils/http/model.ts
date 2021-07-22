@@ -6,7 +6,7 @@ interface TResMsg {
 }
 
 export interface TRes {
-  resCode: ResCodeEnum
-  resData: any
-  resMsg: TResMsg
+  code: ResCodeEnum
+  data: any
+  msg: TResMsg
 }

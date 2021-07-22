@@ -31,14 +31,14 @@ module.exports = ({ mode }) => {
       alias
     },
     server: {
-      port: 3333
-      // proxy: {
-      //   '/api': {
-      //     target: 'http://192.168.0.180:8001',
-      //     changeOrigin: true,
-      //     rewrite: path => path.replace(/^\/api/, '')
-      //   }
-      // },
+      port: 3333,
+      proxy: {
+        '/api/': {
+          target: 'http://192.168.2.155:8099/',
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/api\//, '')
+        }
+      }
     },
     css: {
       preprocessorOptions: {

@@ -2,7 +2,7 @@
  * @description: 请求结果 code
  */
 export enum ResCodeEnum {
-  SUCCESS = 1,
+  SUCCESS = 100000,
   AUTH_ERROR = '10003', //非法token
   AUTH_EXPIRE = '10002' //token已过期
 }

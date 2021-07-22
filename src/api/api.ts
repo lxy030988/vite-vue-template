@@ -1,6 +1,6 @@
 export default {
   user: {},
   authorizationManagement: {
-    list: 'list'
+    list: 'license-record/queryAuthorizationList'
   }
 }

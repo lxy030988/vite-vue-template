@@ -5,7 +5,7 @@
       <template #extra>
         <a-button type="primary" @click="magage(null)">添加授权</a-button>
       </template>
-      <a-table :loading="loading" row-key="key" :data-source="list" :columns="columns" :pagination="false">
+      <a-table :loading="loading" row-key="id" :data-source="list" :columns="columns" :pagination="false">
         <template #index="{ index }">
           {{tableIndex(index)}}
         </template>
@@ -65,6 +65,8 @@ import { useRoute } from 'vue-router'
 import { AuthorizationTypes } from './CONST'
 import { ColumnProps } from 'ant-design-vue/lib/table/interface'
 
+import { getAuthManageList } from '@/api/authorizationManagement'
+import { TAuthorizationListItem } from '@/api/authorizationManagement/model'
 const dcolumns: ColumnProps[] = [
   {
     title: '序号',
@@ -72,23 +74,23 @@ const dcolumns: ColumnProps[] = [
   },
   {
     title: '合同号',
-    dataIndex: 'name'
+    dataIndex: 'contractNumber'
   },
   {
     title: '批次号',
-    dataIndex: 'age'
+    dataIndex: 'batchNumber'
   },
   {
     title: '批次日期',
-    dataIndex: 'address'
+    dataIndex: 'batchTime'
   },
   {
     title: '购买公司',
-    dataIndex: 'address'
+    dataIndex: 'company'
   },
   {
     title: '设备总数',
-    dataIndex: 'age'
+    dataIndex: 'allCount'
   },
   {
     title: '授权设备数',
@@ -129,16 +131,9 @@ export default defineComponent({
   setup() {
     let authorizationType = ref(AuthorizationTypes.INSIDE)
     let columns = ref<any[]>([])
-    const state = reactive({
-      list: [
-        {
-          key: 0,
-          name: '胡彦斌',
-          age: 32,
-          address: '西湖区湖底公园1号'
-        }
-      ]
-    })
+    let filter = ref<any>({})
+
+    let list = ref<TAuthorizationListItem[]>([])
 
     let loading = ref(false)
     let visible = ref(false)
@@ -148,20 +143,22 @@ export default defineComponent({
     let detailId = ref('')
     let deviceListId = ref('')
 
-    const initData = () => {
-      // loading.value = true
-      console.log('initData')
-      const list = []
-      for (let index = 0; index < 10; index++) {
-        list.push({
-          key: index,
-          name: '胡彦祖',
-          age: 42,
-          address: '西湖区湖底公园1号'
+    const initData = async () => {
+      loading.value = true
+      try {
+        const res = await getAuthManageList({
+          ...filter.value,
+          ...pages,
+          type: authorizationType.value
         })
+        console.log('res', res)
+        pages.total = res.total
+        list.value = res.list
+      } catch (error) {
+        console.error(error)
+      } finally {
+        loading.value = false
       }
-      state.list = list
-      pages.total = 100
     }
 
     const { pages, tableIndex, currentChange, sizeChange } = usePage(initData)
@@ -204,7 +201,7 @@ export default defineComponent({
         columns.value = [...dcolumns]
         columns.value.splice(3, 0, {
           title: '授权码',
-          dataIndex: 'age'
+          dataIndex: 'licenseCode'
         })
       }
       deviceListVisible.value = false
@@ -219,7 +216,8 @@ export default defineComponent({
       currentChange,
       sizeChange,
       tableIndex,
-      ...toRefs(state),
+      // ...toRefs(state),
+      list,
       visible,
       manageInfo,
       detailVisible,
