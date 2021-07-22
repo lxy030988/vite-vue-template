@@ -1,5 +1,7 @@
 export default {
-  user: {},
+  user: {
+    login: 'user/login'
+  },
   authorizationManagement: {
     list: 'license-record/queryAuthorizationList',
     add: 'license-record/addAuthorization',
