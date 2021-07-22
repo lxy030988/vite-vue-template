@@ -25,6 +25,7 @@ import { FormRefType } from '@/hooks/useForm'
 import { TParamsAddDevice } from '@/api/authorizationManagement/model'
 import { DEVICE_LICENSE_STATUSES } from '@/views/AuthorizationManagement/CONST'
 import { addAuthManageDevice } from '@/api/authorizationManagement'
+import { message } from 'ant-design-vue'
 
 export default defineComponent({
   name: 'AuthorizationManagementDeviceListManage',
@@ -70,7 +71,7 @@ export default defineComponent({
 
           try {
             await addAuthManageDevice(toRaw(formState))
-
+            message.success('操作成功')
             resetForm()
             emit('success')
           } catch (error) {

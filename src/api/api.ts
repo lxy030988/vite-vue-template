@@ -10,6 +10,7 @@ export default {
     add: 'license-record/addAuthorization',
     update: 'license-record/updateAuthorization',
     deviceList: 'license-record-equipment/queryEquipmentList',
-    addDevice: 'license-record-equipment/insertEquipment'
+    addDevice: 'license-record-equipment/insertEquipment',
+    updateDeviceStatus: 'license-record-equipment/updateEquipmentStatus'
   }
 }

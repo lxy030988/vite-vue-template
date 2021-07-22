@@ -65,3 +65,8 @@ export interface TParamsAddDevice {
   licenseStatus: number
   equipmentNum: string
 }
+
+export interface TParamsDeviceStatus {
+  id: string
+  licenseStatus: number
+}

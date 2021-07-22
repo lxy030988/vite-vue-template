@@ -7,7 +7,8 @@ import {
   TParamsList,
   TParamsDeviceList,
   TDeviceListItem,
-  TParamsAddDevice
+  TParamsAddDevice,
+  TParamsDeviceStatus
 } from './model'
 
 export function getAuthManageList(data: TParamsList) {
@@ -49,6 +50,14 @@ export function getAuthManageDeviceList(data: TParamsDeviceList) {
 export function addAuthManageDevice(data: TParamsAddDevice) {
   return http.request<any, any>({
     url: api.authorizationManagement.addDevice,
+    method: 'POST',
+    data
+  })
+}
+
+export function updateDeviceStatus(data: TParamsDeviceStatus) {
+  return http.request<any, any>({
+    url: api.authorizationManagement.updateDeviceStatus,
     method: 'POST',
     data
   })

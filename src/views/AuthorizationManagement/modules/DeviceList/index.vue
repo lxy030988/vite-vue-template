@@ -9,23 +9,28 @@
         <a-button type="primary" @click="magage">添加设备</a-button>
         <a-button type="primary" class="jc-ml" @click="magageImport">批量导入</a-button>
       </template>
-      <a-table :data-source="list" row-key="id" :columns="columns" :pagination="false">
+      <a-table :loading="loading" :data-source="list" row-key="id" :columns="columns" :pagination="false">
         <template #index="{ index }">
           {{tableIndex(index)}}
         </template>
         <template #operation="{ record }">
           <template v-if="type === AuthorizationTypes.INSIDE">
-            <a-button type="link" title="禁用">
-              <template #icon>
-                <StopOutlined />
-              </template>
-            </a-button>
-            <a-button type="link" title="授权">
-              <template #icon>
-                <UnlockOutlined />
-              </template>
-            </a-button>
+            <a-popconfirm v-if="record.licenseStatus===DEVICE_LICENSE_STATUSES.YSQ" title="您确定要禁用该设备吗?" @confirm="onDeviceStatus(record,DEVICE_LICENSE_STATUSES.WSQ)">
+              <a-button type="link" title="禁用">
+                <template #icon>
+                  <StopOutlined />
+                </template>
+              </a-button>
+            </a-popconfirm>
+            <a-popconfirm v-else title="您确定要授权该设备吗?" @confirm="onDeviceStatus(record,DEVICE_LICENSE_STATUSES.YSQ)">
+              <a-button type="link" title="授权">
+                <template #icon>
+                  <UnlockOutlined />
+                </template>
+              </a-button>
+            </a-popconfirm>
           </template>
+
           <a-popconfirm title="您确定要删除吗?" @confirm="onDelete(record)">
             <a-button type="link" title="删除">
               <template #icon>
@@ -65,8 +70,13 @@ import {
   StopOutlined
 } from '@ant-design/icons-vue'
 import { AuthorizationTypes } from '../../CONST'
-import { getAuthManageDeviceList } from '@/api/authorizationManagement'
+import {
+  getAuthManageDeviceList,
+  updateDeviceStatus
+} from '@/api/authorizationManagement'
 import { TDeviceListItem } from '@/api/authorizationManagement/model'
+import { DEVICE_LICENSE_STATUSES } from '@/views/AuthorizationManagement/CONST'
+import { message } from 'ant-design-vue'
 
 const dcolumns = [
   {
@@ -125,7 +135,7 @@ export default defineComponent({
   setup(props, { emit }) {
     let columns = ref<any[]>([])
     let filter = ref<any>({})
-
+    let loading = ref(false)
     let list = ref<TDeviceListItem[]>([])
 
     let manageVisible = ref(false)
@@ -142,15 +152,20 @@ export default defineComponent({
     )
 
     const initData = async () => {
-      console.log('initData')
-      // pages.total = 100
-      const res = await getAuthManageDeviceList({
-        ...filter.value,
-        ...pages,
-        licenseRecordId: props.id
-      })
-      pages.total = res.total
-      list.value = res.list
+      try {
+        loading.value = true
+        const res = await getAuthManageDeviceList({
+          ...filter.value,
+          ...pages,
+          licenseRecordId: props.id
+        })
+        pages.total = res.total
+        list.value = res.list
+      } catch (error) {
+        console.error(error)
+      } finally {
+        loading.value = false
+      }
     }
 
     const { pages, tableIndex, currentChange, sizeChange } = usePage(initData)
@@ -163,6 +178,19 @@ export default defineComponent({
 
     const onDelete = (record: TDeviceListItem) => {
       console.log('onDelete', record.id)
+    }
+
+    const onDeviceStatus = async (
+      record: TDeviceListItem,
+      licenseStatus: number
+    ) => {
+      try {
+        await updateDeviceStatus({ licenseStatus, id: record.id })
+        message.success('操作成功')
+        initData()
+      } catch (error) {
+        console.error(error)
+      }
     }
 
     const handleCancel = (e: MouseEvent) => {
@@ -189,6 +217,8 @@ export default defineComponent({
     })
 
     return {
+      loading,
+      DEVICE_LICENSE_STATUSES,
       AuthorizationTypes,
       columns,
       pages,
@@ -198,7 +228,9 @@ export default defineComponent({
       list,
       // ...toRefs(state),
       goFilter,
+      initData,
       onDelete,
+      onDeviceStatus,
       handleCancel,
       manageVisible,
       magage,

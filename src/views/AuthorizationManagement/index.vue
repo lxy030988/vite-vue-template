@@ -49,16 +49,7 @@
 
 <script lang="ts">
 import { usePage } from '@/hooks'
-import {
-  defineAsyncComponent,
-  defineComponent,
-  reactive,
-  ref,
-  toRaw,
-  toRefs,
-  watch,
-  watchEffect
-} from 'vue'
+import { defineAsyncComponent, defineComponent, ref, watch } from 'vue'
 
 import {
   DeleteOutlined,
@@ -146,14 +137,13 @@ export default defineComponent({
     let deviceListId = ref('')
 
     const initData = async () => {
-      loading.value = true
       try {
+        loading.value = true
         const res = await getAuthManageList({
           ...filter.value,
           ...pages,
           type: authorizationType.value
         })
-        console.log('res', res)
         pages.total = res.total
         list.value = res.list
       } catch (error) {
@@ -196,6 +186,12 @@ export default defineComponent({
       deviceListVisible.value = true
     }
 
+    watch(deviceListVisible, (value, oldValue) => {
+      if (!value) {
+        initData()
+      }
+    })
+
     //根据路由的变化 改变授权类型
     const route = useRoute()
 
@@ -220,10 +216,6 @@ export default defineComponent({
       { immediate: true }
     )
 
-    // watchEffect(() => {
-
-    // })
-
     return {
       authorizationType,
       columns,
@@ -233,7 +225,6 @@ export default defineComponent({
       sizeChange,
       tableIndex,
       formatDate,
-      // ...toRefs(state),
       list,
       visible,
       manageInfo,
