@@ -34,13 +34,14 @@ http.interceptors.response.use(
         return res.data.data
       } else {
         if (
-          res.data.msg.msgCode === ResCodeEnum.AUTH_ERROR ||
-          res.data.msg.msgCode === ResCodeEnum.AUTH_EXPIRE
+          res.data.code === ResCodeEnum.AUTH_ERROR ||
+          res.data.code === ResCodeEnum.AUTH_EXPIRE
         ) {
           message.error('您未登录或登录已失效')
           router.push({ path: '/login' })
         } else {
-          console.error(res.data.msg.msgText)
+          message.error(res.data.msg)
+          console.error(res.data.msg)
         }
         return Promise.reject(res)
       }

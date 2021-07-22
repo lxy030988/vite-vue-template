@@ -1,36 +1,33 @@
 <template>
-  <a-modal :visible="visible" :title="title" :width="800" :footer="null" :mask-closable="false" @cancel="handleCancel">
+  <a-modal :visible="visible" :title="title" :width="800" :footer="null" :mask-closable="false" @cancel="resetForm">
     <a-form ref="formRef" class="jc-manage-form" :model="formState" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-      <a-form-item label="合同号" name="name">
-        <a-input v-model:value="formState.name" placeholder="请输入" />
+      <a-form-item label="合同号" name="contractNumber">
+        <a-input v-model:value="formState.contractNumber" placeholder="请输入" />
       </a-form-item>
-      <a-form-item label="批次号" name="region">
-        <a-select v-model:value="formState.region" placeholder="请选择">
-          <a-select-option value="shanghai">Zone one</a-select-option>
-          <a-select-option value="beijing">Zone two</a-select-option>
-        </a-select>
+      <a-form-item label="批次号" name="batchNumber">
+        <a-input v-model:value="formState.batchNumber" placeholder="请输入" />
       </a-form-item>
-      <a-form-item v-if="AuthorizationTypes.OUTSIDE===type" label="授权码" name="name">
-        <a-input v-model:value="formState.name" />
+      <a-form-item v-if="AuthorizationTypes.OUTSIDE===type" label="授权码" name="licenseCode">
+        <a-input v-model:value="formState.licenseCode" />
       </a-form-item>
-      <a-form-item label="批次日期" name="date1">
-        <a-date-picker v-model:value="formState.date1" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss" show-time />
+      <a-form-item label="批次日期" name="batchTime">
+        <a-date-picker v-model:value="formState.batchTime" format="YYYY-MM-DD" value-format="YYYY-MM-DD" :show-time="false" />
       </a-form-item>
-      <a-form-item label="购买公司" name="name">
-        <a-input v-model:value="formState.name" />
+      <a-form-item label="购买公司" name="company">
+        <a-input v-model:value="formState.company" />
       </a-form-item>
-      <a-form-item label="批次设备总数" name="count">
-        <a-input v-model:value.number="formState.count" />
+      <a-form-item label="批次设备总数" name="allCount">
+        <a-input v-model:value.number="formState.allCount" />
       </a-form-item>
-      <a-form-item label="设备信息导入" name="url">
+      <a-form-item label="设备信息导入" name="execlUrl">
         <a href="/public/excel/test.xlsx">设备信息表格模板下载</a>
         <jc-upload-list v-model:fileList="fileList" />
       </a-form-item>
-      <a-form-item label="授权日期" name="date2">
-        <a-range-picker v-model:value="formState.date2" value-format="YYYY-MM-DD HH:mm:ss" show-time />
+      <a-form-item label="授权日期" name="date">
+        <a-range-picker v-model:value="formState.date" value-format="YYYY-MM-DD HH:mm:ss" show-time @change="changeDate" />
       </a-form-item>
-      <a-form-item label="描述" name="desc">
-        <a-textarea v-model:value="formState.desc" />
+      <a-form-item label="描述" name="description">
+        <a-textarea v-model:value="formState.description" />
       </a-form-item>
       <div class="text-center">
         <a-button @click="resetForm">取消</a-button>
@@ -57,17 +54,8 @@ import { getIntegerRule, NOT_NULL, SELECT_NOT_NULL } from '@/utils/rule'
 import { useForm } from '@/hooks'
 import { FormRefType } from '@/hooks/useForm'
 import { AuthorizationTypes } from '../../CONST'
-interface FormState {
-  name: string
-  region: string | undefined
-  date1: string | undefined
-  delivery: boolean
-  type: string[]
-  resource: string
-  url: string
-  desc: string
-  count: number | null
-}
+import { TParamsManage } from '@/api/authorizationManagement/model'
+import { manageAuthManage } from '@/api/authorizationManagement'
 
 export default defineComponent({
   name: 'AuthorizationManagementManage',
@@ -82,7 +70,7 @@ export default defineComponent({
       required: true
     },
     info: {
-      type: Object,
+      type: Object as PropType<TParamsManage>,
       required: true
     },
     visible: {
@@ -99,36 +87,26 @@ export default defineComponent({
     let title = ref('添加授权')
 
     const formRef = ref<FormRefType>()
-    const formState = reactive<FormState>({
-      name: '',
-      region: undefined,
-      date1: undefined,
-      delivery: false,
-      type: [],
-      resource: '',
-      url: '',
-      desc: '',
-      count: null
+    const formState = reactive<TParamsManage>({
+      allCount: 0,
+      batchNumber: '',
+      batchTime: '',
+      company: '',
+      contractNumber: '',
+      description: '',
+      endTime: '',
+      execlUrl: '',
+      id: '',
+      licenseCode: '',
+      startTime: '',
+      type: '',
+      date: []
     })
     let fileList = ref<any[]>([])
     const rules = {
-      count: getIntegerRule(),
-      name: [
-        {
-          required: true,
-          message: 'Please input Activity name'
-        },
-        { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }
-      ],
-      region: [
-        {
-          required: true,
-          message: 'Please select Activity zone',
-          trigger: 'change'
-        }
-      ],
-      url: SELECT_NOT_NULL,
-      date1: SELECT_NOT_NULL
+      allCount: getIntegerRule(),
+      execlUrl: SELECT_NOT_NULL,
+      date: SELECT_NOT_NULL
     }
 
     const { resetFields, validate } = useForm(formState, rules)
@@ -137,30 +115,71 @@ export default defineComponent({
       if (props.info) {
         console.log('props.info', props.info)
         title.value = '编辑授权'
+        formState.id = props.info.id
+        formState.allCount = props.info.allCount
+        formState.batchNumber = props.info.batchNumber
+        formState.batchTime = props.info.batchTime
+        formState.company = props.info.company
+        formState.contractNumber = props.info.contractNumber
+        formState.description = props.info.description
+        formState.execlUrl = props.info.execlUrl
+        formState.type = props.info.type
+        formState.licenseCode = props.info.licenseCode
+        formState.endTime = props.info.endTime
+        formState.startTime = props.info.startTime //时间格式化
+        formState.date = [props.info.startTime, props.info.endTime]
+
+        fileList.value = [
+          {
+            uid: props.info.execlUrl,
+            name: props.info.execlUrl,
+            url: props.info.execlUrl
+          }
+        ]
       } else {
         title.value = '添加授权'
       }
     })
 
     watchEffect(() => {
-      formState.url = fileList.value[0]?.url || ''
+      formState.execlUrl = fileList.value[0]?.url || ''
     })
 
     const onSubmit = () => {
       formRef
         .value!.validate()
-        .then(() => {
+        .then(async () => {
+          formState.type = props.type
           console.log('values', formState, toRaw(formState))
-          resetForm()
+
+          try {
+            await manageAuthManage(toRaw(formState))
+
+            resetForm()
+          } catch (error) {
+            console.error(error)
+          }
         })
-        .catch((error: ValidateErrorEntity<FormState>) => {
+        .catch((error: ValidateErrorEntity<TParamsManage>) => {
           console.log('error', error)
         })
     }
 
     const resetForm = () => {
       resetFields()
+      fileList.value = []
       emit('update:visible', false)
+    }
+
+    const changeDate = (v: any[]) => {
+      if (v.length) {
+        formState.startTime = v[0]
+        formState.endTime = v[1]
+      } else {
+        formState.startTime = ''
+        formState.endTime = ''
+      }
+      // console.log('changeDate', v)
     }
 
     return {
@@ -168,6 +187,7 @@ export default defineComponent({
       AuthorizationTypes,
       fileList,
       handleCancel,
+      changeDate,
       formRef,
       labelCol: { span: 4 },
       wrapperCol: { span: 20 },
