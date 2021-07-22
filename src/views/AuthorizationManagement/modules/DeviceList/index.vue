@@ -9,7 +9,7 @@
         <a-button type="primary" @click="magage">添加设备</a-button>
         <a-button type="primary" class="jc-ml" @click="magageImport">批量导入</a-button>
       </template>
-      <a-table :data-source="list" :columns="columns" :pagination="false">
+      <a-table :data-source="list" row-key="id" :columns="columns" :pagination="false">
         <template #index="{ index }">
           {{tableIndex(index)}}
         </template>
@@ -53,6 +53,7 @@ import {
   reactive,
   ref,
   toRefs,
+  watch,
   watchEffect
 } from 'vue'
 
@@ -62,6 +63,8 @@ import {
   StopOutlined
 } from '@ant-design/icons-vue'
 import { AuthorizationTypes } from '../../CONST'
+import { getAuthManageDeviceList } from '@/api/authorizationManagement'
+import { TDeviceListItem } from '@/api/authorizationManagement/model'
 
 const dcolumns = [
   {
@@ -70,18 +73,15 @@ const dcolumns = [
   },
   {
     title: '设备号',
-    dataIndex: 'name',
-    key: 'name'
+    dataIndex: 'equipmentNum'
   },
   {
     title: '创建日期',
-    dataIndex: 'age',
-    key: 'age'
+    dataIndex: 'createTime'
   },
   {
     title: '设备状态',
-    dataIndex: 'address',
-    key: 'address'
+    dataIndex: 'licenseStatus'
   },
   {
     title: '操作',
@@ -122,36 +122,40 @@ export default defineComponent({
   emits: ['update:visible'],
   setup(props, { emit }) {
     let columns = ref<any[]>([])
+    let filter = ref<any>({})
 
-    const state = reactive({
-      list: [
-        {
-          key: 0,
-          name: '胡彦斌',
-          age: 32,
-          address: '西湖区湖底公园1号'
-        }
-      ]
-    })
+    let list = ref<TDeviceListItem[]>([])
+
     let manageVisible = ref(false)
     let magageImportVisible = ref(false)
 
-    watchEffect(() => {
-      console.log('id', props.id)
-      if (props.id) {
-        initData()
+    watch(
+      () => props.id,
+      () => {
+        console.log('id', props.id)
+        if (props.id) {
+          initData()
+        }
       }
-    })
+    )
 
-    const initData = () => {
+    const initData = async () => {
       console.log('initData')
-      pages.total = 100
+      // pages.total = 100
+      const res = await getAuthManageDeviceList({
+        ...filter.value,
+        ...pages,
+        licenseRecordId: props.id
+      })
+      pages.total = res.total
+      list.value = res.list
     }
 
     const { pages, tableIndex, currentChange, sizeChange } = usePage(initData)
 
     const goFilter = (v: any) => {
       console.log('goFilter', v)
+      filter.value = v
       currentChange(1)
     }
 
@@ -180,8 +184,6 @@ export default defineComponent({
           dataIndex: 'age'
         })
       }
-
-      initData()
     })
 
     return {
@@ -190,7 +192,8 @@ export default defineComponent({
       tableIndex,
       currentChange,
       sizeChange,
-      ...toRefs(state),
+      list,
+      // ...toRefs(state),
       goFilter,
       onDelete,
       handleCancel,

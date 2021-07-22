@@ -1,7 +1,13 @@
 import http from '@/utils/http'
 import api from '../api'
 import { TPageRes } from '../model'
-import { TAuthorizationListItem, TParamsManage, TParamsList } from './model'
+import {
+  TAuthorizationListItem,
+  TParamsManage,
+  TParamsList,
+  TParamsDeviceList,
+  TDeviceListItem
+} from './model'
 
 export function getAuthManageList(data: TParamsList) {
   return http.request<any, TPageRes<TAuthorizationListItem>>({
@@ -29,4 +35,12 @@ export function updateAuthManage(data: TParamsManage) {
 
 export function manageAuthManage(data: TParamsManage) {
   return data.id ? updateAuthManage(data) : addAuthManage(data)
+}
+
+export function getAuthManageDeviceList(data: TParamsDeviceList) {
+  return http.request<any, TPageRes<TDeviceListItem>>({
+    url: api.authorizationManagement.deviceList,
+    method: 'POST',
+    data
+  })
 }

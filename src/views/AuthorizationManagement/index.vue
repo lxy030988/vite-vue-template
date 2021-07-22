@@ -193,7 +193,7 @@ export default defineComponent({
     }
 
     const showDevice = (record: TAuthorizationListItem) => {
-      console.log('record', record.id)
+      // console.log('record', record.id)
       deviceListId.value = record.id
       deviceListVisible.value = true
     }

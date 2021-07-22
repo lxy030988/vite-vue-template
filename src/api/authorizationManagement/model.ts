@@ -39,3 +39,19 @@ export interface TParamsManage {
   type: string
   [key: string]: any
 }
+
+export interface TParamsDeviceList {
+  licenseRecordId: string
+  pageNum: number
+  pageSize: number
+  licenseStatus?: number
+  createTime?: string
+  equipmentNum?: string
+}
+
+export interface TDeviceListItem {
+  id: string
+  createTime: string
+  equipmentNum: string
+  licenseStatus: number
+}
