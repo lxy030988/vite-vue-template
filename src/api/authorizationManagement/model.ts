@@ -23,3 +23,19 @@ export interface TAuthorizationListItem {
   licenseStatus: number
   type: number
 }
+
+export interface TParamsManage {
+  allCount: number
+  batchNumber: string
+  batchTime: string
+  company: string
+  contractNumber: string
+  description: string
+  endTime: string
+  execlUrl: string
+  id?: string
+  licenseCode: string
+  startTime: string
+  type: string
+  [key: string]: any
+}

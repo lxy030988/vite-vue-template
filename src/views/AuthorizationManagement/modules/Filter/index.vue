@@ -13,7 +13,7 @@
         <a-input v-model:value="formState.licenseInfo"></a-input>
       </a-form-item>
       <a-form-item label="授权日期">
-        <a-range-picker v-model:value="formState.date" value-format="YYYY-MM-DD" :show-time="false" @change="changeDate" />
+        <a-range-picker v-model:value="formState.date" value-format="YYYY-MM-DD HH:mm:ss" @change="changeDate" />
       </a-form-item>
       <a-form-item class="jc-tabfilter-btns">
         <a-button type="primary" html-type="submit" @click="onSubmit">查询</a-button>
