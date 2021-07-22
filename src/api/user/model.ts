@@ -19,3 +19,7 @@ export interface TResItemDomainLogo {
   loginLogoLocation: number
   systemName: string
 }
+export interface TParamsLogin {
+  account?: string
+  userPwd?: string
+}

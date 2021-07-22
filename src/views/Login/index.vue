@@ -8,23 +8,32 @@
           <div class="jc-user-title">用户登录</div>
           <div class="jc-user-box"></div>
         </div>
-        <a-form :form="form">
+        <a-form :model="form">
           <a-form-item>
-            <a-input placeholder="账号">
+            <a-input
+              v-model:value="form.account"
+              placeholder="账号"
+            >
               <template #prefix>
                 <svg-icon name="login-user"></svg-icon>
               </template>
             </a-input>
           </a-form-item>
           <a-form-item>
-            <a-input placeholder="密码">
+            <a-input
+              v-model:value.trim="form.userPwd"
+              placeholder="密码"
+            >
               <template #prefix>
                 <svg-icon name="login-password"></svg-icon>
               </template>
             </a-input>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary">
+            <a-button
+              type="primary"
+              @click="onSubmit"
+            >
               登录
             </a-button>
           </a-form-item>
@@ -36,14 +45,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, toRaw } from 'vue'
+import { getUserInfo } from '@/api/user'
+interface UserInfo {
+  account: string
+  userPwd: string
+}
 
 export default defineComponent({
   name: 'Login',
   setup() {
-    const form = reactive({})
+    const form = reactive<UserInfo>({
+      account: '',
+      userPwd: ''
+    })
+    const onSubmit = async () => {
+      console.log(toRaw(form))
+      await getUserInfo(toRaw(form))
+    }
     return {
-      form
+      form,
+      onSubmit
     }
   }
 })
@@ -61,6 +83,7 @@ export default defineComponent({
       font-size: 40px;
       color: $jc-color-white;
       margin-bottom: 40px;
+      text-align: center;
     }
     .jc-login-info {
       width: 530px;
