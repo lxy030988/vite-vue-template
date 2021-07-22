@@ -14,6 +14,9 @@
             <span class="authorized-count">10</span>/{{record.age}}
           </span>
         </template>
+        <template #date="{ record }">
+          {{formatDate(record)}}
+        </template>
         <template #operation="{ record }">
           <a-button type="link" title="详情" @click="showDetail(record)">
             <template #icon>
@@ -53,6 +56,7 @@ import {
   ref,
   toRaw,
   toRefs,
+  watch,
   watchEffect
 } from 'vue'
 
@@ -99,11 +103,11 @@ const dcolumns: ColumnProps[] = [
   },
   {
     title: '授权日期',
-    dataIndex: 'age'
+    slots: { customRender: 'date' }
   },
   {
     title: '授权状态',
-    dataIndex: 'age'
+    dataIndex: 'licenseStatus'
   },
   {
     title: '操作',
@@ -137,7 +141,7 @@ export default defineComponent({
 
     let loading = ref(false)
     let visible = ref(false)
-    let manageInfo = ref(null)
+    let manageInfo = ref<TAuthorizationListItem>()
     let detailVisible = ref(false)
     let deviceListVisible = ref(false)
     let detailId = ref('')
@@ -165,48 +169,62 @@ export default defineComponent({
 
     const goFilter = (v: any) => {
       console.log('goFilter', v)
+      filter.value = v
       currentChange(1)
     }
 
-    const magage = (record: any) => {
+    const formatDate = (record: TAuthorizationListItem) => {
+      return `${record.startTime}-${record.endTime}`
+    }
+
+    const magage = (record: TAuthorizationListItem) => {
       manageInfo.value = record
       visible.value = true
     }
 
-    const showDetail = (record: any) => {
+    const showDetail = (record: TAuthorizationListItem) => {
       console.log('record', record)
-      detailId.value = record.key
+      detailId.value = record.id
       detailVisible.value = true
     }
 
-    const onDelete = (record: any) => {
-      console.log('record', record.key)
+    const onDelete = (record: TAuthorizationListItem) => {
+      console.log('record', record.id)
     }
 
-    const showDevice = (record: any) => {
-      console.log('record', record.key)
-      deviceListId.value = record.key
+    const showDevice = (record: TAuthorizationListItem) => {
+      console.log('record', record.id)
+      deviceListId.value = record.id
       deviceListVisible.value = true
     }
 
     //根据路由的变化 改变授权类型
     const route = useRoute()
-    watchEffect(() => {
-      console.log('route', route.params)
-      if (route.params.type === AuthorizationTypes.INSIDE) {
-        authorizationType.value = AuthorizationTypes.INSIDE
-        columns.value = [...dcolumns]
-      } else if (route.params.type === AuthorizationTypes.OUTSIDE) {
-        authorizationType.value = AuthorizationTypes.OUTSIDE
-        columns.value = [...dcolumns]
-        columns.value.splice(3, 0, {
-          title: '授权码',
-          dataIndex: 'licenseCode'
-        })
-      }
-      deviceListVisible.value = false
-      initData()
-    })
+
+    watch(
+      route,
+      () => {
+        console.log('route', route.params)
+        if (route.params.type === AuthorizationTypes.INSIDE) {
+          authorizationType.value = AuthorizationTypes.INSIDE
+          columns.value = [...dcolumns]
+        } else if (route.params.type === AuthorizationTypes.OUTSIDE) {
+          authorizationType.value = AuthorizationTypes.OUTSIDE
+          columns.value = [...dcolumns]
+          columns.value.splice(3, 0, {
+            title: '授权码',
+            dataIndex: 'licenseCode'
+          })
+        }
+        deviceListVisible.value = false
+        initData()
+      },
+      { immediate: true }
+    )
+
+    // watchEffect(() => {
+
+    // })
 
     return {
       authorizationType,
@@ -216,6 +234,7 @@ export default defineComponent({
       currentChange,
       sizeChange,
       tableIndex,
+      formatDate,
       // ...toRefs(state),
       list,
       visible,

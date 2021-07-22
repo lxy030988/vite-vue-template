@@ -20,5 +20,6 @@ export interface TAuthorizationListItem {
   id: string
   licenseCode: string
   startTime: string
+  licenseStatus: number
   type: number
 }
