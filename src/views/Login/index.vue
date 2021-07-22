@@ -12,14 +12,14 @@
           <a-form-item>
             <a-input placeholder="账号">
               <template #prefix>
-                <svg-icon name="icons-user"></svg-icon>
+                <svg-icon name="login-user"></svg-icon>
               </template>
             </a-input>
           </a-form-item>
           <a-form-item>
             <a-input placeholder="密码">
               <template #prefix>
-                <svg-icon name="icons-password"></svg-icon>
+                <svg-icon name="login-password"></svg-icon>
               </template>
             </a-input>
           </a-form-item>
