@@ -1,35 +1,47 @@
 <template>
-  <jc-filter @filter="goFilter" />
-  <a-card class="jc-mt" title="列表内容" :bordered="false">
-    <template #extra>
-      <a-button type="primary" @click="magage">添加授权</a-button>
-    </template>
-    <a-table :data-source="list" :columns="columns" :pagination="false">
-      <template #operation="{ record }">
-        <a-button type="link" title="详情" @click="showDetail(record)">
-          <template #icon>
-            <InfoCircleOutlined />
-          </template>
-        </a-button>
-        <a-button type="link" title="编辑">
-          <template #icon>
-            <FormOutlined />
-          </template>
-        </a-button>
-        <a-popconfirm title="Sure to delete?" @confirm="onDelete(record)">
-          <a-button type="link" title="删除">
+  <div v-show="!deviceListVisible">
+    <jc-filter @filter="goFilter" />
+    <a-card class="jc-mt" title="列表内容" :bordered="false">
+      <template #extra>
+        <a-button type="primary" @click="magage(null)">添加授权</a-button>
+      </template>
+      <a-table :loading="loading" row-key="key" :data-source="list" :columns="columns" :pagination="false">
+        <template #index="{ index }">
+          {{tableIndex(index)}}
+        </template>
+        <template #shouquan="{ record }">
+          <span class="authorized-count-box" @click="showDevice(record)">
+            <span class="authorized-count">10</span>/{{record.age}}
+          </span>
+        </template>
+        <template #operation="{ record }">
+          <a-button type="link" title="详情" @click="showDetail(record)">
             <template #icon>
-              <DeleteOutlined />
+              <InfoCircleOutlined />
             </template>
           </a-button>
-        </a-popconfirm>
-      </template>
-    </a-table>
+          <a-button type="link" title="编辑" @click="magage(record)">
+            <template #icon>
+              <FormOutlined />
+            </template>
+          </a-button>
+          <a-popconfirm title="Sure to delete?" @confirm="onDelete(record)">
+            <a-button type="link" title="删除">
+              <template #icon>
+                <DeleteOutlined />
+              </template>
+            </a-button>
+          </a-popconfirm>
+        </template>
+      </a-table>
 
-    <jc-pagination :pages="pages" @currentChange="currentChange" @sizeChange="sizeChange" />
-  </a-card>
-  <jc-manage v-model:visible="visible" />
-  <jc-detail :id="detailId" v-model:visible="detailVisible" />
+      <jc-pagination :pages="pages" @currentChange="currentChange" @sizeChange="sizeChange" />
+    </a-card>
+  </div>
+
+  <jc-device-list :id="deviceListId" v-model:visible="deviceListVisible" :type="authorizationType" />
+  <jc-manage v-model:visible="visible" :type="authorizationType" :info="manageInfo" />
+  <jc-detail :id="detailId" v-model:visible="detailVisible" :type="authorizationType" />
 </template>
 
 <script lang="ts">
@@ -40,7 +52,8 @@ import {
   reactive,
   ref,
   toRaw,
-  toRefs
+  toRefs,
+  watchEffect
 } from 'vue'
 
 import {
@@ -48,22 +61,47 @@ import {
   FormOutlined,
   InfoCircleOutlined
 } from '@ant-design/icons-vue'
+import { useRoute } from 'vue-router'
+import { AuthorizationTypes } from './CONST'
+import { ColumnProps } from 'ant-design-vue/lib/table/interface'
 
-const columns = [
+const dcolumns: ColumnProps[] = [
   {
-    title: '姓名',
-    dataIndex: 'name',
-    key: 'name'
+    title: '序号',
+    slots: { customRender: 'index' }
   },
   {
-    title: '年龄',
-    dataIndex: 'age',
-    key: 'age'
+    title: '合同号',
+    dataIndex: 'name'
   },
   {
-    title: '住址',
-    dataIndex: 'address',
-    key: 'address'
+    title: '批次号',
+    dataIndex: 'age'
+  },
+  {
+    title: '批次日期',
+    dataIndex: 'address'
+  },
+  {
+    title: '购买公司',
+    dataIndex: 'address'
+  },
+  {
+    title: '设备总数',
+    dataIndex: 'age'
+  },
+  {
+    title: '授权设备数',
+    dataIndex: 'shouquan',
+    slots: { customRender: 'shouquan' }
+  },
+  {
+    title: '授权日期',
+    dataIndex: 'age'
+  },
+  {
+    title: '授权状态',
+    dataIndex: 'age'
   },
   {
     title: '操作',
@@ -83,9 +121,14 @@ export default defineComponent({
     ),
     JcFilter: defineAsyncComponent(() => import('./modules/Filter/index.vue')),
     JcManage: defineAsyncComponent(() => import('./modules/Manage/index.vue')),
-    JcDetail: defineAsyncComponent(() => import('./modules/Detail/index.vue'))
+    JcDetail: defineAsyncComponent(() => import('./modules/Detail/index.vue')),
+    JcDeviceList: defineAsyncComponent(
+      () => import('./modules/DeviceList/index.vue')
+    )
   },
   setup() {
+    let authorizationType = ref(AuthorizationTypes.INSIDE)
+    let columns = ref<any[]>([])
     const state = reactive({
       list: [
         {
@@ -96,62 +139,108 @@ export default defineComponent({
         }
       ]
     })
+
+    let loading = ref(false)
     let visible = ref(false)
+    let manageInfo = ref(null)
     let detailVisible = ref(false)
+    let deviceListVisible = ref(false)
     let detailId = ref('')
+    let deviceListId = ref('')
 
     const initData = () => {
+      // loading.value = true
       console.log('initData')
-      for (let index = 1; index < 10; index++) {
-        state.list.push({
+      const list = []
+      for (let index = 0; index < 10; index++) {
+        list.push({
           key: index,
           name: '胡彦祖',
           age: 42,
           address: '西湖区湖底公园1号'
         })
       }
+      state.list = list
       pages.total = 100
     }
 
-    const { pages, currentChange, sizeChange } = usePage(initData)
+    const { pages, tableIndex, currentChange, sizeChange } = usePage(initData)
 
     const goFilter = (v: any) => {
       console.log('goFilter', v)
       currentChange(1)
     }
 
-    initData()
-
-    const magage = () => {
+    const magage = (record: any) => {
+      manageInfo.value = record
       visible.value = true
     }
 
     const showDetail = (record: any) => {
-      console.log('record', record.key)
+      console.log('record', record)
       detailId.value = record.key
       detailVisible.value = true
     }
+
     const onDelete = (record: any) => {
       console.log('record', record.key)
     }
 
+    const showDevice = (record: any) => {
+      console.log('record', record.key)
+      deviceListId.value = record.key
+      deviceListVisible.value = true
+    }
+
+    //根据路由的变化 改变授权类型
+    const route = useRoute()
+    watchEffect(() => {
+      console.log('route', route.params)
+      if (route.params.type === AuthorizationTypes.INSIDE) {
+        authorizationType.value = AuthorizationTypes.INSIDE
+        columns.value = [...dcolumns]
+      } else if (route.params.type === AuthorizationTypes.OUTSIDE) {
+        authorizationType.value = AuthorizationTypes.OUTSIDE
+        columns.value = [...dcolumns]
+        columns.value.splice(3, 0, {
+          title: '授权码',
+          dataIndex: 'age'
+        })
+      }
+      deviceListVisible.value = false
+      initData()
+    })
+
     return {
+      authorizationType,
       columns,
       pages,
+      loading,
       currentChange,
       sizeChange,
+      tableIndex,
       ...toRefs(state),
       visible,
+      manageInfo,
       detailVisible,
       goFilter,
       magage,
       onDelete,
       showDetail,
-      detailId
+      detailId,
+      deviceListId,
+      showDevice,
+      deviceListVisible
     }
   }
 })
 </script>
 
 <style scoped lang="scss">
+.authorized-count-box {
+  cursor: pointer;
+}
+.authorized-count {
+  color: $jc-color-primary;
+}
 </style>

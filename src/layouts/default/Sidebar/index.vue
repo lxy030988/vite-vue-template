@@ -12,6 +12,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { MenuInfo } from '../model'
 
 import SidebarItem from './SidebarItem.vue'
+import { AuthorizationTypes } from '@/views/AuthorizationManagement/CONST'
 
 export default defineComponent({
   name: 'Sidebar',
@@ -33,27 +34,27 @@ export default defineComponent({
         path: 'home',
         name: '系统首页'
       },
-      {
-        id: 2,
-        parentId: 0,
-        icon: 'setting',
-        path: 'setting',
-        name: '系统设置',
-        children: [
-          {
-            id: 26,
-            parentId: 2,
-            path: 'plan',
-            name: '计划页面'
-          },
-          {
-            id: 27,
-            parentId: 2,
-            path: 'upload',
-            name: '文件上传'
-          }
-        ]
-      },
+      // {
+      //   id: 2,
+      //   parentId: 0,
+      //   icon: 'setting',
+      //   path: 'setting',
+      //   name: '系统设置',
+      //   children: [
+      //     {
+      //       id: 26,
+      //       parentId: 2,
+      //       path: 'plan',
+      //       name: '计划页面'
+      //     },
+      //     {
+      //       id: 27,
+      //       parentId: 2,
+      //       path: 'upload',
+      //       name: '文件上传'
+      //     }
+      //   ]
+      // },
       {
         id: 3,
         parentId: 0,
@@ -64,8 +65,23 @@ export default defineComponent({
           {
             id: 31,
             parentId: 3,
-            path: 'authorizationManagement',
+            path: AuthorizationTypes.INSIDE,
             name: '授权管理'
+          }
+        ]
+      },
+      {
+        id: 4,
+        parentId: 0,
+        icon: 'setting',
+        path: 'outsideAuthorization',
+        name: '外部授权',
+        children: [
+          {
+            id: 41,
+            parentId: 4,
+            path: AuthorizationTypes.OUTSIDE,
+            name: '授权码管理'
           }
         ]
       }

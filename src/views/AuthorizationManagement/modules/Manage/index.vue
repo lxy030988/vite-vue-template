@@ -1,5 +1,5 @@
 <template>
-  <a-modal :visible="visible" title="添加授权" :width="800" :footer="null" :mask-closable="false" @cancel="handleCancel">
+  <a-modal :visible="visible" :title="title" :width="800" :footer="null" :mask-closable="false" @cancel="handleCancel">
     <a-form ref="formRef" class="jc-manage-form" :model="formState" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-item label="合同号" name="name">
         <a-input v-model:value="formState.name" placeholder="请输入" />
@@ -10,7 +10,7 @@
           <a-select-option value="beijing">Zone two</a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item label="授权码" name="name">
+      <a-form-item v-if="AuthorizationTypes.OUTSIDE===type" label="授权码" name="name">
         <a-input v-model:value="formState.name" />
       </a-form-item>
       <a-form-item label="批次日期" name="date1">
@@ -22,8 +22,9 @@
       <a-form-item label="批次设备总数" name="count">
         <a-input v-model:value.number="formState.count" />
       </a-form-item>
-      <a-form-item label="设备信息导入" name="name">
-
+      <a-form-item label="设备信息导入" name="url">
+        <a href="/public/excel/test.xlsx">设备信息表格模板下载</a>
+        <jc-upload-list v-model:fileList="fileList" />
       </a-form-item>
       <a-form-item label="授权日期" name="date2">
         <a-range-picker v-model:value="formState.date2" value-format="YYYY-MM-DD HH:mm:ss" show-time />
@@ -41,11 +42,21 @@
 
 <script lang="ts">
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
-import { Moment } from 'moment'
-import { defineComponent, reactive, ref, toRaw, UnwrapRef } from 'vue'
-import { getIntegerRule, SELECT_NOT_NULL } from '@/utils/rule'
+// import { Moment } from 'moment'
+import {
+  computed,
+  defineAsyncComponent,
+  defineComponent,
+  PropType,
+  reactive,
+  ref,
+  toRaw,
+  watchEffect
+} from 'vue'
+import { getIntegerRule, NOT_NULL, SELECT_NOT_NULL } from '@/utils/rule'
 import { useForm } from '@/hooks'
 import { FormRefType } from '@/hooks/useForm'
+import { AuthorizationTypes } from '../../CONST'
 interface FormState {
   name: string
   region: string | undefined
@@ -53,13 +64,27 @@ interface FormState {
   delivery: boolean
   type: string[]
   resource: string
+  url: string
   desc: string
   count: number | null
 }
 
 export default defineComponent({
   name: 'AuthorizationManagementManage',
+  components: {
+    JcUploadList: defineAsyncComponent(
+      () => import('@/components/upload/uploadList.vue')
+    )
+  },
   props: {
+    type: {
+      type: String as PropType<AuthorizationTypes>,
+      required: true
+    },
+    info: {
+      type: Object,
+      required: true
+    },
     visible: {
       type: Boolean,
       required: true
@@ -71,6 +96,8 @@ export default defineComponent({
       emit('update:visible', false)
     }
 
+    let title = ref('添加授权')
+
     const formRef = ref<FormRefType>()
     const formState = reactive<FormState>({
       name: '',
@@ -79,9 +106,11 @@ export default defineComponent({
       delivery: false,
       type: [],
       resource: '',
+      url: '',
       desc: '',
       count: null
     })
+    let fileList = ref<any[]>([])
     const rules = {
       count: getIntegerRule(),
       name: [
@@ -98,10 +127,24 @@ export default defineComponent({
           trigger: 'change'
         }
       ],
+      url: SELECT_NOT_NULL,
       date1: SELECT_NOT_NULL
     }
 
     const { resetFields, validate } = useForm(formState, rules)
+
+    watchEffect(() => {
+      if (props.info) {
+        console.log('props.info', props.info)
+        title.value = '编辑授权'
+      } else {
+        title.value = '添加授权'
+      }
+    })
+
+    watchEffect(() => {
+      formState.url = fileList.value[0]?.url || ''
+    })
 
     const onSubmit = () => {
       formRef
@@ -121,6 +164,9 @@ export default defineComponent({
     }
 
     return {
+      title,
+      AuthorizationTypes,
+      fileList,
       handleCancel,
       formRef,
       labelCol: { span: 4 },

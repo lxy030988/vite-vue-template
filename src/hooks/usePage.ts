@@ -25,8 +25,13 @@ export const usePage = (fn: Function) => {
     fn()
   }
 
+  const tableIndex = (index: number) => {
+    return pages.pageSize * (pages.pageNum - 1) + index + 1
+  }
+
   return {
     pages,
+    tableIndex,
     sizeChange,
     currentChange
   }
