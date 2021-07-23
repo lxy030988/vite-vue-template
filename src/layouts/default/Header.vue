@@ -6,7 +6,7 @@
         <!-- 用户名下拉菜单 -->
         <a-dropdown>
           <span class="ant-dropdown-link">
-            <img src="@/assets/logo.png" />
+            <img src="@/assets/images/avator.png" />
             {{ username }}
             <DownOutlined />
           </span>

@@ -30,14 +30,14 @@ export default defineComponent({
       {
         id: 1,
         parentId: 0,
-        icon: 'home',
+        icon: 'menu-home',
         path: 'home',
         name: '系统首页'
       },
       // {
       //   id: 2,
       //   parentId: 0,
-      //   icon: 'setting',
+      //   icon: 'menu-setting',
       //   path: 'setting',
       //   name: '系统设置',
       //   children: [
@@ -58,7 +58,7 @@ export default defineComponent({
       {
         id: 3,
         parentId: 0,
-        icon: 'setting',
+        icon: 'menu-internal-authorization',
         path: 'internalAuthorization',
         name: '内部授权',
         children: [
@@ -73,7 +73,7 @@ export default defineComponent({
       {
         id: 4,
         parentId: 0,
-        icon: 'setting',
+        icon: 'menu-outside-authorization',
         path: 'outsideAuthorization',
         name: '外部授权',
         children: [
