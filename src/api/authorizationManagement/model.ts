@@ -9,6 +9,11 @@ export interface TParamsList {
   type: string
 }
 
+export interface TParamsDetail {
+  id: string
+  type: string
+}
+
 export interface TAuthorizationListItem {
   allCount: number
   batchNumber: string

@@ -12,6 +12,7 @@ export default {
     deviceList: 'license-record-equipment/queryEquipmentList',
     addDevice: 'license-record-equipment/insertEquipment',
     updateDeviceStatus: 'license-record-equipment/updateEquipmentStatus',
-    importDevice: 'license-record-equipment/importLicense'
+    importDevice: 'license-record-equipment/importLicense',
+    detail: 'license-record/queryAuthorizationDetail'
   }
 }

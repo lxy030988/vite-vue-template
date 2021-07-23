@@ -9,12 +9,21 @@ import {
   TDeviceListItem,
   TParamsAddDevice,
   TParamsDeviceStatus,
-  TParamsImportDevice
+  TParamsImportDevice,
+  TParamsDetail
 } from './model'
 
 export function getAuthManageList(data: TParamsList) {
   return http.request<any, TPageRes<TAuthorizationListItem>>({
     url: api.authorizationManagement.list,
+    method: 'POST',
+    data
+  })
+}
+
+export function getAuthManageDetail(data: TParamsDetail) {
+  return http.request<any, TAuthorizationListItem>({
+    url: api.authorizationManagement.detail,
     method: 'POST',
     data
   })
@@ -68,7 +77,7 @@ export function importDevice(data: TParamsImportDevice) {
   const { recordId, file } = data
   const formData = new FormData()
 
-  formData.append('file', file)
+  formData.append('file', file as File)
 
   return http.request<any, any>({
     url: api.authorizationManagement.importDevice,
