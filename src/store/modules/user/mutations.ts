@@ -1,14 +1,13 @@
-import { GET_DATA, GET_DATA1 } from './constant'
+import { setToken, setUser } from '@/utils/storage/user/user'
+import { MutationsTypes } from './constant'
 import { userState } from './store'
 
 const mutations = {
-  [GET_DATA](state: userState, payload: boolean): void {
+  [MutationsTypes.SET_USER](state: userState, payload: any): void {
     console.log('mutations执行成功')
-    state.loading = payload
-  },
-  [GET_DATA1](state: userState, payload: boolean): void {
-    console.log('mutations执行成功')
-    state.loading = payload
+    state.user = payload
+    setUser(payload)
+    setToken(payload?.token)
   }
 }
 export default mutations

@@ -1,13 +1,16 @@
 import { ActionContext } from 'vuex'
-import { GET_DATA } from './constant'
+import { MutationsTypes } from './constant'
 import { userState } from './store'
 
 export default {
-  [GET_DATA]({ commit }: ActionContext<userState, unknown>, payload: boolean): void {
+  [MutationsTypes.SET_USER](
+    { commit }: ActionContext<userState, unknown>,
+    payload: boolean
+  ): void {
     console.log('action执行成功')
     setTimeout(() => {
       // const payload = false
-      commit(GET_DATA, payload)
+      commit(MutationsTypes.SET_USER, payload)
     }, 2000)
   }
 }

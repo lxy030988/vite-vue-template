@@ -1,6 +1,8 @@
+import { getUser } from '@/utils/storage/user/user'
+
 export const createState = () => {
   const store = {
-    loading: true
+    user: getUser()
   }
   return store
 }

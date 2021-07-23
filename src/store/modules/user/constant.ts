@@ -1,3 +1,3 @@
-const GET_DATA = 'GET_DATA'
-const GET_DATA1 = 'GET_DATA1'
-export { GET_DATA, GET_DATA1 }
+export enum MutationsTypes {
+  SET_USER = 'SET_USER'
+}

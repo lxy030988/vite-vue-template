@@ -13,7 +13,7 @@ export const localData = {
   }
 }
 
-export const storageSet = (key: string, info: string | object) => {
+export const storageSet = (key: string, info: string | object | null) => {
   if (info) {
     if (typeof info === 'string') {
       localData.setData(key, info)

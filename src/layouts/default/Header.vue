@@ -30,6 +30,7 @@ import { DownOutlined } from '@ant-design/icons-vue'
 import { MenuInfo } from './model'
 import { DropdownEnum } from './enum'
 import { useRouter } from 'vue-router'
+import { useMyStore } from '@/hooks'
 
 export default defineComponent({
   name: 'Header',
@@ -38,11 +39,17 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
+    const { commit } = useMyStore()
     let username = ref('admin')
     const onClick = ({ key }: MenuInfo) => {
       console.log(`Click on item ${key}`)
       if (key === DropdownEnum.LOGOUT) {
-        router.push({ path: '/login' })
+        try {
+          commit('user/SET_USER', null)
+          router.push({ path: '/login' })
+        } catch (error) {
+          console.error(error)
+        }
       }
     }
     return {

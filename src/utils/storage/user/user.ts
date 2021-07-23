@@ -14,6 +14,6 @@ export function getUser() {
   return storageGet<User>(StorageEnum.USER)
 }
 
-export function setUser(info: User) {
+export function setUser(info: User | null) {
   storageSet(StorageEnum.USER, info)
 }

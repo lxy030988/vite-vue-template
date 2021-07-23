@@ -68,6 +68,8 @@ import {
   getAuthManageList
 } from '@/api/authorizationManagement'
 import { TAuthorizationListItem } from '@/api/authorizationManagement/model'
+
+//定义表格列
 const dcolumns: ColumnProps[] = [
   {
     title: '序号',
@@ -129,7 +131,7 @@ export default defineComponent({
     )
   },
   setup() {
-    let authorizationType = ref(AuthorizationTypes.INSIDE)
+    let authorizationType = ref(AuthorizationTypes.INSIDE) //授权类型
     let columns = ref<any[]>([])
     let filter = ref<any>({})
 
