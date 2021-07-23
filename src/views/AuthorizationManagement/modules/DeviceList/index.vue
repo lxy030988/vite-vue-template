@@ -45,7 +45,7 @@
     </a-card>
 
     <jc-manage :id="id" v-model:visible="manageVisible" @success="initData" />
-    <jc-manage-import v-model:visible="magageImportVisible" @success="initData" />
+    <jc-manage-import :id="id" v-model:visible="magageImportVisible" @success="initData" />
 
   </div>
 

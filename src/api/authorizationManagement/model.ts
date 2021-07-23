@@ -70,3 +70,8 @@ export interface TParamsDeviceStatus {
   id: string
   licenseStatus: number
 }
+
+export interface TParamsImportDevice {
+  recordId: string
+  file: File | null
+}
