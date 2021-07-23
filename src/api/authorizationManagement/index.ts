@@ -95,3 +95,11 @@ export function importDevice(data: TParamsImportDevice) {
     data: formData
   })
 }
+
+export function deleteDevice(data: string[]) {
+  return http.request<any, any>({
+    url: api.authorizationManagement.deleteDevice,
+    method: 'POST',
+    data
+  })
+}

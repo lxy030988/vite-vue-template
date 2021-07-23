@@ -71,6 +71,7 @@ import {
 } from '@ant-design/icons-vue'
 import { AuthorizationTypes } from '../../CONST'
 import {
+  deleteDevice,
   getAuthManageDeviceList,
   updateDeviceStatus
 } from '@/api/authorizationManagement'
@@ -176,8 +177,14 @@ export default defineComponent({
       currentChange(1)
     }
 
-    const onDelete = (record: TDeviceListItem) => {
+    const onDelete = async (record: TDeviceListItem) => {
       console.log('onDelete', record.id)
+      try {
+        await deleteDevice([record.id])
+        initData()
+      } catch (error) {
+        console.error(error)
+      }
     }
 
     const onDeviceStatus = async (
