@@ -5,7 +5,8 @@ import {
   TPageResItemTest,
   TParamsTest,
   TResItemDomainLogo,
-  TParamsLogin
+  TParamsLogin,
+  TResUser
 } from './model'
 
 export function getSystemDomainLogo1(params?: TParamsTest) {
@@ -23,11 +24,11 @@ export function getSystemDomainLogo(params?: TParamsTest) {
     params
   })
 }
-export function getUserInfo(params?: TParamsLogin) {
-  return http.request<any, any>({
+export function getUserInfo(data: TParamsLogin) {
+  return http.request<any, TResUser>({
     url: api.user.login,
     method: 'POST',
-    params
+    data
   })
 }
 

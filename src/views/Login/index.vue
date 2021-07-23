@@ -22,6 +22,7 @@
           <a-form-item>
             <a-input
               v-model:value.trim="form.userPwd"
+              type="password"
               placeholder="密码"
             >
               <template #prefix>
@@ -47,6 +48,8 @@
 <script lang="ts">
 import { defineComponent, reactive, toRaw } from 'vue'
 import { getUserInfo } from '@/api/user'
+import { Md5 } from 'ts-md5/dist/md5'
+import { useMyStore } from '@/hooks'
 interface UserInfo {
   account: string
   userPwd: string
@@ -59,9 +62,16 @@ export default defineComponent({
       account: '',
       userPwd: ''
     })
+    const { commit } = useMyStore()
     const onSubmit = async () => {
-      console.log(toRaw(form))
-      await getUserInfo(toRaw(form))
+      try {
+        const { account, userPwd } = toRaw(form)
+        console.log(toRaw(form))
+        const res = await getUserInfo({ account, userPwd })
+        commit('user/SET_USER', res)
+      } catch (error) {
+        console.error(error)
+      }
     }
     return {
       form,
