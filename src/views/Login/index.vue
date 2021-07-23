@@ -10,31 +10,21 @@
         </div>
         <a-form :model="form">
           <a-form-item>
-            <a-input
-              v-model:value="form.account"
-              placeholder="账号"
-            >
+            <a-input v-model:value="form.account" placeholder="账号">
               <template #prefix>
                 <svg-icon name="login-user"></svg-icon>
               </template>
             </a-input>
           </a-form-item>
           <a-form-item>
-            <a-input
-              v-model:value.trim="form.userPwd"
-              type="password"
-              placeholder="密码"
-            >
+            <a-input v-model:value.trim="form.userPwd" type="password" placeholder="密码">
               <template #prefix>
                 <svg-icon name="login-password"></svg-icon>
               </template>
             </a-input>
           </a-form-item>
           <a-form-item>
-            <a-button
-              type="primary"
-              @click="onSubmit"
-            >
+            <a-button type="primary" @click="onSubmit">
               登录
             </a-button>
           </a-form-item>
@@ -50,6 +40,7 @@ import { defineComponent, reactive, toRaw } from 'vue'
 import { getUserInfo } from '@/api/user'
 import { Md5 } from 'ts-md5/dist/md5'
 import { useMyStore } from '@/hooks'
+import { useRouter } from 'vue-router'
 interface UserInfo {
   account: string
   userPwd: string
@@ -63,12 +54,15 @@ export default defineComponent({
       userPwd: ''
     })
     const { commit } = useMyStore()
+    const router = useRouter()
+
     const onSubmit = async () => {
       try {
         const { account, userPwd } = toRaw(form)
         console.log(toRaw(form))
         const res = await getUserInfo({ account, userPwd })
         commit('user/SET_USER', res)
+        router.push({ path: '/' })
       } catch (error) {
         console.error(error)
       }

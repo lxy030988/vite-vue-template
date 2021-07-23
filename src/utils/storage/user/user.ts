@@ -1,6 +1,6 @@
+import { TResUser } from '@/api/user/model'
 import { StorageEnum } from '@/enums/storageEnum'
 import { localData, storageGet, storageSet } from '..'
-import { User } from './model'
 
 export function setToken(token: string) {
   storageSet(StorageEnum.ACCESS_TOKEN, token)
@@ -11,9 +11,9 @@ export function getToken() {
 }
 
 export function getUser() {
-  return storageGet<User>(StorageEnum.USER)
+  return storageGet<TResUser>(StorageEnum.USER)
 }
 
-export function setUser(info: User | null) {
+export function setUser(info: TResUser | null) {
   storageSet(StorageEnum.USER, info)
 }

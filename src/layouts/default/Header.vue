@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 
 import { DownOutlined } from '@ant-design/icons-vue'
 import { MenuInfo } from './model'
@@ -39,8 +39,8 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
-    const { commit } = useMyStore()
-    let username = ref('admin')
+    const { state, commit } = useMyStore()
+    let username = computed(() => state.user.user?.userName)
     const onClick = ({ key }: MenuInfo) => {
       console.log(`Click on item ${key}`)
       if (key === DropdownEnum.LOGOUT) {
