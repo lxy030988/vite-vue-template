@@ -1,11 +1,11 @@
 <template>
   <a-modal :visible="visible" title="添加设备" :width="600" :footer="null" :mask-closable="false" @cancel="handleCancel">
     <a-form ref="formRef" class="jc-manage-form" :model="formState" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-      <a-form-item label="设备号" name="name">
-        <a-input v-model:value="formState.name" placeholder="请输入" />
+      <a-form-item label="设备号" name="equipmentNum">
+        <a-input v-model:value="formState.equipmentNum" placeholder="请输入" />
       </a-form-item>
-      <a-form-item label="是否授权" name="region">
-        <a-switch v-model:checked="formState.region" />
+      <a-form-item label="是否授权" name="licenseStatus">
+        <a-switch v-model:checked="formState.licenseStatus" :checked-value="DEVICE_LICENSE_STATUSES.YSQ" :un-checked-value="DEVICE_LICENSE_STATUSES.WSQ" />
       </a-form-item>
       <div class="text-center">
         <a-button @click="resetForm">取消</a-button>
@@ -18,15 +18,14 @@
 <script lang="ts">
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 
-import { defineComponent, reactive, ref, toRaw } from 'vue'
+import { defineComponent, reactive, ref, toRaw, watchEffect } from 'vue'
 import { NOT_NULL, SELECT_NOT_NULL } from '@/utils/rule'
 import { useForm } from '@/hooks'
 import { FormRefType } from '@/hooks/useForm'
-
-interface FormState {
-  name: string
-  region: boolean
-}
+import { TParamsAddDevice } from '@/api/authorizationManagement/model'
+import { DEVICE_LICENSE_STATUSES } from '@/views/AuthorizationManagement/CONST'
+import { addAuthManageDevice } from '@/api/authorizationManagement'
+import { message } from 'ant-design-vue'
 
 export default defineComponent({
   name: 'AuthorizationManagementDeviceListManage',
@@ -34,22 +33,32 @@ export default defineComponent({
     visible: {
       type: Boolean,
       required: true
+    },
+    id: {
+      type: String,
+      required: true
     }
   },
-  emits: ['update:visible'],
+  emits: ['update:visible', 'success'],
   setup(props, { emit }) {
     const handleCancel = (e: MouseEvent) => {
       emit('update:visible', false)
     }
 
     const formRef = ref<FormRefType>()
-    const formState = reactive<FormState>({
-      name: '',
-      region: false
+    const formState = reactive<TParamsAddDevice>({
+      licenseRecordId: '',
+      licenseStatus: DEVICE_LICENSE_STATUSES['WSQ'],
+      equipmentNum: ''
     })
+
+    watchEffect(() => {
+      formState.licenseRecordId = props.id
+    })
+
     const rules = {
-      name: NOT_NULL,
-      region: SELECT_NOT_NULL
+      equipmentNum: NOT_NULL,
+      licenseStatus: SELECT_NOT_NULL
     }
 
     const { resetFields, validate } = useForm(formState, rules)
@@ -57,11 +66,19 @@ export default defineComponent({
     const onSubmit = () => {
       formRef
         .value!.validate()
-        .then(() => {
+        .then(async () => {
           console.log('values', formState, toRaw(formState))
-          resetForm()
+
+          try {
+            await addAuthManageDevice(toRaw(formState))
+            message.success('操作成功')
+            resetForm()
+            emit('success')
+          } catch (error) {
+            console.error(error)
+          }
         })
-        .catch((error: ValidateErrorEntity<FormState>) => {
+        .catch((error: ValidateErrorEntity<TParamsAddDevice>) => {
           console.log('error', error)
         })
     }
@@ -72,6 +89,7 @@ export default defineComponent({
     }
 
     return {
+      DEVICE_LICENSE_STATUSES,
       handleCancel,
       formRef,
       labelCol: { span: 4 },

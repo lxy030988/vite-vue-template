@@ -7,8 +7,9 @@
       <a-form-item label="批次号">
         <span>批次号</span>
       </a-form-item>
-      <a-form-item label="设备信息导入" name="name">
-
+      <a-form-item label="设备信息导入" name="file">
+        <a href="/public/excel/test.xlsx">设备信息表格模板下载</a>
+        <input type="file" name="file" @change="handleFileChange" />
       </a-form-item>
       <div class="text-center">
         <a-button @click="resetForm">取消</a-button>
@@ -21,15 +22,13 @@
 <script lang="ts">
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 
-import { defineComponent, reactive, ref, toRaw } from 'vue'
+import { defineComponent, reactive, ref, toRaw, watchEffect } from 'vue'
 import { NOT_NULL, SELECT_NOT_NULL } from '@/utils/rule'
 import { useForm } from '@/hooks'
 import { FormRefType } from '@/hooks/useForm'
-
-interface FormState {
-  name: string
-  region: boolean
-}
+import { TParamsImportDevice } from '@/api/authorizationManagement/model'
+import { message } from 'ant-design-vue'
+import { importDevice } from '@/api/authorizationManagement'
 
 export default defineComponent({
   name: 'AuthorizationManagementDeviceListManageImport',
@@ -37,22 +36,36 @@ export default defineComponent({
     visible: {
       type: Boolean,
       required: true
+    },
+    id: {
+      type: String,
+      required: true
     }
   },
-  emits: ['update:visible'],
+  emits: ['update:visible', 'success'],
   setup(props, { emit }) {
     const handleCancel = (e: MouseEvent) => {
       emit('update:visible', false)
     }
 
     const formRef = ref<FormRefType>()
-    const formState = reactive<FormState>({
-      name: '',
-      region: false
+    const formState = reactive<TParamsImportDevice>({
+      recordId: '',
+      file: null
     })
     const rules = {
-      name: NOT_NULL,
-      region: SELECT_NOT_NULL
+      recordId: NOT_NULL,
+      file: SELECT_NOT_NULL
+    }
+
+    watchEffect(() => {
+      formState.recordId = props.id
+    })
+
+    const handleFileChange = (e: any) => {
+      const target: HTMLInputElement = e.target
+      console.log('target', target)
+      formState.file = target.files![0]
     }
 
     const { resetFields, validate } = useForm(formState, rules)
@@ -60,11 +73,18 @@ export default defineComponent({
     const onSubmit = () => {
       formRef
         .value!.validate()
-        .then(() => {
+        .then(async () => {
           console.log('values', formState, toRaw(formState))
-          resetForm()
+          try {
+            await importDevice(toRaw(formState))
+            message.success('操作成功')
+            resetForm()
+            emit('success')
+          } catch (error) {
+            console.error(error)
+          }
         })
-        .catch((error: ValidateErrorEntity<FormState>) => {
+        .catch((error: ValidateErrorEntity<TParamsImportDevice>) => {
           console.log('error', error)
         })
     }
@@ -76,6 +96,7 @@ export default defineComponent({
 
     return {
       handleCancel,
+      handleFileChange,
       formRef,
       labelCol: { span: 6 },
       wrapperCol: { span: 18 },

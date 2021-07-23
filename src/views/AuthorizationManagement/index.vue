@@ -9,9 +9,9 @@
         <template #index="{ index }">
           {{tableIndex(index)}}
         </template>
-        <template #shouquan="{ record }">
+        <template #count="{ record }">
           <span class="authorized-count-box" @click="showDevice(record)">
-            <span class="authorized-count">10</span>/{{record.age}}
+            <span class="authorized-count">{{record.licenseEquNum}}</span>/{{record.importEquNum}}
           </span>
         </template>
         <template #date="{ record }">
@@ -28,8 +28,8 @@
               <FormOutlined />
             </template>
           </a-button>
-          <a-popconfirm title="Sure to delete?" @confirm="onDelete(record)">
-            <a-button type="link" title="删除">
+          <a-popconfirm title="您确定要删除吗?" @confirm="onDelete(record)">
+            <a-button type="link" danger title="删除">
               <template #icon>
                 <DeleteOutlined />
               </template>
@@ -43,22 +43,13 @@
   </div>
 
   <jc-device-list :id="deviceListId" v-model:visible="deviceListVisible" :type="authorizationType" />
-  <jc-manage v-model:visible="visible" :type="authorizationType" :info="manageInfo" />
+  <jc-manage v-model:visible="visible" :type="authorizationType" :info="manageInfo" @success="initData" />
   <jc-detail :id="detailId" v-model:visible="detailVisible" :type="authorizationType" />
 </template>
 
 <script lang="ts">
 import { usePage } from '@/hooks'
-import {
-  defineAsyncComponent,
-  defineComponent,
-  reactive,
-  ref,
-  toRaw,
-  toRefs,
-  watch,
-  watchEffect
-} from 'vue'
+import { defineAsyncComponent, defineComponent, ref, watch } from 'vue'
 
 import {
   DeleteOutlined,
@@ -69,7 +60,10 @@ import { useRoute } from 'vue-router'
 import { AuthorizationTypes } from './CONST'
 import { ColumnProps } from 'ant-design-vue/lib/table/interface'
 
-import { getAuthManageList } from '@/api/authorizationManagement'
+import {
+  deleteAuthManage,
+  getAuthManageList
+} from '@/api/authorizationManagement'
 import { TAuthorizationListItem } from '@/api/authorizationManagement/model'
 const dcolumns: ColumnProps[] = [
   {
@@ -98,8 +92,7 @@ const dcolumns: ColumnProps[] = [
   },
   {
     title: '授权设备数',
-    dataIndex: 'shouquan',
-    slots: { customRender: 'shouquan' }
+    slots: { customRender: 'count' }
   },
   {
     title: '授权日期',
@@ -111,7 +104,6 @@ const dcolumns: ColumnProps[] = [
   },
   {
     title: '操作',
-    dataIndex: 'operation',
     slots: { customRender: 'operation' }
   }
 ]
@@ -148,14 +140,13 @@ export default defineComponent({
     let deviceListId = ref('')
 
     const initData = async () => {
-      loading.value = true
       try {
+        loading.value = true
         const res = await getAuthManageList({
           ...filter.value,
           ...pages,
           type: authorizationType.value
         })
-        console.log('res', res)
         pages.total = res.total
         list.value = res.list
       } catch (error) {
@@ -183,13 +174,19 @@ export default defineComponent({
     }
 
     const showDetail = (record: TAuthorizationListItem) => {
-      console.log('record', record)
+      // console.log('record', record)
       detailId.value = record.id
       detailVisible.value = true
     }
 
-    const onDelete = (record: TAuthorizationListItem) => {
+    const onDelete = async (record: TAuthorizationListItem) => {
       console.log('record', record.id)
+      try {
+        await deleteAuthManage([record.id])
+        initData()
+      } catch (error) {
+        console.error(error)
+      }
     }
 
     const showDevice = (record: TAuthorizationListItem) => {
@@ -197,6 +194,12 @@ export default defineComponent({
       deviceListId.value = record.id
       deviceListVisible.value = true
     }
+
+    watch(deviceListVisible, (value, oldValue) => {
+      if (!value) {
+        initData()
+      }
+    })
 
     //根据路由的变化 改变授权类型
     const route = useRoute()
@@ -222,10 +225,6 @@ export default defineComponent({
       { immediate: true }
     )
 
-    // watchEffect(() => {
-
-    // })
-
     return {
       authorizationType,
       columns,
@@ -235,7 +234,6 @@ export default defineComponent({
       sizeChange,
       tableIndex,
       formatDate,
-      // ...toRefs(state),
       list,
       visible,
       manageInfo,
@@ -247,7 +245,8 @@ export default defineComponent({
       detailId,
       deviceListId,
       showDevice,
-      deviceListVisible
+      deviceListVisible,
+      initData
     }
   }
 })

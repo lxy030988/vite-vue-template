@@ -6,7 +6,7 @@
         <!-- 用户名下拉菜单 -->
         <a-dropdown>
           <span class="ant-dropdown-link">
-            <img src="@/assets/logo.png" />
+            <img src="@/assets/images/avator.png" />
             {{ username }}
             <DownOutlined />
           </span>
@@ -59,27 +59,25 @@ export default defineComponent({
   background-color: white;
   position: relative;
   box-sizing: border-box;
-  // width: 100%;
-  height: 50px;
-  font-size: 22px;
-  // color: #fff;
-  border-bottom: 1px solid #eee;
+  height: $jc-header-height;
+  font-size: $jc-font-size-larger;
+  border-bottom: 1px solid $jc-color-line-primary;
 }
 
 .header .logo {
   float: left;
-  width: 250px;
-  line-height: 50px;
+  line-height: $jc-header-height;
+  padding-left: $jc-header-height;
 }
 
 .header-right {
   float: right;
-  padding-right: 50px;
+  padding-right: $jc-header-height;
 }
 
 .header-user-con {
   display: flex;
-  height: 50px;
+  height: $jc-header-height;
   align-items: center;
 }
 
@@ -88,7 +86,7 @@ export default defineComponent({
   img {
     width: 30px;
     height: 30px;
-    margin-right: 10px;
+    margin-right: $jc-default-dis * 0.5;
     border-radius: 50%;
   }
 }

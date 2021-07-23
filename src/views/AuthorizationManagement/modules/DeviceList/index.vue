@@ -5,27 +5,34 @@
     </div>
     <jc-filter @filter="goFilter" />
     <a-card class="jc-mt" title="设备列表" :bordered="false">
-      <template #extra>
+      <template v-if="type === AuthorizationTypes.INSIDE" #extra>
         <a-button type="primary" @click="magage">添加设备</a-button>
         <a-button type="primary" class="jc-ml" @click="magageImport">批量导入</a-button>
       </template>
-      <a-table :data-source="list" row-key="id" :columns="columns" :pagination="false">
+      <a-table :loading="loading" :data-source="list" row-key="id" :columns="columns" :pagination="false">
         <template #index="{ index }">
           {{tableIndex(index)}}
         </template>
         <template #operation="{ record }">
-          <a-button type="link" title="禁用">
-            <template #icon>
-              <StopOutlined />
-            </template>
-          </a-button>
-          <a-button type="link" title="授权">
-            <template #icon>
-              <UnlockOutlined />
-            </template>
-          </a-button>
+          <template v-if="type === AuthorizationTypes.INSIDE">
+            <a-popconfirm v-if="record.licenseStatus===DEVICE_LICENSE_STATUSES.YSQ" title="您确定要禁用该设备吗?" @confirm="onDeviceStatus(record,DEVICE_LICENSE_STATUSES.WSQ)">
+              <a-button type="link" title="禁用">
+                <template #icon>
+                  <StopOutlined />
+                </template>
+              </a-button>
+            </a-popconfirm>
+            <a-popconfirm v-else title="您确定要授权该设备吗?" @confirm="onDeviceStatus(record,DEVICE_LICENSE_STATUSES.YSQ)">
+              <a-button type="link" title="授权">
+                <template #icon>
+                  <UnlockOutlined />
+                </template>
+              </a-button>
+            </a-popconfirm>
+          </template>
+
           <a-popconfirm title="您确定要删除吗?" @confirm="onDelete(record)">
-            <a-button type="link" title="删除">
+            <a-button type="link" danger title="删除">
               <template #icon>
                 <DeleteOutlined />
               </template>
@@ -37,8 +44,8 @@
       <jc-pagination :pages="pages" @currentChange="currentChange" @sizeChange="sizeChange" />
     </a-card>
 
-    <jc-manage v-model:visible="manageVisible" />
-    <jc-manage-import v-model:visible="magageImportVisible" />
+    <jc-manage :id="id" v-model:visible="manageVisible" @success="initData" />
+    <jc-manage-import :id="id" v-model:visible="magageImportVisible" @success="initData" />
 
   </div>
 
@@ -63,8 +70,14 @@ import {
   StopOutlined
 } from '@ant-design/icons-vue'
 import { AuthorizationTypes } from '../../CONST'
-import { getAuthManageDeviceList } from '@/api/authorizationManagement'
+import {
+  deleteDevice,
+  getAuthManageDeviceList,
+  updateDeviceStatus
+} from '@/api/authorizationManagement'
 import { TDeviceListItem } from '@/api/authorizationManagement/model'
+import { DEVICE_LICENSE_STATUSES } from '@/views/AuthorizationManagement/CONST'
+import { message } from 'ant-design-vue'
 
 const dcolumns = [
   {
@@ -123,7 +136,7 @@ export default defineComponent({
   setup(props, { emit }) {
     let columns = ref<any[]>([])
     let filter = ref<any>({})
-
+    let loading = ref(false)
     let list = ref<TDeviceListItem[]>([])
 
     let manageVisible = ref(false)
@@ -140,15 +153,20 @@ export default defineComponent({
     )
 
     const initData = async () => {
-      console.log('initData')
-      // pages.total = 100
-      const res = await getAuthManageDeviceList({
-        ...filter.value,
-        ...pages,
-        licenseRecordId: props.id
-      })
-      pages.total = res.total
-      list.value = res.list
+      try {
+        loading.value = true
+        const res = await getAuthManageDeviceList({
+          ...filter.value,
+          ...pages,
+          licenseRecordId: props.id
+        })
+        pages.total = res.total
+        list.value = res.list
+      } catch (error) {
+        console.error(error)
+      } finally {
+        loading.value = false
+      }
     }
 
     const { pages, tableIndex, currentChange, sizeChange } = usePage(initData)
@@ -159,8 +177,27 @@ export default defineComponent({
       currentChange(1)
     }
 
-    const onDelete = (record: any) => {
-      console.log('onDelete', record.key)
+    const onDelete = async (record: TDeviceListItem) => {
+      console.log('onDelete', record.id)
+      try {
+        await deleteDevice([record.id])
+        initData()
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    const onDeviceStatus = async (
+      record: TDeviceListItem,
+      licenseStatus: number
+    ) => {
+      try {
+        await updateDeviceStatus({ licenseStatus, id: record.id })
+        message.success('操作成功')
+        initData()
+      } catch (error) {
+        console.error(error)
+      }
     }
 
     const handleCancel = (e: MouseEvent) => {
@@ -181,12 +218,15 @@ export default defineComponent({
         columns.value = [...dcolumns]
         columns.value.splice(1, 0, {
           title: '授权信息',
-          dataIndex: 'age'
+          dataIndex: 'licenseSentence'
         })
       }
     })
 
     return {
+      loading,
+      DEVICE_LICENSE_STATUSES,
+      AuthorizationTypes,
       columns,
       pages,
       tableIndex,
@@ -195,7 +235,9 @@ export default defineComponent({
       list,
       // ...toRefs(state),
       goFilter,
+      initData,
       onDelete,
+      onDeviceStatus,
       handleCancel,
       manageVisible,
       magage,

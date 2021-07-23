@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-upload :file-list="fileList" :multiple="false" action="https://192.168.0.180/gwy-api/file-server-service/upload/upload?ifSaveName=true" :before-upload="beforeUpload" @change="handleChange">
+    <a-upload :file-list="fileList" :multiple="false" :action="uploadUrl" :before-upload="beforeUpload" @change="handleChange">
       <a-button type="primary" :disabled="loading">
         <upload-outlined></upload-outlined>
         上传文件
@@ -11,6 +11,8 @@
 <script lang="ts">
 import { UploadOutlined } from '@ant-design/icons-vue'
 import { defineComponent, PropType, ref } from 'vue'
+
+import api from '@/api/api'
 
 interface FileItem {
   uid: string
@@ -67,7 +69,7 @@ export default defineComponent({
 
       resFileList = resFileList.map(file => {
         if (file.response) {
-          file.url = file.response.url || 'url'
+          file.url = file.response.data || ''
         }
         return file
       })
@@ -81,6 +83,7 @@ export default defineComponent({
     }
 
     return {
+      uploadUrl: import.meta.env.VITE_BASE_URL + api.file.upload,
       loading,
       // fileList,
       handleChange,
