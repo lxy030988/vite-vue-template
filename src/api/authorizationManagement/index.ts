@@ -49,6 +49,14 @@ export function manageAuthManage(data: TParamsManage) {
   return data.id ? updateAuthManage(data) : addAuthManage(data)
 }
 
+export function deleteAuthManage(data: string[]) {
+  return http.request<any, any>({
+    url: api.authorizationManagement.delete,
+    method: 'POST',
+    data
+  })
+}
+
 export function getAuthManageDeviceList(data: TParamsDeviceList) {
   return http.request<any, TPageRes<TDeviceListItem>>({
     url: api.authorizationManagement.deviceList,

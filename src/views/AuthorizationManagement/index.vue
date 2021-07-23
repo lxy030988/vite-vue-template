@@ -28,8 +28,8 @@
               <FormOutlined />
             </template>
           </a-button>
-          <a-popconfirm title="Sure to delete?" @confirm="onDelete(record)">
-            <a-button type="link" title="删除">
+          <a-popconfirm title="您确定要删除吗?" @confirm="onDelete(record)">
+            <a-button type="link" danger title="删除">
               <template #icon>
                 <DeleteOutlined />
               </template>
@@ -60,7 +60,10 @@ import { useRoute } from 'vue-router'
 import { AuthorizationTypes } from './CONST'
 import { ColumnProps } from 'ant-design-vue/lib/table/interface'
 
-import { getAuthManageList } from '@/api/authorizationManagement'
+import {
+  deleteAuthManage,
+  getAuthManageList
+} from '@/api/authorizationManagement'
 import { TAuthorizationListItem } from '@/api/authorizationManagement/model'
 const dcolumns: ColumnProps[] = [
   {
@@ -171,13 +174,19 @@ export default defineComponent({
     }
 
     const showDetail = (record: TAuthorizationListItem) => {
-      console.log('record', record)
+      // console.log('record', record)
       detailId.value = record.id
       detailVisible.value = true
     }
 
-    const onDelete = (record: TAuthorizationListItem) => {
+    const onDelete = async (record: TAuthorizationListItem) => {
       console.log('record', record.id)
+      try {
+        await deleteAuthManage([record.id])
+        initData()
+      } catch (error) {
+        console.error(error)
+      }
     }
 
     const showDevice = (record: TAuthorizationListItem) => {

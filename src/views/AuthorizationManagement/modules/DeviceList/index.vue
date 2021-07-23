@@ -32,7 +32,7 @@
           </template>
 
           <a-popconfirm title="您确定要删除吗?" @confirm="onDelete(record)">
-            <a-button type="link" title="删除">
+            <a-button type="link" danger title="删除">
               <template #icon>
                 <DeleteOutlined />
               </template>
