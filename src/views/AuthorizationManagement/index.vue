@@ -46,7 +46,7 @@
   </div>
 
   <jc-device-list :id="deviceListId" v-model:visible="deviceListVisible" :type="authorizationType" />
-  <jc-manage v-model:visible="visible" :type="authorizationType" :info="manageInfo" @success="initData" />
+  <jc-manage v-model:visible="visible" :total="pages.total" :type="authorizationType" :info="manageInfo" @success="initData" />
   <jc-detail :id="detailId" v-model:visible="detailVisible" :type="authorizationType" />
 </template>
 

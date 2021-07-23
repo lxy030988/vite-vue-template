@@ -2,13 +2,13 @@
   <a-modal :visible="visible" :title="title" :width="800" :footer="null" :mask-closable="false" @cancel="resetForm">
     <a-form ref="formRef" class="jc-manage-form" :model="formState" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-item label="合同号" name="contractNumber">
-        <a-input v-model:value="formState.contractNumber" placeholder="请输入" />
+        <a-input v-model:value="formState.contractNumber" :disabled="info" placeholder="请输入" />
       </a-form-item>
       <a-form-item label="批次号" name="batchNumber">
-        <a-input v-model:value="formState.batchNumber" placeholder="请输入" />
+        <a-input v-model:value="formState.batchNumber" :disabled="info" placeholder="请输入" />
       </a-form-item>
       <a-form-item v-if="AuthorizationTypes.OUTSIDE===type" label="授权码" name="licenseCode">
-        <a-input v-model:value="formState.licenseCode" />
+        <a-input v-model:value="formState.licenseCode" disabled />
       </a-form-item>
       <a-form-item label="批次日期" name="batchTime">
         <a-date-picker v-model:value="formState.batchTime" format="YYYY-MM-DD" value-format="YYYY-MM-DD" :show-time="false" />
@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
-// import { Moment } from 'moment'
+import moment from 'moment'
 import {
   computed,
   defineAsyncComponent,
@@ -56,6 +56,7 @@ import { FormRefType } from '@/hooks/useForm'
 import { AuthorizationTypes } from '../../CONST'
 import { TParamsManage } from '@/api/authorizationManagement/model'
 import { manageAuthManage } from '@/api/authorizationManagement'
+import { createNonceStr } from '@/utils/util'
 
 export default defineComponent({
   name: 'AuthorizationManagementManage',
@@ -75,6 +76,10 @@ export default defineComponent({
     },
     visible: {
       type: Boolean,
+      required: true
+    },
+    total: {
+      type: Number,
       required: true
     }
   },
@@ -144,6 +149,11 @@ export default defineComponent({
         ]
       } else {
         title.value = '添加授权'
+        formState.licenseCode = createNonceStr(16)
+        const now = moment().format('YYYYMMDD')
+        const num = props.total + 1
+        formState.contractNumber = `JCXSB${now}${num}`
+        formState.batchNumber = `ZFY${now}${num}`
       }
     })
 
