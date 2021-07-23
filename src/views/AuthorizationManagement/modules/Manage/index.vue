@@ -106,7 +106,13 @@ export default defineComponent({
     const rules = {
       allCount: getIntegerRule(),
       execlUrl: SELECT_NOT_NULL,
-      date: SELECT_NOT_NULL
+      date: SELECT_NOT_NULL,
+      batchTime: SELECT_NOT_NULL,
+      batchNumber: NOT_NULL,
+      company: NOT_NULL,
+      contractNumber: NOT_NULL,
+      description: NOT_NULL,
+      licenseCode: NOT_NULL
     }
 
     const { resetFields, validate } = useForm(formState, rules)

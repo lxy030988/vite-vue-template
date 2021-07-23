@@ -22,5 +22,8 @@ export function getIntegerRule(max?: number, min?: number) {
     extraRules.push({ min, message: `整数不小于${min}` })
   }
 
-  return [{ type: 'integer', message: '请输入整数' }, ...extraRules]
+  return [
+    { required: true, type: 'integer', message: '请输入整数' },
+    ...extraRules
+  ]
 }
