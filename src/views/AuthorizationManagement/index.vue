@@ -17,6 +17,9 @@
         <template #date="{ record }">
           {{formatDate(record)}}
         </template>
+        <template #licenseStatus="{ record }">
+          {{formatStatus(record)}}
+        </template>
         <template #operation="{ record }">
           <a-button type="link" title="详情" @click="showDetail(record)">
             <template #icon>
@@ -57,7 +60,7 @@ import {
   InfoCircleOutlined
 } from '@ant-design/icons-vue'
 import { useRoute } from 'vue-router'
-import { AuthorizationTypes } from './CONST'
+import { AuthorizationTypes, LICENSE_STATUSES } from './CONST'
 import { ColumnProps } from 'ant-design-vue/lib/table/interface'
 
 import {
@@ -100,7 +103,8 @@ const dcolumns: ColumnProps[] = [
   },
   {
     title: '授权状态',
-    dataIndex: 'licenseStatus'
+    dataIndex: 'licenseStatus',
+    slots: { customRender: 'licenseStatus' }
   },
   {
     title: '操作',
@@ -166,6 +170,10 @@ export default defineComponent({
 
     const formatDate = (record: TAuthorizationListItem) => {
       return `${record.startTime}-${record.endTime}`
+    }
+
+    const formatStatus = (record: TAuthorizationListItem) => {
+      return LICENSE_STATUSES.toString(record.licenseStatus)
     }
 
     const magage = (record: TAuthorizationListItem) => {
@@ -234,6 +242,7 @@ export default defineComponent({
       sizeChange,
       tableIndex,
       formatDate,
+      formatStatus,
       list,
       visible,
       manageInfo,

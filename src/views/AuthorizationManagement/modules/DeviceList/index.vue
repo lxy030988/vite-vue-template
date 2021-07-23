@@ -13,6 +13,9 @@
         <template #index="{ index }">
           {{tableIndex(index)}}
         </template>
+        <template #licenseStatus="{ record }">
+          {{formatStatus(record)}}
+        </template>
         <template #operation="{ record }">
           <template v-if="type === AuthorizationTypes.INSIDE">
             <a-popconfirm v-if="record.licenseStatus===DEVICE_LICENSE_STATUSES.YSQ" title="您确定要禁用该设备吗?" @confirm="onDeviceStatus(record,DEVICE_LICENSE_STATUSES.WSQ)">
@@ -94,7 +97,8 @@ const dcolumns = [
   },
   {
     title: '设备状态',
-    dataIndex: 'licenseStatus'
+    dataIndex: 'licenseStatus',
+    slots: { customRender: 'licenseStatus' }
   },
   {
     title: '操作',
@@ -200,6 +204,10 @@ export default defineComponent({
       }
     }
 
+    const formatStatus = (record: TDeviceListItem) => {
+      return DEVICE_LICENSE_STATUSES.toString(record.licenseStatus)
+    }
+
     const handleCancel = (e: MouseEvent) => {
       emit('update:visible', false)
     }
@@ -225,6 +233,7 @@ export default defineComponent({
 
     return {
       loading,
+      formatStatus,
       DEVICE_LICENSE_STATUSES,
       AuthorizationTypes,
       columns,

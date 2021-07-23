@@ -67,12 +67,12 @@ export default defineComponent({
 .header .logo {
   float: left;
   line-height: $jc-header-height;
-  padding-left: $jc-header-height;
+  padding-left: $jc-default-dis;
 }
 
 .header-right {
   float: right;
-  padding-right: $jc-header-height;
+  padding-right: $jc-default-dis;
 }
 
 .header-user-con {
