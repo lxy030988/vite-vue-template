@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import DefaultLayout from '@/layouts/default/index.vue'
 import FullLayout from '@/layouts/full/index.vue'
+import { getToken } from '@/utils/storage/user/user'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -79,7 +80,8 @@ const routes: Array<RouteRecordRaw> = [
         component: () =>
           import(/* webpackChunkName: "login" */ '@/views/Login/index.vue'),
         meta: {
-          title: '登录'
+          title: '登录',
+          ignore: true
         }
       }
     ]
@@ -89,6 +91,16 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  console.log('beforeEach', to)
+
+  if (to.meta.ignore || getToken()) {
+    next()
+  } else {
+    next({ path: '/login' })
+  }
 })
 
 export default router

@@ -6,20 +6,20 @@ import { TRes } from './model'
 import { getToken } from '../storage/user/user'
 
 import { message } from 'ant-design-vue'
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import router from '@/router' //只能在setup里用useRouter
 
 const http: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL as string,
   timeout: 200_000,
   headers: {
-    token: getToken(),
+    // token: getToken(),
     'Content-Security-Policy': 'upgrade-insecure-requests'
   }
 })
 
 http.interceptors.request.use(
   (config: AxiosRequestConfig) => {
+    config.headers.token = getToken()
     return config
   },
   error => {
@@ -33,10 +33,7 @@ http.interceptors.response.use(
       if (res.data.code === ResCodeEnum.SUCCESS) {
         return res.data.data
       } else {
-        if (
-          res.data.code === ResCodeEnum.AUTH_ERROR ||
-          res.data.code === ResCodeEnum.AUTH_EXPIRE
-        ) {
+        if (res.data.code === ResCodeEnum.AUTH_EXPIRE) {
           message.error('您未登录或登录已失效')
           router.push({ path: '/login' })
         } else {

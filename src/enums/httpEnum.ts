@@ -3,8 +3,7 @@
  */
 export enum ResCodeEnum {
   SUCCESS = 100000,
-  AUTH_ERROR = '10003', //非法token
-  AUTH_EXPIRE = '10002' //token已过期
+  AUTH_EXPIRE = 160056 //token已过期
 }
 
 /**
