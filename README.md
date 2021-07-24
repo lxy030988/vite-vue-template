@@ -18,10 +18,22 @@ setup(props,ctx) {}
 ### 文件引入
 
 - @ = src目录
+
 - 相对路径   ./assets/logo.png
+
 - 绝对路径   @/assets/logo.png
 
+- 在script中引入静态文件
 
+  ```html
+  <img :src="logo" alt="" />
+  
+  <script setup lang="ts">
+  import logo from '@/assets/logo.png'
+  </script>
+  ```
+
+  
 
 ### http数据请求
 
@@ -69,6 +81,27 @@ css: {
         }
     }
 }
+```
+
+
+
+### module.css
+
+```html
+<div :class="$style.a">
+    <span :class="$style.b">aaaaa</span>
+</div>
+<style lang="scss" scoped module>
+//$style.a
+.a {
+  display: flex;
+  box-shadow: 0px 0px 3px #121212 inset;
+  background: rebeccapurple;
+  .b {
+    font-size: 28px;
+  }
+}
+</style>
 ```
 
 
