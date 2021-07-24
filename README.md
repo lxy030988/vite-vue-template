@@ -268,7 +268,7 @@ import.meta.env.VITE_BASE_URL
 
 
 
-### lint
+### eslint
 
 ```json
 "build": "vue-tsc --noEmit && vite build"
@@ -282,6 +282,34 @@ Vue 3 command line Type-Checking tool base on IDE plugin Volar
 "lint": "eslint --fix \"src/**/*([^d]|[^.]d).{ts,vue}\""
 "lint": "eslint --ext .ts,.vue src/** --error-on-unmatched-pattern"   --quiet(不报警告)
 "lint:fix": "eslint --ext .ts,.vue src/** --error-on-unmatched-pattern --fix"
+```
+
+
+
+*这段配置目前有点问题*
+
+Insert `··`eslint[prettier/prettier](https://github.com/prettier/eslint-plugin-prettier#options)
+
+```json
+"@typescript-eslint/eslint-plugin": "^4.15.2",
+"@typescript-eslint/parser": "^4.15.2",
+"@vue/eslint-config-prettier": "^6.0.0",
+"@vue/eslint-config-typescript": "^7.0.0",
+"@vuedx/typescript-plugin-vue": "^0.6.3",
+"eslint": "^7.20.0",
+"eslint-plugin-prettier": "^3.3.1",
+"eslint-plugin-vue": "^7.6.0",
+"prettier": "^2.2.1",
+```
+
+```js
+extends: [
+    'plugin:vue/vue3-recommended',
+    'eslint:recommended',
+    '@vue/typescript/recommended',
+    '@vue/prettier',
+    '@vue/prettier/@typescript-eslint'
+],
 ```
 
 
