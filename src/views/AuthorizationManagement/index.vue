@@ -137,6 +137,9 @@ export default defineComponent({
     let list = ref<TAuthorizationListItem[]>([])
     let loading = ref(false)
     const initData = async () => {
+      if (loading.value) {
+        return
+      }
       try {
         loading.value = true
         const res = await getAuthManageList({

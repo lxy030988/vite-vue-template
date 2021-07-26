@@ -31,7 +31,7 @@
       </a-form-item>
       <div class="text-center">
         <a-button @click="resetForm">取消</a-button>
-        <a-button class="jc-ml" type="primary" @click="onSubmit">确定</a-button>
+        <a-button class="jc-ml" type="primary" :loading="loading" @click="onSubmit">确定</a-button>
       </div>
     </a-form>
   </a-modal>
@@ -41,13 +41,13 @@
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import moment from 'moment'
 import {
-  computed,
   defineAsyncComponent,
   defineComponent,
   PropType,
   reactive,
   ref,
   toRaw,
+  watch,
   watchEffect
 } from 'vue'
 import { getIntegerRule, NOT_NULL, SELECT_NOT_NULL } from '@/utils/rule'
@@ -85,13 +85,6 @@ export default defineComponent({
   },
   emits: ['update:visible', 'success'],
   setup(props, { emit }) {
-    const handleCancel = (e: MouseEvent) => {
-      emit('update:visible', false)
-    }
-
-    let title = ref('添加授权')
-
-    const formRef = ref<FormRefType>()
     const formState = reactive<TParamsManage>({
       allCount: null,
       batchNumber: '',
@@ -107,7 +100,7 @@ export default defineComponent({
       type: '',
       date: []
     })
-    let fileList = ref<any[]>([])
+
     const rules = {
       allCount: getIntegerRule(),
       execlUrl: SELECT_NOT_NULL,
@@ -122,71 +115,54 @@ export default defineComponent({
 
     const { resetFields, validate } = useForm(formState, rules)
 
-    watchEffect(() => {
-      if (props.info) {
-        console.log('props.info', props.info)
-        title.value = '编辑授权'
-        formState.id = props.info.id
-        formState.allCount = props.info.allCount
-        formState.batchNumber = props.info.batchNumber
-        formState.batchTime = props.info.batchTime
-        formState.company = props.info.company
-        formState.contractNumber = props.info.contractNumber
-        formState.description = props.info.description
-        formState.execlUrl = props.info.execlUrl
-        formState.type = props.info.type
-        formState.licenseCode = props.info.licenseCode
-        formState.endTime = props.info.endTime
-        formState.startTime = props.info.startTime //时间格式化
-        formState.date = [props.info.startTime, props.info.endTime]
+    //表单初始化
+    let title = ref('添加授权')
+    watch(
+      () => props.visible,
+      value => {
+        if (!value) {
+          return
+        }
+        if (props.info) {
+          console.log('props.info', props.info)
+          title.value = '编辑授权'
+          formState.id = props.info.id
+          formState.allCount = props.info.allCount
+          formState.batchNumber = props.info.batchNumber
+          formState.batchTime = props.info.batchTime
+          formState.company = props.info.company
+          formState.contractNumber = props.info.contractNumber
+          formState.description = props.info.description
+          formState.execlUrl = props.info.execlUrl
+          formState.type = props.info.type
+          formState.licenseCode = props.info.licenseCode
+          formState.endTime = props.info.endTime
+          formState.startTime = props.info.startTime //时间格式化
+          formState.date = [props.info.startTime, props.info.endTime]
 
-        fileList.value = [
-          {
-            uid: props.info.execlUrl,
-            name: props.info.execlUrl,
-            url: props.info.execlUrl
-          }
-        ]
-      } else {
-        title.value = '添加授权'
-        formState.licenseCode = createNonceStr(16)
-        const now = moment().format('YYYYMMDD')
-        const num = props.total + 1
-        formState.contractNumber = `JCXSB${now}${num}`
-        formState.batchNumber = `ZFY${now}${num}`
+          fileList.value = [
+            {
+              uid: props.info.execlUrl,
+              name: props.info.execlUrl,
+              url: props.info.execlUrl
+            }
+          ]
+        } else {
+          title.value = '添加授权'
+          formState.licenseCode = createNonceStr(16)
+          const now = moment().format('YYYYMMDD')
+          const num = props.total + 1
+          formState.contractNumber = `JCXSB${now}${num}`
+          formState.batchNumber = `ZFY${now}${num}`
+        }
       }
-    })
+    )
 
+    //文件上传
+    let fileList = ref<any[]>([])
     watchEffect(() => {
       formState.execlUrl = fileList.value[0]?.url || ''
     })
-
-    const onSubmit = () => {
-      formRef
-        .value!.validate()
-        .then(async () => {
-          formState.type = props.type
-          console.log('values', formState, toRaw(formState))
-
-          try {
-            await manageAuthManage(toRaw(formState))
-
-            resetForm()
-            emit('success')
-          } catch (error) {
-            console.error(error)
-          }
-        })
-        .catch((error: ValidateErrorEntity<TParamsManage>) => {
-          console.log('error', error)
-        })
-    }
-
-    const resetForm = () => {
-      resetFields()
-      fileList.value = []
-      emit('update:visible', false)
-    }
 
     const changeDate = (v: any[]) => {
       if (v.length) {
@@ -196,20 +172,58 @@ export default defineComponent({
         formState.startTime = ''
         formState.endTime = ''
       }
-      // console.log('changeDate', v)
+    }
+
+    //表单确认提交
+    const formRef = ref<FormRefType>()
+    let loading = ref(false)
+    const onSubmit = () => {
+      formRef
+        .value!.validate()
+        .then(() => {
+          validated()
+        })
+        .catch((error: ValidateErrorEntity<TParamsManage>) => {
+          console.log('validate error', error)
+        })
+    }
+    const validated = async () => {
+      formState.type = props.type
+      console.log('values', formState, toRaw(formState))
+
+      try {
+        loading.value = true
+        await manageAuthManage(toRaw(formState))
+
+        resetForm()
+        emit('success')
+      } catch (error) {
+        console.error(error)
+      } finally {
+        loading.value = false
+      }
+    }
+
+    const resetForm = () => {
+      formRef.value!.resetFields()
+      resetFields()
+      fileList.value = []
+      emit('update:visible', false)
     }
 
     return {
-      title,
-      AuthorizationTypes,
-      fileList,
-      handleCancel,
-      changeDate,
-      formRef,
       labelCol: { span: 4 },
       wrapperCol: { span: 20 },
+      //form数据
+      AuthorizationTypes,
+      title,
+      formRef,
       formState,
       rules,
+      fileList,
+      changeDate,
+      //form操作
+      loading,
       onSubmit,
       resetForm
     }
