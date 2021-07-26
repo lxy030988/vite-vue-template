@@ -2,7 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import DefaultLayout from '@/layouts/default/index.vue'
 import FullLayout from '@/layouts/full/index.vue'
-import { getToken } from '@/utils/storage/user/user'
+import { getToken } from '@/utils/storage/user'
 
 const routes: Array<RouteRecordRaw> = [
   {

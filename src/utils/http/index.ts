@@ -3,7 +3,7 @@ import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 import { ResCodeEnum } from '@/enums/httpEnum'
 import { TRes } from './model'
-import { getToken } from '../storage/user/user'
+import { getToken } from '../storage/user'
 
 import { message } from 'ant-design-vue'
 import router from '@/router' //只能在setup里用useRouter

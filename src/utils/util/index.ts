@@ -1,3 +1,8 @@
+/**
+ * 随机数 - 字母+数字
+ * @param num 随机数长度
+ * @returns
+ */
 export function createNonceStr(num: number) {
   const chars = [
     '0',
