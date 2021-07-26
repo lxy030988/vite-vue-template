@@ -48,7 +48,7 @@
     </a-card>
 
     <jc-manage :id="id" v-model:visible="manageVisible" @success="initData" />
-    <jc-manage-import :id="id" v-model:visible="magageImportVisible" @success="initData" />
+    <jc-manage-import :id="id" v-model:visible="magageImportVisible" :info="info" @success="initData" />
 
   </div>
 
@@ -76,7 +76,10 @@ import {
   getAuthManageDeviceList,
   updateDeviceStatus
 } from '@/api/authorizationManagement'
-import { TDeviceListItem } from '@/api/authorizationManagement/model'
+import {
+  TDeviceListItem,
+  TParamsManage
+} from '@/api/authorizationManagement/model'
 import { DEVICE_LICENSE_STATUSES } from '@/views/AuthorizationManagement/CONST'
 import { success } from '@/utils/message'
 
@@ -122,6 +125,10 @@ export default defineComponent({
     type: {
       type: String as PropType<AuthorizationTypes>,
       required: true
+    },
+    info: {
+      type: Object as PropType<TParamsManage>,
+      default: () => ({})
     },
     visible: {
       type: Boolean,
@@ -211,7 +218,6 @@ export default defineComponent({
     watch(
       () => props.id,
       () => {
-        console.log('id', props.id)
         if (props.id) {
           initData()
         }

@@ -1,5 +1,5 @@
 <template>
-  <a-modal :visible="visible" title="添加设备" :width="600" :footer="null" :mask-closable="false" @cancel="handleCancel">
+  <a-modal :visible="visible" title="添加设备" :width="600" :footer="null" :mask-closable="false" @cancel="resetForm">
     <a-form ref="formRef" class="jc-manage-form" :model="formState" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-item label="设备号" name="equipmentNum">
         <a-input v-model:value="formState.equipmentNum" placeholder="请输入" />
@@ -9,7 +9,7 @@
       </a-form-item>
       <div class="text-center">
         <a-button @click="resetForm">取消</a-button>
-        <a-button class="jc-ml" type="primary" @click="onSubmit">确定</a-button>
+        <a-button class="jc-ml" type="primary" :loading="loading" @click="onSubmit">确定</a-button>
       </div>
     </a-form>
   </a-modal>
@@ -41,19 +41,10 @@ export default defineComponent({
   },
   emits: ['update:visible', 'success'],
   setup(props, { emit }) {
-    const handleCancel = (e: MouseEvent) => {
-      emit('update:visible', false)
-    }
-
-    const formRef = ref<FormRefType>()
     const formState = reactive<TParamsAddDevice>({
       licenseRecordId: '',
       licenseStatus: DEVICE_LICENSE_STATUSES['WSQ'],
       equipmentNum: ''
-    })
-
-    watchEffect(() => {
-      formState.licenseRecordId = props.id
     })
 
     const rules = {
@@ -63,24 +54,35 @@ export default defineComponent({
 
     const { resetFields, validate } = useForm(formState, rules)
 
+    watchEffect(() => {
+      formState.licenseRecordId = props.id
+    })
+
+    const formRef = ref<FormRefType>()
     const onSubmit = () => {
       formRef
         .value!.validate()
-        .then(async () => {
-          console.log('values', formState, toRaw(formState))
-
-          try {
-            await addAuthManageDevice(toRaw(formState))
-            success()
-            resetForm()
-            emit('success')
-          } catch (error) {
-            console.error(error)
-          }
+        .then(() => {
+          validated()
         })
         .catch((error: ValidateErrorEntity<TParamsAddDevice>) => {
           console.log('error', error)
         })
+    }
+
+    let loading = ref(false)
+    const validated = async () => {
+      try {
+        loading.value = true
+        await addAuthManageDevice(toRaw(formState))
+        success()
+        resetForm()
+        emit('success')
+      } catch (error) {
+        console.error(error)
+      } finally {
+        loading.value = false
+      }
     }
 
     const resetForm = () => {
@@ -89,13 +91,13 @@ export default defineComponent({
     }
 
     return {
-      DEVICE_LICENSE_STATUSES,
-      handleCancel,
-      formRef,
       labelCol: { span: 4 },
       wrapperCol: { span: 20 },
+      DEVICE_LICENSE_STATUSES,
+      formRef,
       formState,
       rules,
+      loading,
       onSubmit,
       resetForm
     }

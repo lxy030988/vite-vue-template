@@ -177,7 +177,6 @@ export default defineComponent({
 
     //表单确认提交
     const formRef = ref<FormRefType>()
-    let loading = ref(false)
     const onSubmit = () => {
       formRef
         .value!.validate()
@@ -188,6 +187,8 @@ export default defineComponent({
           console.log('validate error', error)
         })
     }
+
+    let loading = ref(false)
     const validated = async () => {
       formState.type = props.type
       try {

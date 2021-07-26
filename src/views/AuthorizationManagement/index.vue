@@ -45,7 +45,7 @@
     </a-card>
   </div>
 
-  <jc-device-list :id="deviceListId" v-model:visible="deviceListVisible" :type="authorizationType" />
+  <jc-device-list :id="deviceListId" v-model:visible="deviceListVisible" :info="deviceListInfo" :type="authorizationType" />
   <jc-manage v-model:visible="visible" :total="pages.total" :type="authorizationType" :info="manageInfo" @success="initData" />
   <jc-detail :id="detailId" v-model:visible="detailVisible" :type="authorizationType" />
 </template>
@@ -205,9 +205,11 @@ export default defineComponent({
     //查看设备列表
     let deviceListVisible = ref(false)
     let deviceListId = ref('')
+    let deviceListInfo = ref<TAuthorizationListItem>()
     const showDevice = (record: TAuthorizationListItem) => {
       // console.log('record', record.id)
       deviceListId.value = record.id
+      deviceListInfo.value = record
       deviceListVisible.value = true
     }
 
@@ -266,6 +268,7 @@ export default defineComponent({
       showDetail,
       deviceListVisible,
       deviceListId,
+      deviceListInfo,
       showDevice,
       onDelete
     }
