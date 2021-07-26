@@ -2,10 +2,10 @@
   <a-modal :visible="visible" :title="title" :width="800" :footer="null" :mask-closable="false" @cancel="resetForm">
     <a-form ref="formRef" class="jc-manage-form" :model="formState" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-item label="合同号" name="contractNumber">
-        <a-input v-model:value="formState.contractNumber" :disabled="info" placeholder="请输入" />
+        <a-input v-model:value="formState.contractNumber" :disabled="!!info" placeholder="请输入" />
       </a-form-item>
       <a-form-item label="批次号" name="batchNumber">
-        <a-input v-model:value="formState.batchNumber" :disabled="info" placeholder="请输入" />
+        <a-input v-model:value="formState.batchNumber" :disabled="!!info" placeholder="请输入" />
       </a-form-item>
       <a-form-item v-if="AuthorizationTypes.OUTSIDE===type" label="授权码" name="licenseCode">
         <a-input v-model:value="formState.licenseCode" disabled />
@@ -73,7 +73,7 @@ export default defineComponent({
     },
     info: {
       type: Object as PropType<TParamsManage>,
-      required: true
+      default: null
     },
     visible: {
       type: Boolean,
@@ -114,7 +114,7 @@ export default defineComponent({
       licenseCode: NOT_NULL
     }
 
-    const { resetFields, validate } = useForm(formState, rules)
+    const { resetFields, validate } = useForm(formState, ref(rules))
 
     //表单初始化
     let title = ref('添加授权')

@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRaw } from 'vue'
+import { defineComponent, reactive, ref, toRaw } from 'vue'
 import { useForm } from '@/hooks'
 import { LICENSE_STATUSES } from '../../CONST'
 
@@ -41,7 +41,7 @@ export default defineComponent({
       endTime: ''
     })
 
-    const { resetFields } = useForm(formState, {})
+    const { resetFields } = useForm(formState, ref({}))
 
     const onSubmit = () => {
       emit('filter', toRaw(formState))

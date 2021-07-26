@@ -8,6 +8,7 @@ export function useForm(
   modelRef: Props | Ref<Props>,
   rulesRef?: Props | Ref<Props> | undefined
 ) {
+  //Form.useForm 两个参数必传  必须是proxy对象
   const { resetFields, validate } = Form.useForm(modelRef, rulesRef)
 
   return { resetFields, validate }

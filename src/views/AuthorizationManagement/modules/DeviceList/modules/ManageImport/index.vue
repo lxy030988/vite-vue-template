@@ -67,7 +67,7 @@ export default defineComponent({
       file: SELECT_NOT_NULL
     }
 
-    const { resetFields, validate } = useForm(formState, rules)
+    const { resetFields, validate } = useForm(formState, ref(rules))
 
     watchEffect(() => {
       formState.recordId = props.id
