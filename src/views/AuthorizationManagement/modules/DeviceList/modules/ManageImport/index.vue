@@ -27,8 +27,8 @@ import { NOT_NULL, SELECT_NOT_NULL } from '@/utils/rule'
 import { useForm } from '@/hooks'
 import { FormRefType } from '@/hooks/useForm'
 import { TParamsImportDevice } from '@/api/authorizationManagement/model'
-import { message } from 'ant-design-vue'
 import { importDevice } from '@/api/authorizationManagement'
+import { success } from '@/utils/message'
 
 export default defineComponent({
   name: 'AuthorizationManagementDeviceListManageImport',
@@ -77,7 +77,7 @@ export default defineComponent({
           console.log('values', formState, toRaw(formState))
           try {
             await importDevice(toRaw(formState))
-            message.success('操作成功')
+            success()
             resetForm()
             emit('success')
           } catch (error) {

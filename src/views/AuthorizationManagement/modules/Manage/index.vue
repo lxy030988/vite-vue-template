@@ -57,6 +57,7 @@ import { AuthorizationTypes } from '../../CONST'
 import { TParamsManage } from '@/api/authorizationManagement/model'
 import { manageAuthManage } from '@/api/authorizationManagement'
 import { createNonceStr } from '@/utils/util'
+import { success } from '@/utils/message'
 
 export default defineComponent({
   name: 'AuthorizationManagementManage',
@@ -189,12 +190,10 @@ export default defineComponent({
     }
     const validated = async () => {
       formState.type = props.type
-      console.log('values', formState, toRaw(formState))
-
       try {
         loading.value = true
         await manageAuthManage(toRaw(formState))
-
+        success()
         resetForm()
         emit('success')
       } catch (error) {

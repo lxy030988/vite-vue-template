@@ -106,7 +106,6 @@ const dcolumns: ColumnProps[] = [
   },
   {
     title: '授权状态',
-    dataIndex: 'licenseStatus',
     slots: { customRender: 'licenseStatus' }
   },
   {

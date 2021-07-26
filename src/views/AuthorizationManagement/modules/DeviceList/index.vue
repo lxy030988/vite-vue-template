@@ -60,9 +60,7 @@ import {
   defineAsyncComponent,
   defineComponent,
   PropType,
-  reactive,
   ref,
-  toRefs,
   watch,
   watchEffect
 } from 'vue'
@@ -80,7 +78,7 @@ import {
 } from '@/api/authorizationManagement'
 import { TDeviceListItem } from '@/api/authorizationManagement/model'
 import { DEVICE_LICENSE_STATUSES } from '@/views/AuthorizationManagement/CONST'
-import { message } from 'ant-design-vue'
+import { success } from '@/utils/message'
 
 const dcolumns = [
   {
@@ -97,12 +95,10 @@ const dcolumns = [
   },
   {
     title: '设备状态',
-    dataIndex: 'licenseStatus',
     slots: { customRender: 'licenseStatus' }
   },
   {
     title: '操作',
-    dataIndex: 'operation',
     slots: { customRender: 'operation' }
   }
 ]
@@ -138,24 +134,13 @@ export default defineComponent({
   },
   emits: ['update:visible'],
   setup(props, { emit }) {
-    let columns = ref<any[]>([])
-    let filter = ref<any>({})
+    const handleCancel = (e: MouseEvent) => {
+      emit('update:visible', false)
+    }
+
+    //获取表格数据
     let loading = ref(false)
     let list = ref<TDeviceListItem[]>([])
-
-    let manageVisible = ref(false)
-    let magageImportVisible = ref(false)
-
-    watch(
-      () => props.id,
-      () => {
-        console.log('id', props.id)
-        if (props.id) {
-          initData()
-        }
-      }
-    )
-
     const initData = async () => {
       try {
         loading.value = true
@@ -172,14 +157,22 @@ export default defineComponent({
         loading.value = false
       }
     }
+    //表格数据 格式化
+    const formatStatus = (record: TDeviceListItem) => {
+      return DEVICE_LICENSE_STATUSES.toString(record.licenseStatus)
+    }
 
+    //分页
     const { pages, tableIndex, currentChange, sizeChange } = usePage(initData)
-
+    //搜索
+    let filter = ref<any>({})
     const goFilter = (v: any) => {
       console.log('goFilter', v)
       filter.value = v
       currentChange(1)
     }
+
+    //表格相关操作
 
     const onDelete = async (record: TDeviceListItem) => {
       console.log('onDelete', record.id)
@@ -197,28 +190,36 @@ export default defineComponent({
     ) => {
       try {
         await updateDeviceStatus({ licenseStatus, id: record.id })
-        message.success('操作成功')
+        success()
         initData()
       } catch (error) {
         console.error(error)
       }
     }
 
-    const formatStatus = (record: TDeviceListItem) => {
-      return DEVICE_LICENSE_STATUSES.toString(record.licenseStatus)
-    }
-
-    const handleCancel = (e: MouseEvent) => {
-      emit('update:visible', false)
-    }
-
+    let manageVisible = ref(false)
     const magage = () => {
       manageVisible.value = true
     }
+
+    let magageImportVisible = ref(false)
     const magageImport = () => {
       magageImportVisible.value = true
     }
 
+    //监听授权id变化  获取数据
+    watch(
+      () => props.id,
+      () => {
+        console.log('id', props.id)
+        if (props.id) {
+          initData()
+        }
+      }
+    )
+
+    // 根据授权类型 动态改变表格列数
+    let columns = ref<any[]>([])
     watchEffect(() => {
       if (props.type === AuthorizationTypes.INSIDE) {
         columns.value = [...dcolumns]
@@ -232,22 +233,23 @@ export default defineComponent({
     })
 
     return {
-      loading,
-      formatStatus,
-      DEVICE_LICENSE_STATUSES,
       AuthorizationTypes,
+      DEVICE_LICENSE_STATUSES,
+      handleCancel,
       columns,
+      //表格数据
       pages,
-      tableIndex,
       currentChange,
       sizeChange,
+      tableIndex,
+      loading,
       list,
-      // ...toRefs(state),
-      goFilter,
       initData,
+      goFilter,
+      formatStatus,
+      //表格操作
       onDelete,
       onDeviceStatus,
-      handleCancel,
       manageVisible,
       magage,
       magageImportVisible,
