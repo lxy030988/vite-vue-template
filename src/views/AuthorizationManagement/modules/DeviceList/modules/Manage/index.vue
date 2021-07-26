@@ -52,7 +52,7 @@ export default defineComponent({
       licenseStatus: SELECT_NOT_NULL
     }
 
-    const { resetFields, validate } = useForm(formState, ref(rules))
+    const { resetFields, validate } = useForm(formState, rules)
 
     watchEffect(() => {
       formState.licenseRecordId = props.id

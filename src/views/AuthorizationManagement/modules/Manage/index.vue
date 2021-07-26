@@ -114,7 +114,7 @@ export default defineComponent({
       licenseCode: NOT_NULL
     }
 
-    const { resetFields, validate } = useForm(formState, ref(rules))
+    const { resetFields, validate } = useForm(formState, rules)
 
     //表单初始化
     let title = ref('添加授权')
