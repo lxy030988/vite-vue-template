@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="logo">后台管理系统</div>
+    <div class="logo">行政执法授权平台</div>
     <div class="header-right">
       <div class="header-user-con">
         <!-- 用户名下拉菜单 -->
@@ -12,8 +12,8 @@
           </span>
           <template #overlay>
             <a-menu @click="onClick">
-              <a-menu-item :key="DropdownEnum.USER_INFO">个人信息</a-menu-item>
-              <a-menu-item :key="DropdownEnum.UPDATE_PASSWORD">修改密码</a-menu-item>
+              <!-- <a-menu-item :key="DropdownEnum.USER_INFO">个人信息</a-menu-item> -->
+              <!-- <a-menu-item :key="DropdownEnum.UPDATE_PASSWORD">修改密码</a-menu-item> -->
               <a-menu-item :key="DropdownEnum.LOGOUT">退出登录</a-menu-item>
             </a-menu>
           </template>
@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent } from 'vue'
 
 import { DownOutlined } from '@ant-design/icons-vue'
 import { MenuInfo } from './model'
@@ -42,7 +42,7 @@ export default defineComponent({
     const { state, commit } = useMyStore()
     let username = computed(() => state.user.user?.userName)
     const onClick = ({ key }: MenuInfo) => {
-      console.log(`Click on item ${key}`)
+      // console.log(`Click on item ${key}`)
       if (key === DropdownEnum.LOGOUT) {
         try {
           commit('user/SET_USER', null)
@@ -63,7 +63,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .header {
-  background-color: white;
+  background-color: $jc-color-white;
   position: relative;
   box-sizing: border-box;
   height: $jc-header-height;

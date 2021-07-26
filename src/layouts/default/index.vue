@@ -53,8 +53,8 @@ export default defineComponent({
   }
 }
 .left {
-  width: 240px;
-  background: #001529;
+  width: $jc-menu-width;
+  background: $jc-menu-bg-color;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -68,16 +68,14 @@ export default defineComponent({
   box-sizing: border-box;
   .content-box {
     flex: 1;
-    background: #f0f2f5;
-    padding: 10px 15px;
+    background: $jc-bg-color;
+    padding: $jc-default-dis;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     overflow: auto;
     .content {
       box-sizing: border-box;
-      // background: white;
-      // padding: $jc-default-dis;
     }
   }
 }

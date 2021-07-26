@@ -94,7 +94,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log('beforeEach', to)
+  // console.log('beforeEach', to)
 
   if (to.meta.ignore || getToken()) {
     next()
