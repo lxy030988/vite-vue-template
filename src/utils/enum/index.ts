@@ -1,7 +1,13 @@
+interface Item {
+  key: string
+  value: string | number
+  label: string
+}
+
 class JcEnum {
   private container: Map<PropertyKey, string>
-  public VALUES
-  constructor(values: any[]) {
+  public VALUES: Item[]
+  constructor(values: Item[]) {
     this.VALUES = values
 
     this.container = new Map()
