@@ -1,14 +1,15 @@
 import { Form } from 'ant-design-vue'
 import { Props } from 'ant-design-vue/lib/form/useForm'
-import { Ref } from 'vue'
+import { ref, Ref } from 'vue'
 
 export type FormRefType = ReturnType<typeof Form.useForm>
 
 export function useForm(
   modelRef: Props | Ref<Props>,
-  rulesRef?: Props | Ref<Props> | undefined
+  rules?: Props | undefined
 ) {
-  const { resetFields, validate } = Form.useForm(modelRef, rulesRef)
+  //Form.useForm 两个参数必传  必须是proxy对象
+  const { resetFields, validate } = Form.useForm(modelRef, ref(rules))
 
   return { resetFields, validate }
 }

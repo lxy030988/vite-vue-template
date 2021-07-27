@@ -1,5 +1,5 @@
 import { TResUser } from '@/api/user/model'
-import { setToken, setUser } from '@/utils/storage/user/user'
+import { setToken, setUser } from '@/utils/storage/user'
 import { MutationsTypes } from './constant'
 import { userState } from './store'
 

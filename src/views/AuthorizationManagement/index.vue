@@ -45,23 +45,23 @@
     </a-card>
   </div>
 
-  <jc-device-list :id="deviceListId" v-model:visible="deviceListVisible" :type="authorizationType" />
-  <jc-manage v-model:visible="visible" :type="authorizationType" :info="manageInfo" @success="initData" />
+  <jc-device-list :id="deviceListId" v-model:visible="deviceListVisible" :info="deviceListInfo" :type="authorizationType" />
+  <jc-manage v-model:visible="visible" :total="pages.total" :type="authorizationType" :info="manageInfo" @success="initData" />
   <jc-detail :id="detailId" v-model:visible="detailVisible" :type="authorizationType" />
 </template>
 
 <script lang="ts">
-import { usePage } from '@/hooks'
 import { defineAsyncComponent, defineComponent, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 import {
   DeleteOutlined,
   FormOutlined,
   InfoCircleOutlined
 } from '@ant-design/icons-vue'
-import { useRoute } from 'vue-router'
+
 import { AuthorizationTypes, LICENSE_STATUSES } from './CONST'
-import { ColumnProps } from 'ant-design-vue/lib/table/interface'
+import { usePage } from '@/hooks'
 
 import {
   deleteAuthManage,
@@ -69,7 +69,8 @@ import {
 } from '@/api/authorizationManagement'
 import { TAuthorizationListItem } from '@/api/authorizationManagement/model'
 
-//定义表格列
+import { ColumnProps } from 'ant-design-vue/lib/table/interface'
+//定义表格默认列
 const dcolumns: ColumnProps[] = [
   {
     title: '序号',
@@ -105,7 +106,6 @@ const dcolumns: ColumnProps[] = [
   },
   {
     title: '授权状态',
-    dataIndex: 'licenseStatus',
     slots: { customRender: 'licenseStatus' }
   },
   {
@@ -120,6 +120,7 @@ export default defineComponent({
     DeleteOutlined,
     FormOutlined,
     InfoCircleOutlined,
+
     JcPagination: defineAsyncComponent(
       () => import('@/components/pagination/index.vue')
     ),
@@ -131,21 +132,13 @@ export default defineComponent({
     )
   },
   setup() {
-    let authorizationType = ref(AuthorizationTypes.INSIDE) //授权类型
-    let columns = ref<any[]>([])
-    let filter = ref<any>({})
-
+    //获取表格数据
     let list = ref<TAuthorizationListItem[]>([])
-
     let loading = ref(false)
-    let visible = ref(false)
-    let manageInfo = ref<TAuthorizationListItem>()
-    let detailVisible = ref(false)
-    let deviceListVisible = ref(false)
-    let detailId = ref('')
-    let deviceListId = ref('')
-
     const initData = async () => {
+      if (loading.value) {
+        return
+      }
       try {
         loading.value = true
         const res = await getAuthManageList({
@@ -161,34 +154,44 @@ export default defineComponent({
         loading.value = false
       }
     }
+    //表格数据 格式化
+    const formatDate = (record: TAuthorizationListItem) => {
+      return `${record.startTime}-${record.endTime}`
+    }
+    const formatStatus = (record: TAuthorizationListItem) => {
+      return LICENSE_STATUSES.toString(record.licenseStatus)
+    }
 
+    //分页
     const { pages, tableIndex, currentChange, sizeChange } = usePage(initData)
-
+    //搜索
+    let filter = ref<any>({})
     const goFilter = (v: any) => {
       console.log('goFilter', v)
       filter.value = v
       currentChange(1)
     }
 
-    const formatDate = (record: TAuthorizationListItem) => {
-      return `${record.startTime}-${record.endTime}`
-    }
+    //表格相关操作
 
-    const formatStatus = (record: TAuthorizationListItem) => {
-      return LICENSE_STATUSES.toString(record.licenseStatus)
-    }
-
+    //新增、编辑 授权
+    let visible = ref(false)
+    let manageInfo = ref<TAuthorizationListItem>()
     const magage = (record: TAuthorizationListItem) => {
       manageInfo.value = record
       visible.value = true
     }
 
+    //查看详情
+    let detailVisible = ref(false)
+    let detailId = ref('')
     const showDetail = (record: TAuthorizationListItem) => {
       // console.log('record', record)
       detailId.value = record.id
       detailVisible.value = true
     }
 
+    //删除授权
     const onDelete = async (record: TAuthorizationListItem) => {
       console.log('record', record.id)
       try {
@@ -199,21 +202,28 @@ export default defineComponent({
       }
     }
 
+    //查看设备列表
+    let deviceListVisible = ref(false)
+    let deviceListId = ref('')
+    let deviceListInfo = ref<TAuthorizationListItem>()
     const showDevice = (record: TAuthorizationListItem) => {
       // console.log('record', record.id)
       deviceListId.value = record.id
+      deviceListInfo.value = record
       deviceListVisible.value = true
     }
 
+    //从设备列表返回，从新获取授权列表的数据
     watch(deviceListVisible, (value, oldValue) => {
       if (!value) {
         initData()
       }
     })
 
-    //根据路由的变化 改变授权类型
+    //根据路由的变化 改变授权类型 动态改变表格列数
+    let authorizationType = ref(AuthorizationTypes.INSIDE) //授权类型
+    let columns = ref<any[]>([])
     const route = useRoute()
-
     watch(
       route,
       () => {
@@ -238,26 +248,29 @@ export default defineComponent({
     return {
       authorizationType,
       columns,
+      //表格数据
       pages,
-      loading,
       currentChange,
       sizeChange,
       tableIndex,
+      goFilter,
+      initData,
+      loading,
+      list,
       formatDate,
       formatStatus,
-      list,
+      //表格操作
       visible,
       manageInfo,
-      detailVisible,
-      goFilter,
       magage,
-      onDelete,
-      showDetail,
+      detailVisible,
       detailId,
-      deviceListId,
-      showDevice,
+      showDetail,
       deviceListVisible,
-      initData
+      deviceListId,
+      deviceListInfo,
+      showDevice,
+      onDelete
     }
   }
 })

@@ -34,13 +34,7 @@ interface IUserMyStore {
   commit: MyCommit & Commit
   dispatch: MyDispatch & Dispatch
 }
-const useMyStore = (): IUserMyStore => {
+export const useMyStore = (): IUserMyStore => {
   const { state, getters, commit, dispatch }: IUserMyStore = useStore<State>()
   return { state, getters, commit, dispatch }
 }
-export { useMyStore }
-export default useMyStore
-
-// const { state, getters, commit, dispatch } = useStore<State>()
-// state.user.loading
-// state.wechat.loading

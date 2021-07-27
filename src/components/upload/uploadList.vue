@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-upload :file-list="fileList" :multiple="false" :action="uploadUrl" :before-upload="beforeUpload" @change="handleChange">
+    <a-upload :file-list="fileList" :multiple="false" :action="uploadUrl" :headers="headers" :before-upload="beforeUpload" @change="handleChange">
       <a-button type="primary" :disabled="loading">
         <upload-outlined></upload-outlined>
         上传文件
@@ -13,6 +13,9 @@ import { UploadOutlined } from '@ant-design/icons-vue'
 import { defineComponent, PropType, ref } from 'vue'
 
 import api from '@/api/api'
+import { ResCodeEnum } from '@/enums/httpEnum'
+import { message } from 'ant-design-vue'
+import { getToken } from '@/utils/storage/user'
 
 interface FileItem {
   uid: string
@@ -41,21 +44,6 @@ export default defineComponent({
   emits: ['update:fileList'],
   setup(props, { emit }) {
     let loading = ref(false)
-    // const fileList = ref<FileItem[]>([
-    //   {
-    //     uid: '1',
-    //     name: 'xxx.png',
-    //     // status: 'done',
-    //     // response: 'Server Error 500',
-    //     url: 'http://www.baidu.com/xxx.png'
-    //   },
-    //   {
-    //     uid: '2',
-    //     name: 'yyy.png',
-    //     // status: 'done',
-    //     url: 'http://www.baidu.com/yyy.png'
-    //   }
-    // ])
 
     const handleChange = (info: FileInfo) => {
       console.log('handleChange', info.file.status, info)
@@ -69,13 +57,16 @@ export default defineComponent({
 
       resFileList = resFileList.map(file => {
         if (file.response) {
-          file.url = file.response.data || ''
+          if (file.response.code === ResCodeEnum.SUCCESS) {
+            file.url = file.response.data || ''
+          } else {
+            message.error('上传失败')
+          }
         }
         return file
       })
 
       emit('update:fileList', resFileList)
-      // fileList.value = resFileList
     }
 
     const beforeUpload = () => {
@@ -84,8 +75,10 @@ export default defineComponent({
 
     return {
       uploadUrl: import.meta.env.VITE_BASE_URL + api.file.upload,
+      headers: {
+        token: getToken()
+      },
       loading,
-      // fileList,
       handleChange,
       beforeUpload
     }

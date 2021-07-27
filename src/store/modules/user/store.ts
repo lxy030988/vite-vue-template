@@ -1,4 +1,4 @@
-import { getUser } from '@/utils/storage/user/user'
+import { getUser } from '@/utils/storage/user'
 
 export const createState = () => {
   const store = {

@@ -5,7 +5,7 @@ import { userState } from './store'
 export default {
   [MutationsTypes.SET_USER](
     { commit }: ActionContext<userState, unknown>,
-    payload: boolean
+    payload: any
   ): void {
     console.log('action执行成功')
     setTimeout(() => {

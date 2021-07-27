@@ -10,7 +10,7 @@ module.exports = {
         corejs: 2, //新版本需要指定核⼼库版本
         useBuiltIns: 'usage' //按需注⼊
       }
-    ]
-    // '@babel/preset-typescript'
+    ],
+    '@babel/preset-typescript'
   ]
 }

@@ -13,6 +13,11 @@ import {
   TParamsDetail
 } from './model'
 
+/**
+ * 授权管理列表
+ * @param data
+ * @returns
+ */
 export function getAuthManageList(data: TParamsList) {
   return http.request<any, TPageRes<TAuthorizationListItem>>({
     url: api.authorizationManagement.list,
@@ -21,6 +26,11 @@ export function getAuthManageList(data: TParamsList) {
   })
 }
 
+/**
+ * 授权管理详情
+ * @param data
+ * @returns
+ */
 export function getAuthManageDetail(data: TParamsDetail) {
   return http.request<any, TAuthorizationListItem>({
     url: api.authorizationManagement.detail,
@@ -29,6 +39,11 @@ export function getAuthManageDetail(data: TParamsDetail) {
   })
 }
 
+/**
+ * 添加授权
+ * @param data
+ * @returns
+ */
 export function addAuthManage(data: TParamsManage) {
   return http.request<any, any>({
     url: api.authorizationManagement.add,
@@ -37,6 +52,11 @@ export function addAuthManage(data: TParamsManage) {
   })
 }
 
+/**
+ * 修改授权
+ * @param data
+ * @returns
+ */
 export function updateAuthManage(data: TParamsManage) {
   return http.request<any, any>({
     url: api.authorizationManagement.update,
@@ -45,10 +65,20 @@ export function updateAuthManage(data: TParamsManage) {
   })
 }
 
+/**
+ * 添加 编辑 授权
+ * @param data data.id 存在为编辑授权
+ * @returns
+ */
 export function manageAuthManage(data: TParamsManage) {
   return data.id ? updateAuthManage(data) : addAuthManage(data)
 }
 
+/**
+ * 删除授权
+ * @param data
+ * @returns
+ */
 export function deleteAuthManage(data: string[]) {
   return http.request<any, any>({
     url: api.authorizationManagement.delete,
@@ -57,6 +87,11 @@ export function deleteAuthManage(data: string[]) {
   })
 }
 
+/**
+ * 授权设备列表
+ * @param data
+ * @returns
+ */
 export function getAuthManageDeviceList(data: TParamsDeviceList) {
   return http.request<any, TPageRes<TDeviceListItem>>({
     url: api.authorizationManagement.deviceList,
@@ -65,6 +100,11 @@ export function getAuthManageDeviceList(data: TParamsDeviceList) {
   })
 }
 
+/**
+ * 添加授权设备
+ * @param data
+ * @returns
+ */
 export function addAuthManageDevice(data: TParamsAddDevice) {
   return http.request<any, any>({
     url: api.authorizationManagement.addDevice,
@@ -73,6 +113,11 @@ export function addAuthManageDevice(data: TParamsAddDevice) {
   })
 }
 
+/**
+ * 更新授权设备状态
+ * @param data
+ * @returns
+ */
 export function updateDeviceStatus(data: TParamsDeviceStatus) {
   return http.request<any, any>({
     url: api.authorizationManagement.updateDeviceStatus,
@@ -81,6 +126,11 @@ export function updateDeviceStatus(data: TParamsDeviceStatus) {
   })
 }
 
+/**
+ * 导入授权设备
+ * @param data
+ * @returns
+ */
 export function importDevice(data: TParamsImportDevice) {
   const { recordId, file } = data
   const formData = new FormData()
@@ -96,6 +146,11 @@ export function importDevice(data: TParamsImportDevice) {
   })
 }
 
+/**
+ * 删除授权设备
+ * @param data
+ * @returns
+ */
 export function deleteDevice(data: string[]) {
   return http.request<any, any>({
     url: api.authorizationManagement.deleteDevice,

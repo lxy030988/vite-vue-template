@@ -2,13 +2,13 @@
   <a-modal :visible="visible" :title="title" :width="800" :footer="null" :mask-closable="false" @cancel="resetForm">
     <a-form ref="formRef" class="jc-manage-form" :model="formState" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-item label="合同号" name="contractNumber">
-        <a-input v-model:value="formState.contractNumber" placeholder="请输入" />
+        <a-input v-model:value="formState.contractNumber" :disabled="!!info" placeholder="请输入" />
       </a-form-item>
       <a-form-item label="批次号" name="batchNumber">
-        <a-input v-model:value="formState.batchNumber" placeholder="请输入" />
+        <a-input v-model:value="formState.batchNumber" :disabled="!!info" placeholder="请输入" />
       </a-form-item>
       <a-form-item v-if="AuthorizationTypes.OUTSIDE===type" label="授权码" name="licenseCode">
-        <a-input v-model:value="formState.licenseCode" />
+        <a-input v-model:value="formState.licenseCode" disabled />
       </a-form-item>
       <a-form-item label="批次日期" name="batchTime">
         <a-date-picker v-model:value="formState.batchTime" format="YYYY-MM-DD" value-format="YYYY-MM-DD" :show-time="false" />
@@ -31,7 +31,7 @@
       </a-form-item>
       <div class="text-center">
         <a-button @click="resetForm">取消</a-button>
-        <a-button class="jc-ml" type="primary" @click="onSubmit">确定</a-button>
+        <a-button class="jc-ml" type="primary" :loading="loading" @click="onSubmit">确定</a-button>
       </div>
     </a-form>
   </a-modal>
@@ -39,15 +39,15 @@
 
 <script lang="ts">
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
-// import { Moment } from 'moment'
+import moment from 'moment'
 import {
-  computed,
   defineAsyncComponent,
   defineComponent,
   PropType,
   reactive,
   ref,
   toRaw,
+  watch,
   watchEffect
 } from 'vue'
 import { getIntegerRule, NOT_NULL, SELECT_NOT_NULL } from '@/utils/rule'
@@ -56,6 +56,8 @@ import { FormRefType } from '@/hooks/useForm'
 import { AuthorizationTypes } from '../../CONST'
 import { TParamsManage } from '@/api/authorizationManagement/model'
 import { manageAuthManage } from '@/api/authorizationManagement'
+import { createNonceStr } from '@/utils/util'
+import { success } from '@/utils/message'
 
 export default defineComponent({
   name: 'AuthorizationManagementManage',
@@ -71,22 +73,19 @@ export default defineComponent({
     },
     info: {
       type: Object as PropType<TParamsManage>,
-      required: true
+      default: null
     },
     visible: {
       type: Boolean,
+      required: true
+    },
+    total: {
+      type: Number,
       required: true
     }
   },
   emits: ['update:visible', 'success'],
   setup(props, { emit }) {
-    const handleCancel = (e: MouseEvent) => {
-      emit('update:visible', false)
-    }
-
-    let title = ref('添加授权')
-
-    const formRef = ref<FormRefType>()
     const formState = reactive<TParamsManage>({
       allCount: null,
       batchNumber: '',
@@ -102,7 +101,7 @@ export default defineComponent({
       type: '',
       date: []
     })
-    let fileList = ref<any[]>([])
+
     const rules = {
       allCount: getIntegerRule(),
       execlUrl: SELECT_NOT_NULL,
@@ -117,66 +116,54 @@ export default defineComponent({
 
     const { resetFields, validate } = useForm(formState, rules)
 
-    watchEffect(() => {
-      if (props.info) {
-        console.log('props.info', props.info)
-        title.value = '编辑授权'
-        formState.id = props.info.id
-        formState.allCount = props.info.allCount
-        formState.batchNumber = props.info.batchNumber
-        formState.batchTime = props.info.batchTime
-        formState.company = props.info.company
-        formState.contractNumber = props.info.contractNumber
-        formState.description = props.info.description
-        formState.execlUrl = props.info.execlUrl
-        formState.type = props.info.type
-        formState.licenseCode = props.info.licenseCode
-        formState.endTime = props.info.endTime
-        formState.startTime = props.info.startTime //时间格式化
-        formState.date = [props.info.startTime, props.info.endTime]
+    //表单初始化
+    let title = ref('添加授权')
+    watch(
+      () => props.visible,
+      value => {
+        if (!value) {
+          return
+        }
+        if (props.info) {
+          console.log('props.info', props.info)
+          title.value = '编辑授权'
+          formState.id = props.info.id
+          formState.allCount = props.info.allCount
+          formState.batchNumber = props.info.batchNumber
+          formState.batchTime = props.info.batchTime
+          formState.company = props.info.company
+          formState.contractNumber = props.info.contractNumber
+          formState.description = props.info.description
+          formState.execlUrl = props.info.execlUrl
+          formState.type = props.info.type
+          formState.licenseCode = props.info.licenseCode
+          formState.endTime = props.info.endTime
+          formState.startTime = props.info.startTime //时间格式化
+          formState.date = [props.info.startTime, props.info.endTime]
 
-        fileList.value = [
-          {
-            uid: props.info.execlUrl,
-            name: props.info.execlUrl,
-            url: props.info.execlUrl
-          }
-        ]
-      } else {
-        title.value = '添加授权'
+          fileList.value = [
+            {
+              uid: props.info.execlUrl,
+              name: props.info.execlUrl,
+              url: props.info.execlUrl
+            }
+          ]
+        } else {
+          title.value = '添加授权'
+          formState.licenseCode = createNonceStr(16)
+          const now = moment().format('YYYYMMDD')
+          const num = props.total + 1
+          formState.contractNumber = `JCXSB${now}${num}`
+          formState.batchNumber = `ZFY${now}${num}`
+        }
       }
-    })
+    )
 
+    //文件上传
+    let fileList = ref<any[]>([])
     watchEffect(() => {
       formState.execlUrl = fileList.value[0]?.url || ''
     })
-
-    const onSubmit = () => {
-      formRef
-        .value!.validate()
-        .then(async () => {
-          formState.type = props.type
-          console.log('values', formState, toRaw(formState))
-
-          try {
-            await manageAuthManage(toRaw(formState))
-
-            resetForm()
-            emit('success')
-          } catch (error) {
-            console.error(error)
-          }
-        })
-        .catch((error: ValidateErrorEntity<TParamsManage>) => {
-          console.log('error', error)
-        })
-    }
-
-    const resetForm = () => {
-      resetFields()
-      fileList.value = []
-      emit('update:visible', false)
-    }
 
     const changeDate = (v: any[]) => {
       if (v.length) {
@@ -186,20 +173,57 @@ export default defineComponent({
         formState.startTime = ''
         formState.endTime = ''
       }
-      // console.log('changeDate', v)
+    }
+
+    //表单确认提交
+    const formRef = ref<FormRefType>()
+    const onSubmit = () => {
+      formRef
+        .value!.validate()
+        .then(() => {
+          validated()
+        })
+        .catch((error: ValidateErrorEntity<TParamsManage>) => {
+          console.log('validate error', error)
+        })
+    }
+
+    let loading = ref(false)
+    const validated = async () => {
+      formState.type = props.type
+      try {
+        loading.value = true
+        await manageAuthManage(toRaw(formState))
+        success()
+        resetForm()
+        emit('success')
+      } catch (error) {
+        console.error(error)
+      } finally {
+        loading.value = false
+      }
+    }
+
+    const resetForm = () => {
+      formRef.value!.resetFields()
+      resetFields()
+      fileList.value = []
+      emit('update:visible', false)
     }
 
     return {
-      title,
-      AuthorizationTypes,
-      fileList,
-      handleCancel,
-      changeDate,
-      formRef,
       labelCol: { span: 4 },
       wrapperCol: { span: 20 },
+      //form数据
+      AuthorizationTypes,
+      title,
+      formRef,
       formState,
       rules,
+      fileList,
+      changeDate,
+      //form操作
+      loading,
       onSubmit,
       resetForm
     }

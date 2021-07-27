@@ -1,6 +1,3 @@
-$red: red;
-$green: green;
-
 $jc-default-dis: 20px; //常用边距
 
 $jc-default-item-height: 40px; //常用高度
@@ -28,9 +25,9 @@ $jc-header-height: 60px;
 //左侧菜单
 $jc-menu-height: 40px;
 $jc-menu-hide-width: 40px;
-$jc-menu-width: 200px;
+$jc-menu-width: 240px;
+$jc-menu-bg-color: #001529; //菜单背景色
 $jc-menu-control-bg: #102957; //controll 背景色
-$jc-menu-bg-color: #16356e; //菜单背景色
 $jc-submenu-bg-color: #0d2450; //二级菜单背景色
 $jc-menu-active-bg: $jc-color-primary; //选择背景色
 
