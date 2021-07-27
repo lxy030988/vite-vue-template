@@ -10,21 +10,31 @@
         </div>
         <a-form :model="form">
           <a-form-item>
-            <a-input v-model:value="form.account" placeholder="账号">
+            <a-input
+              v-model:value="form.account"
+              placeholder="账号"
+            >
               <template #prefix>
                 <svg-icon name="login-user"></svg-icon>
               </template>
             </a-input>
           </a-form-item>
           <a-form-item>
-            <a-input v-model:value.trim="form.userPwd" type="password" placeholder="密码">
+            <a-input
+              v-model:value.trim="form.userPwd"
+              type="password"
+              placeholder="密码"
+            >
               <template #prefix>
                 <svg-icon name="login-password"></svg-icon>
               </template>
             </a-input>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="onSubmit">
+            <a-button
+              type="primary"
+              @click="onSubmit"
+            >
               登录
             </a-button>
           </a-form-item>
@@ -96,7 +106,7 @@ export default defineComponent({
       background: $jc-color-white;
       .jc-login-user {
         display: flex;
-        padding: 60px 0;
+        padding: 80px 0;
         width: 300px;
         height: 20px;
         justify-content: space-between;
@@ -133,7 +143,7 @@ export default defineComponent({
           }
 
           .ant-btn {
-            margin-top: 50px;
+            margin-top: 25px;
             width: 100%;
             background-image: linear-gradient(90deg, #008dff 0%, #503afb 100%);
             border-radius: 8px;
