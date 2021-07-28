@@ -8,12 +8,12 @@
           <span class="ant-dropdown-link">
             <img src="@/assets/images/avator.png" />
             {{ username }}
-            <DownOutlined />
+            <!-- <DownOutlined /> -->
           </span>
           <template #overlay>
             <a-menu @click="onClick">
-              <!-- <a-menu-item :key="DropdownEnum.USER_INFO">个人信息</a-menu-item> -->
-              <!-- <a-menu-item :key="DropdownEnum.UPDATE_PASSWORD">修改密码</a-menu-item> -->
+              <a-menu-item :key="DropdownEnum.USER_INFO">个人信息</a-menu-item>
+              <a-menu-item :key="DropdownEnum.UPDATE_PASSWORD">修改密码</a-menu-item>
               <a-menu-item :key="DropdownEnum.LOGOUT">退出登录</a-menu-item>
             </a-menu>
           </template>
@@ -79,21 +79,25 @@ export default defineComponent({
 
 .header-right {
   float: right;
-  padding-right: $jc-default-dis;
+  padding-right: $jc-default-dis * 2;
 }
 
 .header-user-con {
   display: flex;
   height: $jc-header-height;
+  font-size: $jc-font-size-medium;
   align-items: center;
 }
 
 .ant-dropdown-link {
   cursor: pointer;
+  a-menu-item {
+    padding: 20px;
+  }
   img {
-    width: 30px;
-    height: 30px;
-    margin-right: $jc-default-dis * 0.5;
+    width: 40px;
+    height: 40px;
+    margin-right: $jc-default-dis * 0.4;
     border-radius: 50%;
   }
 }
