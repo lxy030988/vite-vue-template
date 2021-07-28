@@ -13,6 +13,7 @@
             <a-input
               v-model:value="form.account"
               placeholder="账号"
+              @keyup.enter="onSubmit"
             >
               <template #prefix>
                 <svg-icon name="login-user"></svg-icon>
@@ -24,6 +25,7 @@
               v-model:value.trim="form.userPwd"
               type="password"
               placeholder="密码"
+              @keyup.enter="onSubmit"
             >
               <template #prefix>
                 <svg-icon name="login-password"></svg-icon>
@@ -51,15 +53,11 @@ import { getUserInfo } from '@/api/user'
 import { Md5 } from 'ts-md5/dist/md5'
 import { useMyStore } from '@/hooks'
 import { useRouter } from 'vue-router'
-interface UserInfo {
-  account: string
-  userPwd: string
-}
 
 export default defineComponent({
   name: 'Login',
   setup() {
-    const form = reactive<UserInfo>({
+    const form = reactive({
       account: '',
       userPwd: ''
     })
@@ -70,7 +68,10 @@ export default defineComponent({
       try {
         const { account, userPwd } = toRaw(form)
         console.log(toRaw(form))
-        const res = await getUserInfo({ account, userPwd })
+        const res = await getUserInfo({
+          account,
+          userPwd: Md5.hashStr(userPwd)
+        })
         commit('user/SET_USER', res)
         router.push({ path: '/' })
       } catch (error) {
