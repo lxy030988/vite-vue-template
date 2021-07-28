@@ -167,10 +167,14 @@ export default defineComponent({
   },
   emits: ['update:visible', 'success'],
   setup(props, { emit }) {
+    const curDate = new Date()
+    const date = `${curDate.getFullYear()}-0${
+      curDate.getMonth() + 1
+    }-${curDate.getDate()}`
     const formState = reactive<TParamsManage>({
       allCount: null,
       batchNumber: '',
-      batchTime: '',
+      batchTime: date,
       company: '',
       contractNumber: '',
       description: '',
