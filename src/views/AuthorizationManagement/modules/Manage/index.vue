@@ -78,6 +78,7 @@
         name="execlUrl"
       >
         <a href="/public/excel/test.xlsx">设备信息表格模板下载</a>
+        <span v-if='isEditDevice'>重新导入后，若设备号相同，原有设备信息将被覆盖!</span>
         <jc-upload-list v-model:fileList="fileList" />
       </a-form-item>
       <a-form-item
@@ -210,6 +211,7 @@ export default defineComponent({
 
     //表单初始化
     let title = ref('添加授权')
+    let isEditDevice = ref(false)
     watch(
       () => props.visible,
       value => {
@@ -219,6 +221,7 @@ export default defineComponent({
         if (props.info) {
           console.log('props.info', props.info)
           title.value = '编辑授权'
+          isEditDevice.value = true
           formState.id = props.info.id
           formState.allCount = props.info.allCount
           formState.batchNumber = props.info.batchNumber
@@ -242,6 +245,7 @@ export default defineComponent({
           ]
         } else {
           title.value = '添加授权'
+          isEditDevice.value = false
           formState.licenseCode = createNonceStr(8)
           const now = moment().format('YYYYMMDD')
           const num = props.total + 1
@@ -306,6 +310,8 @@ export default defineComponent({
     return {
       labelCol: { span: 4 },
       wrapperCol: { span: 20 },
+      //编辑导入设备提示
+      isEditDevice,
       //form数据
       AuthorizationTypes,
       title,
@@ -324,4 +330,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+span {
+  display: block;
+  color: red;
+}
 </style>
