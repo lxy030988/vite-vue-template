@@ -40,37 +40,12 @@ export function createNonceStr(num: number) {
     'W',
     'X',
     'Y',
-    'Z',
-    'a',
-    'b',
-    'c',
-    'd',
-    'e',
-    'f',
-    'g',
-    'h',
-    'i',
-    'j',
-    'k',
-    'l',
-    'm',
-    'n',
-    'o',
-    'p',
-    'q',
-    'r',
-    's',
-    't',
-    'u',
-    'v',
-    'w',
-    'x',
-    'y',
-    'z'
+    'Z'
   ]
+  const len = chars.length
   let str = ''
   for (let i = 0; i < num; i++) {
-    const id = Math.round(Math.random() * 61)
+    const id = Math.floor(Math.random() * len)
     str += chars[id]
   }
   return str
