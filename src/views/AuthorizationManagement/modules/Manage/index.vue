@@ -74,6 +74,7 @@
         />
       </a-form-item>
       <a-form-item
+        v-if="type === AuthorizationTypes.INSIDE"
         label="设备信息导入"
         name="execlUrl"
       >
