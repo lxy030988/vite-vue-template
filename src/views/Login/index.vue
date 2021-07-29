@@ -88,7 +88,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .jc-login-wrap {
-  background: url('@/assets/bground.jpg');
+  background: url('@/assets/images/bground.jpg');
   height: 100%;
   .jc-login-contain {
     float: right;
