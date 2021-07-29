@@ -88,8 +88,8 @@
       >
         <a-range-picker
           v-model:value="formState.date"
-          value-format="YYYY-MM-DD HH:mm:ss"
-          show-time
+          value-format='YYYY-MM-DD'
+          format='YYYY-MM-DD'
           @change="changeDate"
         />
       </a-form-item>
@@ -140,7 +140,6 @@ import {
 import { manageAuthManage } from '@/api/authorizationManagement'
 import { createNonceStr } from '@/utils/util'
 import { success } from '@/utils/message'
-
 export default defineComponent({
   name: 'AuthorizationManagementManage',
   components: {
@@ -189,13 +188,12 @@ export default defineComponent({
     })
     const validateAllCount = (rule: any, value: number) => {
       return new Promise((resolve, reject) => {
-        if (props.info === null) {
-          resolve('')
-        }
-        if (props.info.licenseEquNum < value) {
-          resolve('')
-        } else {
+        if (typeof value !== 'number' || value < 0) {
+          reject('输入正整数')
+        } else if (props.info && props.info.licenseEquNum > value) {
           reject(`批次设备总数大于${props.info.licenseEquNum}`)
+        } else {
+          resolve('')
         }
       })
     }
