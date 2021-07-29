@@ -26,7 +26,7 @@ module.exports = ({ mode }) => {
 
   return defineConfig({
     root: path.resolve(__dirname),
-    base: './', //生产过程中的基本公共路径 默认 '/'
+    base: '/', //生产过程中的基本公共路径 默认 '/'
     resolve: {
       alias
     },
