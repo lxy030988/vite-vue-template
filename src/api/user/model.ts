@@ -8,3 +8,9 @@ export interface TResUser {
   token: string
   userName: string
 }
+
+export interface TParamsPwd {
+  newPassword: string
+  oldPassword: string
+  repeatPassword: string
+}

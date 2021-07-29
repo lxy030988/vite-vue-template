@@ -1,6 +1,6 @@
 import http from '@/utils/http'
 import api from '../api'
-import { TParamsLogin, TResUser } from './model'
+import { TParamsLogin, TResUser, TParamsPwd, TResNewPwd } from './model'
 
 /**
  * 用户登录
@@ -10,6 +10,19 @@ import { TParamsLogin, TResUser } from './model'
 export function getUserInfo(data: TParamsLogin) {
   return http.request<any, TResUser>({
     url: api.user.login,
+    method: 'POST',
+    data
+  })
+}
+
+/**
+ * 修改密码
+ * @param data
+ * @returns
+ */
+export function updatePwd(data: TParamsPwd) {
+  return http.request<any, any>({
+    url: api.user.updatePwd,
     method: 'POST',
     data
   })
