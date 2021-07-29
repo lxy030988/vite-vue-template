@@ -208,7 +208,7 @@ export default defineComponent({
       batchNumber: NOT_NULL,
       company: getStringRule(80),
       contractNumber: NOT_NULL,
-      description: getStringRule(1000),
+      description: getStringRule(1000, 0),
       licenseCode: NOT_NULL
     }
 
