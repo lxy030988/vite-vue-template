@@ -115,8 +115,7 @@ export default defineComponent({
     }
     const formRef = ref<FormRefType>()
     const onSubmit = () => {
-      console.log(formState)
-
+      files.value = []
       formRef
         .value!.validate()
         .then(() => {
@@ -153,9 +152,12 @@ export default defineComponent({
       wrapperCol: { span: 18 },
       formRef,
       formState,
-      files,
       rules,
+      //上传文件
+      files,
       beforeUpload,
+      // handleRemove,
+
       onSubmit,
       resetForm
     }
