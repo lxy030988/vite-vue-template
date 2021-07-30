@@ -16,15 +16,13 @@
           <template #overlay>
             <a-menu @click="onClick">
               <a-menu-item :key="DropdownEnum.USER_INFO">个人信息</a-menu-item>
-              <a-menu-item
-                :key="DropdownEnum.UPDATE_PASSWORD"
-                @click='updatePwd'
-              >修改密码</a-menu-item>
+              <a-menu-item :key="DropdownEnum.UPDATE_PASSWORD">修改密码</a-menu-item>
               <a-menu-item :key="DropdownEnum.LOGOUT">退出登录</a-menu-item>
             </a-menu>
           </template>
         </a-dropdown>
         <update-pwd v-model:visible="visible"></update-pwd>
+        <user-info v-model:visible="userVisible"></user-info>
       </div>
     </div>
   </div>
@@ -33,19 +31,22 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
 import updatePwd from './updatePwd/index.vue'
+import userInfo from './userInfo/index.vue'
 import { MenuInfo } from '../model'
 import { DropdownEnum } from '../enum'
 import { useRouter } from 'vue-router'
 import { useMyStore } from '@/hooks'
-
 export default defineComponent({
   name: 'Header',
   components: {
-    updatePwd
+    updatePwd,
+    userInfo
   },
   setup() {
     const router = useRouter()
     const { state, commit } = useMyStore()
+    let visible = ref(false)
+    let userVisible = ref(false)
     let username = computed(() => state.user.user?.userName)
     const onClick = ({ key }: MenuInfo) => {
       // console.log(`Click on item ${key}`)
@@ -58,18 +59,19 @@ export default defineComponent({
         }
       }
       if (key === DropdownEnum.UPDATE_PASSWORD) {
+        visible.value = true
+      }
+      if (key === DropdownEnum.USER_INFO) {
+        userVisible.value = true
       }
     }
-    let visible = ref(false)
-    const updatePwd = () => {
-      visible.value = true
-    }
+
     return {
       username,
       onClick,
       DropdownEnum,
       visible,
-      updatePwd
+      userVisible
     }
   }
 })
