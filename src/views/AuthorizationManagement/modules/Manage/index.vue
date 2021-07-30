@@ -78,7 +78,7 @@
         label="设备信息导入"
         name="execlUrl"
       >
-        <a href="/public/excel/test.xlsx">设备信息表格模板下载</a>
+        <a href="/excel/test.xlsx">设备信息表格模板下载</a>
         <span v-if='isEditDevice'>重新导入后，若设备号相同，原有设备信息将被覆盖!</span>
         <jc-upload-list v-model:fileList="fileList" />
       </a-form-item>
@@ -251,7 +251,8 @@ export default defineComponent({
           isEditDevice.value = false
           formState.licenseCode = createNonceStr(8)
           const now = moment().format('YYYYMMDD')
-          const num = props.total + 1
+          let num: string | number = props.total + 1
+          num = num < 10 ? '0' + num : num
           formState.contractNumber = `JCXSB${now}${num}`
           formState.batchNumber = `ZFY${now}${num}`
         }
