@@ -10,11 +10,12 @@
       :wrapper-col="wrapperCol"
     >
       <a-form-item label="批次日期">
-        <a-date-picker
+        <a-range-picker
           v-model:value="formState.batchTime"
-          format="YYYY-MM-DD"
-          value-format="YYYY-MM-DD"
+          value-format='YYYY-MM-DD'
+          format='YYYY-MM-DD'
           :show-time="false"
+          @change='changeBatchDate'
         />
       </a-form-item>
       <a-form-item label="授权状态">
@@ -32,13 +33,15 @@
       <a-form-item label="授权信息">
         <a-input
           v-model:value="formState.licenseInfo"
-          placeholder="请输入批次号/合同号/购买公司"
+          placeholder="请输入合同号/购买公司"
         ></a-input>
       </a-form-item>
       <a-form-item label="授权日期">
         <a-range-picker
           v-model:value="formState.date"
-          value-format="YYYY-MM-DD HH:mm:ss"
+          value-format='YYYY-MM-DD'
+          format='YYYY-MM-DD'
+          :show-time="false"
           @change="changeDate"
         />
       </a-form-item>
@@ -59,19 +62,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRaw } from 'vue'
+import { defineComponent, reactive, toRaw, ref } from 'vue'
 import { useForm } from '@/hooks'
+import moment from 'moment'
 import { LICENSE_STATUSES } from '../../CONST'
 
 export default defineComponent({
   name: 'AuthorizationManagementFilter',
   emits: ['filter'],
   setup(props, { emit }) {
+    const date = ref<moment.Moment[]>([])
+
     let formState = reactive({
       licenseInfo: '',
       licenseStatus: undefined,
-      batchTime: '',
-      date: [],
+      batchTime: date.value,
+      batchEndTime: '',
+      batchStartTime: '',
+      date: date.value,
       startTime: '',
       endTime: ''
     })
@@ -90,7 +98,15 @@ export default defineComponent({
         formState.startTime = ''
         formState.endTime = ''
       }
-      // console.log('changeDate', v)
+    }
+    const changeBatchDate = (v: any[]) => {
+      if (v.length) {
+        formState.batchStartTime = v[0]
+        formState.batchEndTime = v[1]
+      } else {
+        formState.batchStartTime = ''
+        formState.batchEndTime = ''
+      }
     }
 
     return {
@@ -98,6 +114,7 @@ export default defineComponent({
       resetFields,
       onSubmit,
       changeDate,
+      changeBatchDate,
       LICENSE_STATUSES,
       labelCol: { span: 6 },
       wrapperCol: { span: 18 }

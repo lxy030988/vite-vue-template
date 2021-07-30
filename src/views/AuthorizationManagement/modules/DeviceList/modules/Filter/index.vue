@@ -13,6 +13,7 @@
           format="YYYY-MM-DD"
           value-format="YYYY-MM-DD"
           :show-time="false"
+          @change="handleChange"
         />
       </a-form-item>
       <a-form-item label="授权状态">
@@ -58,7 +59,9 @@ export default defineComponent({
   emits: ['filter'],
   setup(props, { emit }) {
     let formState = reactive({
-      createTime: '',
+      createTime: [],
+      createEndTime: '',
+      createStartTime: '',
       licenseStatus: undefined,
       equipmentNum: ''
     })
@@ -68,8 +71,23 @@ export default defineComponent({
     const onSubmit = () => {
       emit('filter', toRaw(formState))
     }
+    const handleChange = (v: any[]) => {
+      if (v) {
+        formState.createStartTime = v[0]
+        formState.createEndTime = v[1]
+      } else {
+        formState.createStartTime = ''
+        formState.createEndTime = ''
+      }
+    }
 
-    return { formState, resetFields, onSubmit, DEVICE_LICENSE_STATUSES }
+    return {
+      formState,
+      resetFields,
+      onSubmit,
+      DEVICE_LICENSE_STATUSES,
+      handleChange
+    }
   }
 })
 </script>
