@@ -26,7 +26,7 @@
 import { defineComponent } from 'vue'
 
 import VSidebar from './Sidebar/index.vue'
-import VHead from './Header.vue'
+import VHead from './Header/Header.vue'
 
 export default defineComponent({
   name: 'DefaultLayout',
@@ -54,7 +54,7 @@ export default defineComponent({
 }
 .left {
   width: $jc-menu-width;
-  background: $jc-menu-bg-color;
+  background: $jc-slider-bgColor;
   height: 100%;
   display: flex;
   flex-direction: column;
