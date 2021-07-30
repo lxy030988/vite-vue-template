@@ -7,7 +7,6 @@
     :mask-closable="false"
     @cancel="resetForm"
   >
-
     <a-form
       ref="formRef"
       class="jc-manage-form"
@@ -35,7 +34,7 @@
         />
       </a-form-item>
       <a-form-item
-        v-if="AuthorizationTypes.OUTSIDE===type"
+        v-if="AuthorizationTypes.OUTSIDE === type"
         label="授权码"
         name="licenseCode"
       >
@@ -78,8 +77,8 @@
         label="设备信息导入"
         name="execlUrl"
       >
-        <a href="/excel/test.xlsx">设备信息表格模板下载</a>
-        <span v-if='isEditDevice'>重新导入后，若设备号相同，原有设备信息将被覆盖!</span>
+        <a href="/excel/设备信息表格模板.xlsx">设备信息表格模板下载</a>
+        <span v-if="isEditDevice">重新导入后，若设备号相同，原有设备信息将被覆盖!</span>
         <jc-upload-list v-model:fileList="fileList" />
       </a-form-item>
       <a-form-item
@@ -88,8 +87,8 @@
       >
         <a-range-picker
           v-model:value="formState.date"
-          value-format='YYYY-MM-DD'
-          format='YYYY-MM-DD'
+          value-format="YYYY-MM-DD"
+          format="YYYY-MM-DD"
           @change="changeDate"
         />
       </a-form-item>
@@ -113,7 +112,6 @@
       </div>
     </a-form>
   </a-modal>
-
 </template>
 
 <script lang="ts">
