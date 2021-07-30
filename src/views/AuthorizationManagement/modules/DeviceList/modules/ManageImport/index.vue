@@ -69,8 +69,7 @@ import {
   TParamsManage
 } from '@/api/authorizationManagement/model'
 import { importDevice } from '@/api/authorizationManagement'
-import { success } from '@/utils/message'
-
+import { NumMessage } from '@/utils/message'
 export default defineComponent({
   name: 'AuthorizationManagementDeviceListManageImport',
   components: {
@@ -132,8 +131,8 @@ export default defineComponent({
     const validated = async () => {
       try {
         loading.value = true
-        await importDevice(toRaw(formState))
-        success()
+        const { successList, failList } = await importDevice(toRaw(formState))
+        NumMessage(successList, failList)
         resetForm()
         emit('success')
       } catch (error) {

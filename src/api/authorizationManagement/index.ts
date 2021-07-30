@@ -10,7 +10,8 @@ import {
   TParamsAddDevice,
   TParamsDeviceStatus,
   TParamsImportDevice,
-  TParamsDetail
+  TParamsDetail,
+  TResImportDevice
 } from './model'
 
 /**
@@ -137,7 +138,7 @@ export function importDevice(data: TParamsImportDevice) {
 
   formData.append('file', file as File)
 
-  return http.request<any, any>({
+  return http.request<any, TResImportDevice>({
     url: api.authorizationManagement.importDevice,
     method: 'post',
     headers: { 'Content-Type': 'multipart/form-data' },

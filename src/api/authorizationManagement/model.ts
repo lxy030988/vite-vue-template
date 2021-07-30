@@ -80,3 +80,8 @@ export interface TParamsImportDevice {
   recordId: string
   file: File | null
 }
+
+export interface TResImportDevice {
+  failList: number
+  successList: number
+}
