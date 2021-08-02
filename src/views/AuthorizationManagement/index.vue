@@ -91,6 +91,7 @@
     :total="pages.total"
     :type="authorizationType"
     :info="manageInfo"
+    :num="deviceNum"
     @success="initData"
   />
   <jc-detail
@@ -115,7 +116,8 @@ import { usePage } from '@/hooks'
 
 import {
   deleteAuthManage,
-  getAuthManageList
+  getAuthManageList,
+  deviceCount
 } from '@/api/authorizationManagement'
 import { TAuthorizationListItem } from '@/api/authorizationManagement/model'
 import { ColumnProps } from 'ant-design-vue/lib/table/interface'
@@ -219,15 +221,22 @@ export default defineComponent({
     const goFilter = (v: any) => {
       console.log('goFilter', v)
       filter.value = v
+
       currentChange(1)
     }
 
     //表格相关操作
 
     //新增、编辑 授权
+    let deviceNum = ref(0)
     let visible = ref(false)
     let manageInfo = ref<TAuthorizationListItem>()
-    const magage = (record: TAuthorizationListItem) => {
+    const magage = async (record: TAuthorizationListItem) => {
+      if (!record) {
+        const { count } = await deviceCount()
+        deviceNum.value = count
+      }
+
       manageInfo.value = record
       visible.value = true
     }
@@ -290,7 +299,7 @@ export default defineComponent({
           })
         }
         deviceListVisible.value = false
-        initData()
+        goFilter({})
       },
       { immediate: true }
     )
@@ -298,6 +307,8 @@ export default defineComponent({
     return {
       authorizationType,
       columns,
+      //当天授权设备数
+      deviceNum,
       //表格数据
       pages,
       currentChange,

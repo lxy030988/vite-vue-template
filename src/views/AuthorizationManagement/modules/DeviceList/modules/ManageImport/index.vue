@@ -156,7 +156,6 @@ export default defineComponent({
       //上传文件
       files,
       beforeUpload,
-      // handleRemove,
 
       onSubmit,
       resetForm
