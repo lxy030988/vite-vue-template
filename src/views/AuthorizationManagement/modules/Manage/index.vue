@@ -138,7 +138,7 @@ import {
 } from '@/api/authorizationManagement/model'
 import { manageAuthManage } from '@/api/authorizationManagement'
 import { createNonceStr } from '@/utils/util'
-import { NumMessage } from '@/utils/message'
+import { NumMessage, success } from '@/utils/message'
 export default defineComponent({
   name: 'AuthorizationManagementManage',
   components: {
@@ -285,7 +285,11 @@ export default defineComponent({
         const { successList, failList } = await manageAuthManage(
           toRaw(formState)
         )
-        NumMessage(successList, failList)
+        if (successList || failList) {
+          NumMessage(successList, failList)
+        } else {
+          success()
+        }
         resetForm()
         emit('success')
       } catch (error) {
