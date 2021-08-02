@@ -12,7 +12,6 @@
           v-model:value="formState.createTime"
           format="YYYY-MM-DD"
           value-format="YYYY-MM-DD"
-          :show-time="false"
           @change="handleChange"
         />
       </a-form-item>
@@ -31,8 +30,10 @@
       <a-form-item label="设备信息">
         <a-input
           v-model:value="formState.equipmentNum"
-          placeholder='请输入设备信息'
-        ></a-input>
+          placeholder='
+          请输入设备信息'
+        >
+        </a-input>
       </a-form-item>
       <a-form-item class="jc-tabfilter-btns">
         <a-button
