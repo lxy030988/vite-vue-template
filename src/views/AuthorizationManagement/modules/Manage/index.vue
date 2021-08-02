@@ -137,7 +137,7 @@ import {
 } from '@/api/authorizationManagement/model'
 import { manageAuthManage } from '@/api/authorizationManagement'
 import { createNonceStr } from '@/utils/util'
-import { success } from '@/utils/message'
+import { NumMessage } from '@/utils/message'
 export default defineComponent({
   name: 'AuthorizationManagementManage',
   components: {
@@ -226,18 +226,7 @@ export default defineComponent({
           console.log('props.info', props.info)
           title.value = '编辑授权'
           isEditDevice.value = true
-          formState.id = props.info.id
-          formState.allCount = props.info.allCount
-          formState.batchNumber = props.info.batchNumber
-          formState.batchTime = props.info.batchTime
-          formState.company = props.info.company
-          formState.contractNumber = props.info.contractNumber
-          formState.description = props.info.description
-          formState.execlUrl = props.info.execlUrl
-          formState.type = props.info.type
-          formState.licenseCode = props.info.licenseCode
-          formState.endTime = props.info.endTime
-          formState.startTime = props.info.startTime //时间格式化
+          Object.assign(formState, props.info)
           formState.date = [props.info.startTime, props.info.endTime]
 
           fileList.value = [
@@ -292,8 +281,10 @@ export default defineComponent({
       formState.type = props.type
       try {
         loading.value = true
-        await manageAuthManage(toRaw(formState))
-        success()
+        const { successList, failList } = await manageAuthManage(
+          toRaw(formState)
+        )
+        NumMessage(successList, failList)
         resetForm()
         emit('success')
       } catch (error) {
