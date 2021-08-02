@@ -161,6 +161,10 @@ export default defineComponent({
     total: {
       type: Number,
       required: true
+    },
+    num: {
+      type: Number,
+      default: 0
     }
   },
   emits: ['update:visible', 'success'],
@@ -209,7 +213,6 @@ export default defineComponent({
     }
 
     const { resetFields, validate } = useForm(formState, rules)
-
     //表单初始化
     let title = ref('添加授权')
     let isEditDevice = ref(false)
@@ -249,14 +252,12 @@ export default defineComponent({
           isEditDevice.value = false
           formState.licenseCode = createNonceStr(8)
           const now = moment().format('YYYYMMDD')
-          let num: string | number = props.total + 1
-          num = num < 10 ? '0' + num : num
-          formState.contractNumber = `JCXSB${now}${num}`
-          formState.batchNumber = `ZFY${now}${num}`
+          const nums = props.num + 1
+          formState.contractNumber = `JCXSB${now}${nums}`
+          formState.batchNumber = `ZFY${now}${nums}`
         }
       }
     )
-
     //文件上传
     let fileList = ref<any[]>([])
     watchEffect(() => {
