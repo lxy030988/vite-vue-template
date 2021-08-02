@@ -13,6 +13,8 @@ export default {
     update: 'license-record/updateAuthorization',
     detail: 'license-record/queryAuthorizationDetail',
     delete: 'license-record/deleteLicenseRecord',
+    deviceCount: 'license-record/selectCount',
+
     //授权管理 - 设备
     deviceList: 'license-record-equipment/queryEquipmentList',
     addDevice: 'license-record-equipment/insertEquipment',

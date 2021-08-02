@@ -85,3 +85,6 @@ export interface TResImportDevice {
   failList: number
   successList: number
 }
+export interface TResDevice {
+  count: number
+}

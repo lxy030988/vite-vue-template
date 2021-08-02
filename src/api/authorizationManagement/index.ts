@@ -11,7 +11,8 @@ import {
   TParamsDeviceStatus,
   TParamsImportDevice,
   TParamsDetail,
-  TResImportDevice
+  TResImportDevice,
+  TResDevice
 } from './model'
 
 /**
@@ -157,5 +158,17 @@ export function deleteDevice(data: string[]) {
     url: api.authorizationManagement.deleteDevice,
     method: 'POST',
     data
+  })
+}
+
+/**
+ * 当天授权设备数
+ * @param data
+ * @returns
+ */
+export function deviceCount() {
+  return http.request<any, TResDevice>({
+    url: api.authorizationManagement.deviceCount,
+    method: 'POST'
   })
 }
