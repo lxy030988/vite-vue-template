@@ -85,7 +85,6 @@ export default defineComponent({
   height: $jc-header-height;
   font-size: $jc-font-size-larger;
   color: $jc-color-white;
-  border-bottom: 1px solid $jc-color-line-primary;
 }
 
 .header .logo {
