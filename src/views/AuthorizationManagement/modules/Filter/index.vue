@@ -14,7 +14,6 @@
           v-model:value="formState.batchTime"
           value-format='YYYY-MM-DD'
           format='YYYY-MM-DD'
-          :show-time="false"
           @change='changeBatchDate'
         />
       </a-form-item>
@@ -62,8 +61,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRaw, ref } from 'vue'
+import { defineComponent, reactive, toRaw, ref, watch } from 'vue'
 import { useForm } from '@/hooks'
+import { useRoute } from 'vue-router'
 import moment from 'moment'
 import { LICENSE_STATUSES } from '../../CONST'
 
@@ -89,11 +89,15 @@ export default defineComponent({
     const onSubmit = () => {
       emit('filter', toRaw(formState))
     }
+    const route = useRoute()
+    watch(route, (value, oldValue) => {
+      resetFields()
+    })
 
     const changeDate = (v: any[]) => {
       if (v.length) {
-        formState.startTime = v[0]
-        formState.endTime = v[1]
+        formState.startTime = v[0] + ' 00:00:00'
+        formState.endTime = v[1] + ' 23:59:59'
       } else {
         formState.startTime = ''
         formState.endTime = ''
@@ -101,8 +105,8 @@ export default defineComponent({
     }
     const changeBatchDate = (v: any[]) => {
       if (v.length) {
-        formState.batchStartTime = v[0]
-        formState.batchEndTime = v[1]
+        formState.batchStartTime = v[0] + ' 00:00:00'
+        formState.batchEndTime = v[1] + ' 23:59:59'
       } else {
         formState.batchStartTime = ''
         formState.batchEndTime = ''
