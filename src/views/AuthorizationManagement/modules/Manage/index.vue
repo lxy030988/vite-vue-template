@@ -52,6 +52,7 @@
           format="YYYY-MM-DD"
           value-format="YYYY-MM-DD"
           :show-time="false"
+          :disabled="!!info"
         />
       </a-form-item>
       <a-form-item
