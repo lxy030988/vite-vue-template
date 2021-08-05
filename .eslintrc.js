@@ -31,7 +31,7 @@ module.exports = defineConfig({
     'plugin:@typescript-eslint/recommended',
     // 'eslint:recommended',
     'prettier',
-    // 'plugin:prettier/recommended'
+    'plugin:prettier/recommended'
   ],
   plugins: ['@typescript-eslint', 'prettier'],
   globals: {},
@@ -42,10 +42,10 @@ module.exports = defineConfig({
     '@typescript-eslint/no-unused-wars': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/camelcase': 'off',
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/ban-types": "off",
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/ban-types': 'off',
 
     // https://eslint.vuejs.org/rules/
     'vue/no-unused-components': 'off',

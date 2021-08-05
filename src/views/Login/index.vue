@@ -10,41 +10,26 @@
         </div>
         <a-form :model="form">
           <a-form-item>
-            <a-input
-              v-model:value="form.account"
-              placeholder="账号"
-              @keyup.enter="onSubmit"
-            >
+            <a-input v-model:value="form.account" placeholder="账号" @keyup.enter="onSubmit">
               <template #prefix>
                 <svg-icon name="login-user"></svg-icon>
               </template>
             </a-input>
           </a-form-item>
           <a-form-item>
-            <a-input
-              v-model:value.trim="form.userPwd"
-              type="password"
-              placeholder="密码"
-              @keyup.enter="onSubmit"
-            >
+            <a-input v-model:value.trim="form.userPwd" type="password" placeholder="密码" @keyup.enter="onSubmit">
               <template #prefix>
                 <svg-icon name="login-password"></svg-icon>
               </template>
             </a-input>
           </a-form-item>
           <a-form-item>
-            <a-button
-              type="primary"
-              @click="onSubmit"
-            >
-              登录
-            </a-button>
+            <a-button type="primary" @click="onSubmit"> 登录 </a-button>
           </a-form-item>
         </a-form>
       </div>
     </div>
   </div>
-
 </template>
 
 <script lang="ts">

@@ -47,7 +47,7 @@ export default defineComponent({
     const eff = watchEffect(
       cb => {
         // (name as  Ref<string>).value
-        console.log('watchEffect', ((name as unknown) as Ref<string>).value)
+        console.log('watchEffect', (name as unknown as Ref<string>).value)
         cb(() => {
           //清除副作用
           console.log('cb')

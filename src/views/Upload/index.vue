@@ -11,5 +11,4 @@
 import upload from '@/components/upload/index.vue'
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

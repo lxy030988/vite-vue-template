@@ -1,11 +1,11 @@
 module.exports = {
   eslintIntegration: true, //启用eslint相同规则
-  // printWidth: 80, // 每行代码长度（默认80）
+  printWidth: 120, // 每行代码长度（默认80）
   tabWidth: 2, // 每个tab相当于多少个空格（默认2）
   useTabs: false, // 是否使用tab进行缩进（默认false）
   singleQuote: true, // 使用单引号（默认false）
   endOfLine: 'auto',
-  vueIndentScriptAndStyle: true,
+  vueIndentScriptAndStyle: false,
   semi: false, // 声明结尾使用分号(默认true)
   jsxBracketSameLine: false, // 多行JSX中的>放置在最后一行的结尾，而不是另起一行（默认false）
   jsxSingleQuote: false,
