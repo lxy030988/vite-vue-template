@@ -1,12 +1,5 @@
 <template>
-  <a-modal
-    :visible="visible"
-    :title="title"
-    :width="800"
-    :footer="null"
-    :mask-closable="false"
-    @cancel="resetForm"
-  >
+  <a-modal :visible="visible" :title="title" :width="800" :footer="null" :mask-closable="false" @cancel="resetForm">
     <a-form
       ref="formRef"
       class="jc-manage-form"
@@ -15,38 +8,16 @@
       :label-col="labelCol"
       :wrapper-col="wrapperCol"
     >
-      <a-form-item
-        label="合同号"
-        name="contractNumber"
-      >
-        <a-input
-          v-model:value="formState.contractNumber"
-          :disabled="!!info"
-        />
+      <a-form-item label="合同号" name="contractNumber">
+        <a-input v-model:value="formState.contractNumber" :disabled="!!info" />
       </a-form-item>
-      <a-form-item
-        label="批次号"
-        name="batchNumber"
-      >
-        <a-input
-          v-model:value="formState.batchNumber"
-          :disabled="!!info"
-        />
+      <a-form-item label="批次号" name="batchNumber">
+        <a-input v-model:value="formState.batchNumber" :disabled="!!info" />
       </a-form-item>
-      <a-form-item
-        v-if="AuthorizationTypes.OUTSIDE === type"
-        label="授权码"
-        name="licenseCode"
-      >
-        <a-input
-          v-model:value="formState.licenseCode"
-          disabled
-        />
+      <a-form-item v-if="AuthorizationTypes.OUTSIDE === type" label="授权码" name="licenseCode">
+        <a-input v-model:value="formState.licenseCode" disabled />
       </a-form-item>
-      <a-form-item
-        label="批次日期"
-        name="batchTime"
-      >
+      <a-form-item label="批次日期" name="batchTime">
         <a-date-picker
           v-model:value="formState.batchTime"
           format="YYYY-MM-DD"
@@ -55,37 +26,18 @@
           :disabled="!!info"
         />
       </a-form-item>
-      <a-form-item
-        label="购买公司"
-        name="company"
-      >
-        <a-input
-          v-model:value="formState.company"
-          placeholder="请输入公司/机构/团体名称(仅限80个字符)"
-        />
+      <a-form-item label="购买公司" name="company">
+        <a-input v-model:value="formState.company" placeholder="请输入公司/机构/团体名称(仅限80个字符)" />
       </a-form-item>
-      <a-form-item
-        label="批次设备总数"
-        name="allCount"
-      >
-        <a-input
-          v-model:value.number="formState.allCount"
-          placeholder="请输入数量(仅限阿拉伯数字)"
-        />
+      <a-form-item label="批次设备总数" name="allCount">
+        <a-input v-model:value.number="formState.allCount" placeholder="请输入数量(仅限阿拉伯数字)" />
       </a-form-item>
-      <a-form-item
-        v-if="type === AuthorizationTypes.INSIDE"
-        label="设备信息导入"
-        name="execlUrl"
-      >
+      <a-form-item v-if="type === AuthorizationTypes.INSIDE" label="设备信息导入" name="execlUrl">
         <a href="/excel/设备信息表格模板.xlsx">设备信息表格模板下载</a>
         <span v-if="isEditDevice">重新导入后，若设备号相同，原有设备信息将被覆盖!</span>
         <jc-upload-list v-model:fileList="fileList" />
       </a-form-item>
-      <a-form-item
-        label="授权日期"
-        name="date"
-      >
+      <a-form-item label="授权日期" name="date">
         <a-range-picker
           v-model:value="formState.date"
           value-format="YYYY-MM-DD"
@@ -93,23 +45,12 @@
           @change="changeDate"
         />
       </a-form-item>
-      <a-form-item
-        label="描述"
-        name="description"
-      >
-        <a-textarea
-          v-model:value="formState.description"
-          placeholder="请输入问题描述(仅限1000个字符)"
-        />
+      <a-form-item label="描述" name="description">
+        <a-textarea v-model:value="formState.description" placeholder="请输入问题描述(仅限1000个字符)" />
       </a-form-item>
       <div class="text-center">
         <a-button @click="resetForm">取消</a-button>
-        <a-button
-          class="jc-ml"
-          type="primary"
-          :loading="loading"
-          @click="onSubmit"
-        >确定</a-button>
+        <a-button class="jc-ml" type="primary" :loading="loading" @click="onSubmit">确定</a-button>
       </div>
     </a-form>
   </a-modal>
@@ -118,33 +59,19 @@
 <script lang="ts">
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import moment from 'moment'
-import {
-  defineAsyncComponent,
-  defineComponent,
-  PropType,
-  reactive,
-  ref,
-  toRaw,
-  watch,
-  watchEffect
-} from 'vue'
+import { defineAsyncComponent, defineComponent, PropType, reactive, ref, toRaw, watch, watchEffect } from 'vue'
 import { getStringRule, NOT_NULL, SELECT_NOT_NULL } from '@/utils/rule'
 import { useForm } from '@/hooks'
 import { FormRefType } from '@/hooks/useForm'
 import { AuthorizationTypes } from '../../CONST'
-import {
-  TAuthorizationListItem,
-  TParamsManage
-} from '@/api/authorizationManagement/model'
+import { TAuthorizationListItem, TParamsManage } from '@/api/authorizationManagement/model'
 import { manageAuthManage } from '@/api/authorizationManagement'
 import { createNonceStr } from '@/utils/util'
 import { NumMessage, success } from '@/utils/message'
 export default defineComponent({
   name: 'AuthorizationManagementManage',
   components: {
-    JcUploadList: defineAsyncComponent(
-      () => import('@/components/upload/uploadList.vue')
-    )
+    JcUploadList: defineAsyncComponent(() => import('@/components/upload/uploadList.vue'))
   },
   props: {
     type: {
@@ -171,9 +98,7 @@ export default defineComponent({
   emits: ['update:visible', 'success'],
   setup(props, { emit }) {
     const curDate = new Date()
-    const date = `${curDate.getFullYear()}-0${
-      curDate.getMonth() + 1
-    }-${curDate.getDate()}`
+    const date = `${curDate.getFullYear()}-0${curDate.getMonth() + 1}-${curDate.getDate()}`
     const formState = reactive<TParamsManage>({
       allCount: null,
       batchNumber: '',
@@ -282,9 +207,7 @@ export default defineComponent({
       formState.type = props.type
       try {
         loading.value = true
-        const { successList, failList } = await manageAuthManage(
-          toRaw(formState)
-        )
+        const { successList, failList } = await manageAuthManage(toRaw(formState))
         if (successList || failList) {
           NumMessage(successList, failList)
         } else {

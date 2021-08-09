@@ -11,21 +11,29 @@
       </template>
       <a-table :loading="loading" :data-source="list" row-key="id" :columns="columns" :pagination="false">
         <template #index="{ index }">
-          {{tableIndex(index)}}
+          {{ tableIndex(index) }}
         </template>
         <template #licenseStatus="{ record }">
-          {{formatStatus(record)}}
+          {{ formatStatus(record) }}
         </template>
         <template #operation="{ record }">
           <template v-if="type === AuthorizationTypes.INSIDE">
-            <a-popconfirm v-if="record.licenseStatus===DEVICE_LICENSE_STATUSES.YSQ" title="您确定要禁用该设备吗?" @confirm="onDeviceStatus(record,DEVICE_LICENSE_STATUSES.WSQ)">
+            <a-popconfirm
+              v-if="record.licenseStatus === DEVICE_LICENSE_STATUSES.YSQ"
+              title="您确定要禁用该设备吗?"
+              @confirm="onDeviceStatus(record, DEVICE_LICENSE_STATUSES.WSQ)"
+            >
               <a-button type="link" title="禁用">
                 <template #icon>
                   <StopOutlined />
                 </template>
               </a-button>
             </a-popconfirm>
-            <a-popconfirm v-else title="您确定要授权该设备吗?" @confirm="onDeviceStatus(record,DEVICE_LICENSE_STATUSES.YSQ)">
+            <a-popconfirm
+              v-else
+              title="您确定要授权该设备吗?"
+              @confirm="onDeviceStatus(record, DEVICE_LICENSE_STATUSES.YSQ)"
+            >
               <a-button type="link" title="授权">
                 <template #icon>
                   <UnlockOutlined />
@@ -49,37 +57,17 @@
 
     <jc-manage :id="id" v-model:visible="manageVisible" @success="initData" />
     <jc-manage-import :id="id" v-model:visible="magageImportVisible" :info="info" @success="initData" />
-
   </div>
-
 </template>
 
 <script lang="ts">
 import { usePage } from '@/hooks'
-import {
-  defineAsyncComponent,
-  defineComponent,
-  PropType,
-  ref,
-  watch,
-  watchEffect
-} from 'vue'
+import { defineAsyncComponent, defineComponent, PropType, ref, watch, watchEffect } from 'vue'
 
-import {
-  DeleteOutlined,
-  UnlockOutlined,
-  StopOutlined
-} from '@ant-design/icons-vue'
+import { DeleteOutlined, UnlockOutlined, StopOutlined } from '@ant-design/icons-vue'
 import { AuthorizationTypes } from '../../CONST'
-import {
-  deleteDevice,
-  getAuthManageDeviceList,
-  updateDeviceStatus
-} from '@/api/authorizationManagement'
-import {
-  TDeviceListItem,
-  TParamsManage
-} from '@/api/authorizationManagement/model'
+import { deleteDevice, getAuthManageDeviceList, updateDeviceStatus } from '@/api/authorizationManagement'
+import { TDeviceListItem, TParamsManage } from '@/api/authorizationManagement/model'
 import { DEVICE_LICENSE_STATUSES } from '@/views/AuthorizationManagement/CONST'
 import { success } from '@/utils/message'
 
@@ -112,14 +100,10 @@ export default defineComponent({
     DeleteOutlined,
     UnlockOutlined,
     StopOutlined,
-    JcPagination: defineAsyncComponent(
-      () => import('@/components/pagination/index.vue')
-    ),
+    JcPagination: defineAsyncComponent(() => import('@/components/pagination/index.vue')),
     JcFilter: defineAsyncComponent(() => import('./modules/Filter/index.vue')),
     JcManage: defineAsyncComponent(() => import('./modules/Manage/index.vue')),
-    JcManageImport: defineAsyncComponent(
-      () => import('./modules/ManageImport/index.vue')
-    )
+    JcManageImport: defineAsyncComponent(() => import('./modules/ManageImport/index.vue'))
   },
   props: {
     type: {
@@ -191,10 +175,7 @@ export default defineComponent({
       }
     }
 
-    const onDeviceStatus = async (
-      record: TDeviceListItem,
-      licenseStatus: number
-    ) => {
+    const onDeviceStatus = async (record: TDeviceListItem, licenseStatus: number) => {
       try {
         await updateDeviceStatus({ licenseStatus, id: record.id })
         success()

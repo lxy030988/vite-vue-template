@@ -1,69 +1,48 @@
 <template>
   <div v-show="!deviceListVisible">
     <jc-filter @filter="goFilter" />
-    <a-card
-      class="jc-mt"
-      title="列表内容"
-      :bordered="false"
-    >
+    <a-card class="jc-mt" title="列表内容" :bordered="false">
       <template #extra>
-        <a-button
-          type="primary"
-          @click="magage(null)"
-        >添加授权</a-button>
+        <a-button type="primary" @click="magage(null)">添加授权</a-button>
       </template>
-      <a-table
-        :loading="loading"
-        row-key="id"
-        :data-source="list"
-        :columns="columns"
-        :pagination="false"
-      >
+      <a-table :loading="loading" row-key="id" :data-source="list" :columns="columns" :pagination="false">
         <template #index="{ index }">
-          {{tableIndex(index)}}
+          {{ tableIndex(index) }}
         </template>
         <template #count="{ record }">
-          <span
-            class="authorized-count-box"
-            @click="showDevice(record)"
-          >
-            <span class="authorized-count">{{record.licenseEquNum}}</span>/{{record.importEquNum}}
+          <span class="authorized-count-box" @click="showDevice(record)">
+            <span class="authorized-count">{{ record.licenseEquNum }}</span
+            >/{{ record.importEquNum }}
           </span>
         </template>
         <template #licenseStatus="{ record }">
-          <span :class='record.licenseStatus===1?"licenseStatus-color-green":(record.licenseStatus===0)?"licenseStatus-color-red":"licenseStatus-color-orange"'>{{formatStatus(record)}}</span>
+          <span
+            :class="
+              record.licenseStatus === 1
+                ? 'licenseStatus-color-green'
+                : record.licenseStatus === 0
+                ? 'licenseStatus-color-red'
+                : 'licenseStatus-color-orange'
+            "
+            >{{ formatStatus(record) }}</span
+          >
         </template>
         <template #date="{ record }">
-          {{formatDate(record)}}
+          {{ formatDate(record) }}
         </template>
         <template #operation="{ record }">
-          <a-button
-            type="link"
-            title="详情"
-            @click="showDetail(record)"
-          >
+          <a-button type="link" title="详情" @click="showDetail(record)">
             <template #icon>
               <InfoCircleOutlined />
             </template>
           </a-button>
-          <a-button
-            type="link"
-            title="编辑"
-            @click="magage(record)"
-          >
+          <a-button type="link" title="编辑" @click="magage(record)">
             <template #icon>
               <FormOutlined />
             </template>
           </a-button>
-          <a-popconfirm
-            title="您确定要删除吗?"
-            @confirm="onDelete(record)"
-          >
-            <a-button
-              type="link"
-              danger
-              title="删除"
-            >
+          <a-popconfirm title="您确定要删除吗?" @confirm="onDelete(record)">
+            <a-button type="link" danger title="删除">
               <template #icon>
                 <DeleteOutlined />
               </template>
@@ -72,11 +51,7 @@
         </template>
       </a-table>
 
-      <jc-pagination
-        :pages="pages"
-        @currentChange="currentChange"
-        @sizeChange="sizeChange"
-      />
+      <jc-pagination :pages="pages" @currentChange="currentChange" @sizeChange="sizeChange" />
     </a-card>
   </div>
 
@@ -94,31 +69,19 @@
     :num="deviceNum"
     @success="initData"
   />
-  <jc-detail
-    :id="detailId"
-    v-model:visible="detailVisible"
-    :type="authorizationType"
-  />
+  <jc-detail :id="detailId" v-model:visible="detailVisible" :type="authorizationType" />
 </template>
 
 <script lang="ts">
 import { defineAsyncComponent, defineComponent, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
-import {
-  DeleteOutlined,
-  FormOutlined,
-  InfoCircleOutlined
-} from '@ant-design/icons-vue'
+import { DeleteOutlined, FormOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
 
 import { AuthorizationTypes, LICENSE_STATUSES } from './CONST'
 import { usePage } from '@/hooks'
 
-import {
-  deleteAuthManage,
-  getAuthManageList,
-  deviceCount
-} from '@/api/authorizationManagement'
+import { deleteAuthManage, getAuthManageList, deviceCount } from '@/api/authorizationManagement'
 import { TAuthorizationListItem } from '@/api/authorizationManagement/model'
 import { ColumnProps } from 'ant-design-vue/lib/table/interface'
 //定义表格默认列
@@ -173,15 +136,11 @@ export default defineComponent({
     FormOutlined,
     InfoCircleOutlined,
 
-    JcPagination: defineAsyncComponent(
-      () => import('@/components/pagination/index.vue')
-    ),
+    JcPagination: defineAsyncComponent(() => import('@/components/pagination/index.vue')),
     JcFilter: defineAsyncComponent(() => import('./modules/Filter/index.vue')),
     JcManage: defineAsyncComponent(() => import('./modules/Manage/index.vue')),
     JcDetail: defineAsyncComponent(() => import('./modules/Detail/index.vue')),
-    JcDeviceList: defineAsyncComponent(
-      () => import('./modules/DeviceList/index.vue')
-    )
+    JcDeviceList: defineAsyncComponent(() => import('./modules/DeviceList/index.vue'))
   },
   setup() {
     //获取表格数据

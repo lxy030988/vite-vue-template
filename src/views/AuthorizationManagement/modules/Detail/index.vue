@@ -1,40 +1,48 @@
 <template>
-  <a-modal :visible="visible" title="授权详情" :width="800" :footer="null" :mask-closable="false" class="jc-detail" @cancel="handleCancel">
+  <a-modal
+    :visible="visible"
+    title="授权详情"
+    :width="800"
+    :footer="null"
+    :mask-closable="false"
+    class="jc-detail"
+    @cancel="handleCancel"
+  >
     <a-row :gutter="20">
       <a-col :span="4">合同号</a-col>
-      <a-col :span="20">{{detail.contractNumber}}</a-col>
+      <a-col :span="20">{{ detail.contractNumber }}</a-col>
     </a-row>
     <a-row :gutter="20">
       <a-col :span="4">批次号</a-col>
-      <a-col :span="20">{{detail.batchNumber}}</a-col>
+      <a-col :span="20">{{ detail.batchNumber }}</a-col>
     </a-row>
-    <a-row v-if="AuthorizationTypes.OUTSIDE===type" :gutter="20">
+    <a-row v-if="AuthorizationTypes.OUTSIDE === type" :gutter="20">
       <a-col :span="4">授权码</a-col>
-      <a-col :span="20">{{detail.licenseCode}}</a-col>
+      <a-col :span="20">{{ detail.licenseCode }}</a-col>
     </a-row>
     <a-row :gutter="20">
       <a-col :span="4">批次日期</a-col>
-      <a-col :span="20">{{detail.batchTime}}</a-col>
+      <a-col :span="20">{{ detail.batchTime }}</a-col>
     </a-row>
     <a-row :gutter="20">
       <a-col :span="4">购买公司</a-col>
-      <a-col :span="20">{{detail.company}}</a-col>
+      <a-col :span="20">{{ detail.company }}</a-col>
     </a-row>
     <a-row :gutter="20">
       <a-col :span="4">设备总数</a-col>
-      <a-col :span="20">{{detail.allCount}}</a-col>
+      <a-col :span="20">{{ detail.allCount }}</a-col>
     </a-row>
     <a-row :gutter="20">
       <a-col :span="4">授权设备数</a-col>
-      <a-col :span="20">{{detail.licenseEquNum}}/{{detail.importEquNum}}</a-col>
+      <a-col :span="20">{{ detail.licenseEquNum }}/{{ detail.importEquNum }}</a-col>
     </a-row>
     <a-row :gutter="20">
       <a-col :span="4">授权日期</a-col>
-      <a-col :span="20">{{detail.startTime}}-{{detail.endTime}}</a-col>
+      <a-col :span="20">{{ detail.startTime }}-{{ detail.endTime }}</a-col>
     </a-row>
     <a-row :gutter="20">
       <a-col :span="4">描述</a-col>
-      <a-col :span="20">{{detail.description}}</a-col>
+      <a-col :span="20">{{ detail.description }}</a-col>
     </a-row>
 
     <!-- <div class="ant-modal-header">
