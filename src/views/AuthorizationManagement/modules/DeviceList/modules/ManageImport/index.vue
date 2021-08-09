@@ -1,12 +1,5 @@
 <template>
-  <a-modal
-    :visible="visible"
-    title="导入设备"
-    :width="600"
-    :footer="null"
-    :mask-closable="false"
-    @cancel="resetForm"
-  >
+  <a-modal :visible="visible" title="导入设备" :width="600" :footer="null" :mask-closable="false" @cancel="resetForm">
     <a-form
       ref="formRef"
       class="jc-manage-form"
@@ -16,22 +9,16 @@
       :wrapper-col="wrapperCol"
     >
       <a-form-item label="合同号">
-        <span>{{info.contractNumber}}</span>
+        <span>{{ info.contractNumber }}</span>
       </a-form-item>
       <a-form-item label="批次号">
-        <span>{{info.batchNumber}}</span>
+        <span>{{ info.batchNumber }}</span>
       </a-form-item>
-      <a-form-item
-        label="设备信息导入"
-        name="file"
-      >
+      <a-form-item label="设备信息导入" name="file">
         <a href="/public/excel/test.xlsx">
           <span>设备信息表格模板下载</span>
         </a>
-        <a-upload
-          :file-list="files"
-          :before-upload="beforeUpload"
-        >
+        <a-upload :file-list="files" :before-upload="beforeUpload">
           <a-button>
             <upload-outlined></upload-outlined>
             上传文件
@@ -40,11 +27,7 @@
       </a-form-item>
       <div class="text-center">
         <a-button @click="resetForm">取消</a-button>
-        <a-button
-          class="jc-ml"
-          type="primary"
-          @click="onSubmit"
-        >确定</a-button>
+        <a-button class="jc-ml" type="primary" @click="onSubmit">确定</a-button>
       </div>
     </a-form>
   </a-modal>
@@ -53,21 +36,11 @@
 <script lang="ts">
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import { UploadOutlined } from '@ant-design/icons-vue'
-import {
-  defineComponent,
-  PropType,
-  reactive,
-  ref,
-  toRaw,
-  watchEffect
-} from 'vue'
+import { defineComponent, PropType, reactive, ref, toRaw, watchEffect } from 'vue'
 import { NOT_NULL, SELECT_NOT_NULL } from '@/utils/rule'
 import { useForm } from '@/hooks'
 import { FormRefType } from '@/hooks/useForm'
-import {
-  TParamsImportDevice,
-  TParamsManage
-} from '@/api/authorizationManagement/model'
+import { TParamsImportDevice, TParamsManage } from '@/api/authorizationManagement/model'
 import { importDevice } from '@/api/authorizationManagement'
 import { NumMessage } from '@/utils/message'
 export default defineComponent({

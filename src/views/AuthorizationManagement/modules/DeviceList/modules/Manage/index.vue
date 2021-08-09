@@ -1,11 +1,22 @@
 <template>
   <a-modal :visible="visible" title="添加设备" :width="600" :footer="null" :mask-closable="false" @cancel="resetForm">
-    <a-form ref="formRef" class="jc-manage-form" :model="formState" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+    <a-form
+      ref="formRef"
+      class="jc-manage-form"
+      :model="formState"
+      :rules="rules"
+      :label-col="labelCol"
+      :wrapper-col="wrapperCol"
+    >
       <a-form-item label="设备号" name="equipmentNum">
         <a-input v-model:value="formState.equipmentNum" placeholder="请输入" />
       </a-form-item>
       <a-form-item label="是否授权" name="licenseStatus">
-        <a-switch v-model:checked="formState.licenseStatus" :checked-value="DEVICE_LICENSE_STATUSES.YSQ" :un-checked-value="DEVICE_LICENSE_STATUSES.WSQ" />
+        <a-switch
+          v-model:checked="formState.licenseStatus"
+          :checked-value="DEVICE_LICENSE_STATUSES.YSQ"
+          :un-checked-value="DEVICE_LICENSE_STATUSES.WSQ"
+        />
       </a-form-item>
       <div class="text-center">
         <a-button @click="resetForm">取消</a-button>
@@ -105,5 +116,4 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>
