@@ -6,7 +6,9 @@
   <div>size--{{ size }}</div>
   <a-button type="primary" @click="test">测试</a-button>
   <!-- <img alt="Vue logo" src="@/assets/logo.png" /> -->
-  <test-setup ref="ref1" msg="xxx" :more="{ name: 'l', age: 11 }"></test-setup>
+  <test-setup ref="ref1" msg="xxx" :more="{ name: 'l', age: 11 }" @change="testSetupChange"></test-setup>
+  <a-button type="primary" @click="testSetupBtn">test-setup-btn</a-button>
+
   <my-count :init-value="1"></my-count>
 </template>
 
@@ -66,9 +68,17 @@ export default defineComponent({
       console.log('onMounted')
       console.log('ref1', ref1.value)
       // ref1.value!.test()
-      ;(ref1.value as any).test()
+      // ;(ref1.value as any).test()
     })
-    return { color, font, test, ...toRefs(font), ref1 }
+
+    function testSetupChange(v: any) {
+      console.log('testSetupChange', v)
+    }
+
+    function testSetupBtn() {
+      ;(ref1.value as any).test()
+    }
+    return { color, font, test, ...toRefs(font), ref1, testSetupChange, testSetupBtn }
   }
 })
 </script>

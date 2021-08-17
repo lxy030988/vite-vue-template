@@ -18,8 +18,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: 'Home',
         path: 'home',
-        component: () =>
-          import(/* webpackChunkName: "home" */ '@/views/Home/index.vue'),
+        component: () => import(/* webpackChunkName: "home" */ '@/views/Home/index.vue'),
         meta: {
           title: '系统首页'
         }
@@ -30,8 +29,7 @@ const routes: Array<RouteRecordRaw> = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () =>
-          import(/* webpackChunkName: "plan" */ '../views/Plan/index.vue'),
+        component: () => import(/* webpackChunkName: "plan" */ '../views/Plan/index.vue'),
         meta: {
           title: '计划页面'
         }
@@ -39,8 +37,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'setting/upload',
         name: 'SettingUpload',
-        component: () =>
-          import(/* webpackChunkName: "upload" */ '../views/Upload/index.vue'),
+        component: () => import(/* webpackChunkName: "upload" */ '../views/Upload/index.vue'),
         meta: {
           title: '文件上传'
         }
@@ -49,9 +46,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'internalAuthorization/:type',
         name: 'InternalAuthorization',
         component: () =>
-          import(
-            /* webpackChunkName: "authorizationManagement" */ '../views/AuthorizationManagement/index.vue'
-          ),
+          import(/* webpackChunkName: "authorizationManagement" */ '../views/AuthorizationManagement/index.vue'),
         meta: {
           title: '授权管理'
         }
@@ -60,9 +55,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'outsideAuthorization/:type',
         name: 'OutsideAuthorization',
         component: () =>
-          import(
-            /* webpackChunkName: "authorizationManagement" */ '../views/AuthorizationManagement/index.vue'
-          ),
+          import(/* webpackChunkName: "authorizationManagement" */ '../views/AuthorizationManagement/index.vue'),
         meta: {
           title: '授权码管理'
         }
@@ -77,8 +70,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: 'Login',
         path: 'login',
-        component: () =>
-          import(/* webpackChunkName: "login" */ '@/views/Login/index.vue'),
+        component: () => import(/* webpackChunkName: "login" */ '@/views/Login/index.vue'),
         meta: {
           title: '登录',
           ignore: true

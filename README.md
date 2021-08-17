@@ -15,6 +15,26 @@ setup(props,ctx) {}
 
 
 
+### vue3.2
+
+- script setup + TS + Volar 
+- vscode禁用 Vetur，下载Volar
+- define 编译器宏  不需要引入，直接使用 。defineProps  defineEmits  defineExpose
+- 示例 src\components\testSetup.vue
+
+- 需要更新这几个包 
+
+```json
+"vue": "^3.2.3",
+"vue-router": "^4.0.11",
+
+"@vitejs/plugin-vue": "^1.4.0",
+"@vitejs/plugin-vue-jsx": "^1.1.7",
+"@vue/compiler-sfc": "^3.2.3",
+```
+
+
+
 ### 文件引入
 
 - @ = src目录
