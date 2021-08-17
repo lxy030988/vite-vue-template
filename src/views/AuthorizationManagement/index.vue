@@ -189,8 +189,8 @@ export default defineComponent({
     //新增、编辑 授权
     let deviceNum = ref(0)
     let visible = ref(false)
-    let manageInfo = ref<TAuthorizationListItem>()
-    const magage = async (record: TAuthorizationListItem) => {
+    let manageInfo = ref<TAuthorizationListItem | null>()
+    const magage = async (record: TAuthorizationListItem | null) => {
       if (!record) {
         const { count } = await deviceCount()
         deviceNum.value = count

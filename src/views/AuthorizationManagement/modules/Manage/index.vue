@@ -79,7 +79,7 @@ export default defineComponent({
       required: true
     },
     info: {
-      type: Object as PropType<TAuthorizationListItem>,
+      type: Object as PropType<TAuthorizationListItem | null>,
       default: null
     },
     visible: {
