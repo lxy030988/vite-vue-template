@@ -17,7 +17,7 @@ const alias: Record<string, string> = {
   // img: path.resolve(__dirname, 'src/assets')
 }
 
-module.exports = ({ mode }) => {
+module.exports = ({ mode }: any) => {
   // console.log('mode', mode)
   const env = loadEnv(mode, CWD)
   const viteEnv = wrapperEnv(env)
