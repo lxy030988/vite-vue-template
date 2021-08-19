@@ -2,9 +2,9 @@
   <div>
     <h1>upload</h1>
   </div>
-  <div ref='drag' class="drag">
+  <div ref="drag" class="drag">
     <!-- accept="image/*" -->
-    <input type="file" name="file" @change="handleFileChange">
+    <input type="file" name="file" @change="handleFileChange" />
   </div>
   <div>
     <div>计算hash进度</div>
@@ -24,29 +24,23 @@
       0-100 上传中 小方块(切片)高度 -->
     <div class="cube-container">
       <div v-for="chunk in uploadedChunks" :key="chunk.name" class="cube">
-        <div :class="{
-              'uploading':chunk.progress>0&&chunk.progress<100,
-              'success':chunk.progress==100,
-              'error':chunk.progress<0
-            }" :style="{height:chunk.progress+'%'}">
-          <LoadingOutlined v-if="chunk.progress<100 && chunk.progress>0" />
+        <div
+          :class="{
+            uploading: chunk.progress > 0 && chunk.progress < 100,
+            success: chunk.progress == 100,
+            error: chunk.progress < 0
+          }"
+          :style="{ height: chunk.progress + '%' }"
+        >
+          <LoadingOutlined v-if="chunk.progress < 100 && chunk.progress > 0" />
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  reactive,
-  Ref,
-  ref,
-  toRefs
-} from 'vue'
+import { computed, defineComponent, onMounted, reactive, Ref, ref, toRefs } from 'vue'
 
 import { utest, uploadFile, checkFile } from '@/api/upload'
 import { LoadingOutlined } from '@ant-design/icons-vue'
@@ -160,9 +154,7 @@ export default defineComponent({
 
       const res = await uploadFile(form, (progress: any) => {
         // console.log('progress', progress)
-        progressPercent.value = Number(
-          ((progress.loaded / progress.total) * 100).toFixed(2)
-        )
+        progressPercent.value = Number(((progress.loaded / progress.total) * 100).toFixed(2))
       })
       console.log(res)
     }

@@ -6,10 +6,10 @@
   <div>size--{{ size }}</div>
   <a-button type="primary" @click="test">测试</a-button>
   <!-- <img alt="Vue logo" src="@/assets/logo.png" /> -->
-  <test-setup ref="ref1" msg="xxx" :more="{ name: 'l', age: 11 }" @change="testSetupChange"></test-setup>
+  <test-setup ref="ref1" msg="xxx" :more="{ name: 'l', age: 11 }" @change="testSetupChange" />
   <a-button type="primary" @click="testSetupBtn">test-setup-btn</a-button>
 
-  <my-count :init-value="1"></my-count>
+  <my-count :init-value="1" />
 </template>
 
 <script lang="ts">

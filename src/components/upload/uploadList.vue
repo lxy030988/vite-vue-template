@@ -1,8 +1,15 @@
 <template>
   <div>
-    <a-upload :file-list="fileList" :multiple="false" :action="uploadUrl" :headers="headers" :before-upload="beforeUpload" @change="handleChange">
+    <a-upload
+      :file-list="fileList"
+      :multiple="false"
+      :action="uploadUrl"
+      :headers="headers"
+      :before-upload="beforeUpload"
+      @change="handleChange"
+    >
       <a-button type="primary" :disabled="loading">
-        <upload-outlined></upload-outlined>
+        <upload-outlined />
         上传文件
       </a-button>
     </a-upload>
@@ -85,4 +92,3 @@ export default defineComponent({
   }
 })
 </script>
-

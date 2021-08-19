@@ -1,5 +1,14 @@
 <template>
-  <a-pagination :current="pages.pageNum" :page-size="pages.pageSize" show-quick-jumper show-size-changer :total="pages.total" :show-total="total=>`共${total}条`" @showSizeChange="showSizeChange" @change="onChange" />
+  <a-pagination
+    :current="pages.pageNum"
+    :page-size="pages.pageSize"
+    show-quick-jumper
+    show-size-changer
+    :total="pages.total"
+    :show-total="total => `共${total}条`"
+    @showSizeChange="showSizeChange"
+    @change="onChange"
+  />
 </template>
 <script lang="ts">
 import { IPage } from '@/hooks/usePage'

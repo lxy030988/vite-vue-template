@@ -20,7 +20,7 @@
         </a>
         <a-upload :file-list="files" :before-upload="beforeUpload">
           <a-button>
-            <upload-outlined></upload-outlined>
+            <upload-outlined />
             上传文件
           </a-button>
         </a-upload>

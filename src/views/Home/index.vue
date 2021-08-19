@@ -40,7 +40,7 @@ import { computed, defineComponent, ref } from 'vue'
 // // import { useStore } from 'vuex'
 // import { useMyStore } from '@/hooks'
 
-// import VueEcharts, { OptionType } from '@/components/echarts'
+import VueEcharts, { EChartsOption } from '@/components/echarts'
 
 export default defineComponent({
   name: 'Home',
@@ -56,36 +56,36 @@ export default defineComponent({
     // const { state, getters, commit, dispatch } = useMyStore()
     // console.log('vuex state', state.user.loading)
     // console.log('getters', getters['user/isLogin'])
-    // const installData = ref([120, 200, 150, 80, 70, 110, 130])
-    // const options = computed(
-    //   (): OptionType => ({
-    //     // tooltip: {},
-    //     color: ['red', '#006cff'],
-    //     // legend: {},
-    //     title: {
-    //       text: '柱状图',
-    //       borderWidth: 1,
-    //       borderType: 'solid'
-    //     },
-    //     xAxis: {
-    //       type: 'category',
-    //       data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    //     },
-    //     yAxis: {
-    //       type: 'value'
-    //     },
-    //     series: [
-    //       {
-    //         data: installData.value,
-    //         type: 'bar',
-    //         showBackground: true,
-    //         backgroundStyle: {
-    //           color: 'rgba(180, 180, 180, 0.2)'
-    //         }
-    //       }
-    //     ]
-    //   })
-    // )
+    const installData = ref([120, 200, 150, 80, 70, 110, 130])
+    const options = computed(
+      (): EChartsOption => ({
+        // tooltip: {},
+        color: ['red', '#006cff'],
+        // legend: {},
+        title: {
+          text: '柱状图',
+          borderWidth: 1,
+          borderType: 'solid'
+        },
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            data: installData.value,
+            type: 'bar',
+            showBackground: true,
+            backgroundStyle: {
+              color: 'rgba(180, 180, 180, 0.2)'
+            }
+          }
+        ]
+      })
+    )
     // function test() {
     //   console.log('test')
     //   installData.value = [80, 70, 110, 130, 120, 200, 150]

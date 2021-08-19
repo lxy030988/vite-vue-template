@@ -21,8 +21,7 @@
           v-model:value="formState.equipmentNum"
           placeholder="
           请输入设备信息"
-        >
-        </a-input>
+        />
       </a-form-item>
       <a-form-item class="jc-tabfilter-btns">
         <a-button type="primary" html-type="submit" @click="onSubmit">查询</a-button>

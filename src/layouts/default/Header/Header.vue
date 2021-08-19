@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="logo">
-      <img src="@/assets/images/logo.png">
+      <img src="@/assets/images/logo.png" />
       行政执法授权平台
     </div>
     <div class="header-right">
@@ -21,8 +21,8 @@
             </a-menu>
           </template>
         </a-dropdown>
-        <update-pwd v-model:visible="visible"></update-pwd>
-        <user-info v-model:visible="userVisible"></user-info>
+        <update-pwd v-model:visible="visible" />
+        <user-info v-model:visible="userVisible" />
       </div>
     </div>
   </div>

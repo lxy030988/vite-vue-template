@@ -90,10 +90,7 @@ export async function calculateHashWorker(chunks: any[], cb: Function) {
 }
 
 //时间切片  利用浏览器空余时间计算
-export async function calculateHashIdle(
-  chunks: any[],
-  cb: Function
-): Promise<string> {
+export async function calculateHashIdle(chunks: any[], cb: Function): Promise<string> {
   return new Promise(resolve => {
     const spark = new sparkMD5.ArrayBuffer()
     let count = 0
@@ -222,9 +219,7 @@ export async function sendRequest(requests: any[], chunks: any[], limit = 5) {
         try {
           await uploadFile(form, (progress: any) => {
             // console.log('progress', progress)
-            chunks[index].progress = Number(
-              ((progress.loaded / progress.total) * 100).toFixed(2)
-            )
+            chunks[index].progress = Number(((progress.loaded / progress.total) * 100).toFixed(2))
           })
 
           if (counter == len - 1) {
@@ -311,11 +306,7 @@ export async function TCPSlowStart(file: File, hash: string) {
     const rate = time / 100 //实际用时 是理想用时的 多少倍
 
     // 新的切片大小等比变化
-    console.log(
-      `切片${count}大小是${offset},耗时${time} ms，是100ms的${rate}倍，修正大小为${
-        offset / rate
-      }`
-    )
+    console.log(`切片${count}大小是${offset},耗时${time} ms，是100ms的${rate}倍，修正大小为${offset / rate}`)
 
     // 动态调整offset
     offset = Math.floor(offset / rate)

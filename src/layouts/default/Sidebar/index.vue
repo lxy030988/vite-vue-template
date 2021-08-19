@@ -1,6 +1,13 @@
 <template>
   <div class="sidebar">
-    <a-menu v-model:selectedKeys="selectedKeys" v-model:openKeys="openKeys" class="sidebar-el-menu" mode="inline" theme="dark" @click="clickMenu">
+    <a-menu
+      v-model:selectedKeys="selectedKeys"
+      v-model:openKeys="openKeys"
+      class="sidebar-el-menu"
+      mode="inline"
+      theme="dark"
+      @click="clickMenu"
+    >
       <sidebar-item v-for="item in menus" :key="item.id" :item="item" />
     </a-menu>
   </div>

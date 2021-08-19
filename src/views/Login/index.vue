@@ -12,14 +12,14 @@
           <a-form-item>
             <a-input v-model:value="form.account" placeholder="账号" @keyup.enter="onSubmit">
               <template #prefix>
-                <svg-icon name="login-user"></svg-icon>
+                <svg-icon name="login-user" />
               </template>
             </a-input>
           </a-form-item>
           <a-form-item>
             <a-input v-model:value.trim="form.userPwd" type="password" placeholder="密码" @keyup.enter="onSubmit">
               <template #prefix>
-                <svg-icon name="login-password"></svg-icon>
+                <svg-icon name="login-password" />
               </template>
             </a-input>
           </a-form-item>

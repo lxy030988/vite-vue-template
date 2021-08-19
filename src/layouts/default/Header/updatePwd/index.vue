@@ -1,49 +1,17 @@
 <template>
-  <a-modal
-    :visible="visible"
-    width="800px"
-    title="修改密码"
-    @ok="handleOk"
-    @cancel='handleCancel'
-  >
-    <a-form
-      ref='formRef'
-      :model="formState"
-      :label-col="labelCol"
-      :wrapper-col="wrapperCol"
-      :rules="rules"
-    >
-      <a-form-item
-        label="旧密码"
-        name="oldPassword"
-      >
-        <a-input
-          v-model:value="formState.oldPassword"
-          placeholder="请输入旧密码"
-        />
+  <a-modal :visible="visible" width="800px" title="修改密码" @ok="handleOk" @cancel="handleCancel">
+    <a-form ref="formRef" :model="formState" :label-col="labelCol" :wrapper-col="wrapperCol" :rules="rules">
+      <a-form-item label="旧密码" name="oldPassword">
+        <a-input v-model:value="formState.oldPassword" placeholder="请输入旧密码" />
       </a-form-item>
-      <a-form-item
-        label="新密码"
-        name="newPassword"
-      >
-        <a-input
-          v-model:value="formState.newPassword"
-          placeholder="请输入新密码"
-        />
+      <a-form-item label="新密码" name="newPassword">
+        <a-input v-model:value="formState.newPassword" placeholder="请输入新密码" />
       </a-form-item>
-      <a-form-item
-        label="新密码"
-        name="repeatPassword"
-        required
-      >
-        <a-input
-          v-model:value="formState.repeatPassword"
-          placeholder="请重新输入新密码"
-        />
+      <a-form-item label="新密码" name="repeatPassword" required>
+        <a-input v-model:value="formState.repeatPassword" placeholder="请重新输入新密码" />
       </a-form-item>
     </a-form>
   </a-modal>
-
 </template>
 
 <script lang="ts">
@@ -134,5 +102,4 @@ export default defineComponent({
 })
 </script>
 
-<style>
-</style>
+<style></style>

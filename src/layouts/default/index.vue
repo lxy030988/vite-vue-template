@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper">
-    <v-head></v-head>
+    <v-head />
     <div class="wrapper-con">
       <div class="left">
-        <v-sidebar></v-sidebar>
+        <v-sidebar />
       </div>
       <div class="right">
         <div class="content-box">

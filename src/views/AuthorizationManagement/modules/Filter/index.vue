@@ -17,7 +17,7 @@
         </a-select>
       </a-form-item>
       <a-form-item label="授权信息">
-        <a-input v-model:value="formState.licenseInfo" placeholder="请输入合同号/购买公司"></a-input>
+        <a-input v-model:value="formState.licenseInfo" placeholder="请输入合同号/购买公司" />
       </a-form-item>
       <a-form-item label="授权日期">
         <a-range-picker

@@ -59,23 +59,14 @@
 // 注册必须的组件
 // echarts.use([PieChart, BarChart, LineChart, GaugeChart, PictorialBarChart, ScatterChart, EffectScatterChart, CanvasRenderer /*渲染器*/, TitleComponent, LegendComponent, TooltipComponent, GridComponent, DataZoomComponent, DataZoomInsideComponent, DataZoomSliderComponent])
 
-import {
-  defineComponent,
-  h,
-  Ref,
-  ref,
-  toRefs,
-  PropType,
-  watch,
-  onMounted,
-  onUnmounted
-} from 'vue'
+import { defineComponent, h, Ref, ref, toRefs, PropType, watch, onMounted, onUnmounted } from 'vue'
 
 //echarts 全部引入
 import * as echarts from 'echarts'
 //Option类型提示
 import { EChartsOption } from 'echarts/types/dist/shared'
-export type OptionType = EChartsOption
+export { EChartsOption }
+// export type OptionType = EChartsOption
 
 export default defineComponent({
   name: 'VueEcharts',
