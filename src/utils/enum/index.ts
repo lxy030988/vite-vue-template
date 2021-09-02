@@ -4,9 +4,18 @@ interface Item {
   label: string
 }
 
-class JcEnum {
-  private container: Map<PropertyKey, string>
-  public VALUES: Item[]
+interface IJcEnum {
+  readonly container: Map<PropertyKey, string>
+  VALUES: Item[]
+  toString(keys: any): string
+  [key: string]: any
+}
+
+class JcEnum implements IJcEnum {
+  public readonly container: Map<PropertyKey, string>
+  public VALUES: Item[];
+  [key: string]: any
+
   constructor(values: Item[]) {
     this.VALUES = values
 
@@ -47,5 +56,7 @@ class JcEnum {
     return 'JcEnum'
   }
 }
+
+JcEnum.apply
 
 export default JcEnum
