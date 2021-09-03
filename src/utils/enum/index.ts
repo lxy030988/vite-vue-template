@@ -57,6 +57,5 @@ class JcEnum implements IJcEnum {
   }
 }
 
-JcEnum.apply
-
+export { JcEnum }
 export default JcEnum
