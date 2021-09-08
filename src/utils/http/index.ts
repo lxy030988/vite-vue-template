@@ -1,5 +1,6 @@
 import axios from 'axios'
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import qs from 'qs'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 
 import { ResCodeEnum } from '@/enums/httpEnum'
 import { TRes } from './model'
@@ -8,11 +9,41 @@ import { getToken } from '../storage/user'
 import { message } from 'ant-design-vue'
 import router from '@/router' //只能在setup里用useRouter
 
+//取消重复请求
+const CancelToken = axios.CancelToken
+
+const pendingRequest = new Map()
+
+const generateReqKey = (config: AxiosRequestConfig) => {
+  const { method, url, params, data } = config
+  return [method, url, qs.stringify(params), qs.stringify(data)].join('&')
+}
+
+const addPendingRequest = (config: AxiosRequestConfig) => {
+  if (!config.cancelToken) {
+    const requestKey = generateReqKey(config)
+    const source = CancelToken.source()
+    config.cancelToken = source.token
+    if (!pendingRequest.has(requestKey)) {
+      pendingRequest.set(requestKey, source.cancel)
+      // source.cancel('取消请求')
+    }
+  }
+}
+
+const removePendingRequest = (config: AxiosRequestConfig) => {
+  const requestKey = generateReqKey(config)
+  if (pendingRequest.has(requestKey)) {
+    const cancel = pendingRequest.get(requestKey)
+    cancel(`取消请求 ${requestKey}`)
+    pendingRequest.delete(requestKey)
+  }
+}
+
 const http: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL as string,
-  timeout: 200_000,
+  timeout: 20_000,
   headers: {
-    // token: getToken(),
     'Content-Security-Policy': 'upgrade-insecure-requests'
   }
 })
@@ -20,6 +51,8 @@ const http: AxiosInstance = axios.create({
 http.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     config.headers.token = getToken()
+    removePendingRequest(config)
+    addPendingRequest(config)
     return config
   },
   error => {
@@ -29,6 +62,8 @@ http.interceptors.request.use(
 
 http.interceptors.response.use(
   (res: AxiosResponse<TRes>) => {
+    removePendingRequest(res.config)
+
     if (res.status === 200) {
       if (res.data.code === ResCodeEnum.SUCCESS) {
         return res.data.data
@@ -46,7 +81,11 @@ http.interceptors.response.use(
       return Promise.reject(res)
     }
   },
-  err => {
+  (err: AxiosError) => {
+    removePendingRequest(err.config)
+    if (axios.isCancel(err)) {
+      console.log('已取消的重复请求：' + err.message)
+    }
     return Promise.reject(err)
   }
 )
