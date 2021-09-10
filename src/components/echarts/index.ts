@@ -65,8 +65,8 @@ import { defineComponent, h, Ref, ref, toRefs, PropType, watch, onMounted, onUnm
 import * as echarts from 'echarts'
 //Option类型提示
 import { EChartsOption } from 'echarts/types/dist/shared'
-export { EChartsOption }
-// export type OptionType = EChartsOption
+// export { EChartsOption }
+export type OptionType = EChartsOption
 
 export default defineComponent({
   name: 'VueEcharts',
