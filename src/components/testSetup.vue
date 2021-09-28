@@ -25,6 +25,7 @@ export default defineComponent({
 // import type { test } from "./test"
 import logo from '@/assets/logo.png'
 import { getCurrentInstance, reactive, ref, defineComponent } from 'vue'
+import { getJson } from '@/api/mock/test'
 
 const props = defineProps({
   msg: String,
@@ -80,6 +81,14 @@ function test() {
   // 使用
   emits('change', font)
 }
+
+async function getJsonData() {
+  const json = await getJson()
+  console.log('json', json)
+}
+
+getJsonData()
+
 defineExpose({ test })
 
 // const attrs = useAttrs()  useCSSModule  useSlots  useCssVars  useTransitionState useSSRContext

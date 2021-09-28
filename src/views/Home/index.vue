@@ -2,7 +2,7 @@
   <div></div>
   <img alt="Vue logo" src="@/assets/logo.png" />
   <img alt="Vue logo" src="../../assets/logo.png" />
-  <img src="@/assets/icons/home.svg" alt="" style="width: 20px" />
+  <img src="@/assets/icons/menu/home.svg" alt="" style="width: 20px" />
   <div>
     <a-button type="primary" @click="testVuex"> 测试Vuex </a-button>
   </div>
@@ -37,7 +37,7 @@ export default defineComponent({
     VueEcharts
   },
   setup() {
-    console.log(import.meta.env.VITE_BASE_URL)
+    // console.log(import.meta.env.VITE_BASE_URL)
     // const store = useStore<GlobleState>()
     // console.log(store.state.home.name)
     const { state, getters, commit, dispatch } = useMyStore()
@@ -95,8 +95,8 @@ export default defineComponent({
   color: red;
 }
 .echarts {
-  width: 300px;
-  height: 200px;
+  width: 800px;
+  height: 600px;
 }
 ::v-deep(.deep-test) {
   color: red;

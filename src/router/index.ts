@@ -41,25 +41,25 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: '文件上传'
         }
-      },
-      {
-        path: 'internalAuthorization/:type',
-        name: 'InternalAuthorization',
-        component: () =>
-          import(/* webpackChunkName: "authorizationManagement" */ '../views/AuthorizationManagement/index.vue'),
-        meta: {
-          title: '授权管理'
-        }
-      },
-      {
-        path: 'outsideAuthorization/:type',
-        name: 'OutsideAuthorization',
-        component: () =>
-          import(/* webpackChunkName: "authorizationManagement" */ '../views/AuthorizationManagement/index.vue'),
-        meta: {
-          title: '授权码管理'
-        }
       }
+      // {
+      //   path: 'internalAuthorization/:type',
+      //   name: 'InternalAuthorization',
+      //   component: () =>
+      //     import(/* webpackChunkName: "authorizationManagement" */ '../views/AuthorizationManagement/index.vue'),
+      //   meta: {
+      //     title: '授权管理'
+      //   }
+      // },
+      // {
+      //   path: 'outsideAuthorization/:type',
+      //   name: 'OutsideAuthorization',
+      //   component: () =>
+      //     import(/* webpackChunkName: "authorizationManagement" */ '../views/AuthorizationManagement/index.vue'),
+      //   meta: {
+      //     title: '授权码管理'
+      //   }
+      // }
     ]
   },
   {

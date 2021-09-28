@@ -20,7 +20,7 @@ setup(props,ctx) {}
 - script setup + TS + Volar 
 - vscode禁用 Vetur，下载Volar
 - define 编译器宏  不需要引入，直接使用 。defineProps  defineEmits  defineExpose
-- 示例 src\components\testSetup.vue
+- 示例 src/components/testSetup.vue
 
 - 需要更新这几个包 
 
@@ -61,6 +61,13 @@ setup(props,ctx) {}
 
 
 
+### mock数据
+
+- 在mock文件夹 添加json文件
+- 例子：src/api/mock/test.ts
+
+
+
 ### css深度选择器
 
 ```scss
@@ -90,7 +97,7 @@ setup(props,ctx) {}
 
 ### scss变量全局使用
 
-- src\styles\variables.scss 在此文件里定义变量
+- src/styles/variables.scss 在此文件里定义变量
 - 如果新建文件定义变量  需要在vite.config.ts配置additionalData引入该文件
 
 ```js
@@ -129,15 +136,15 @@ css: {
 ### SVG图标使用
 
 ```html
-svg文件存放路径为 src\assets\icons
+svg文件存放路径为 src/assets/icons
 svg-icon组件 name字段： 文件夹名称+文件名称（没有文件夹则省略）
 
 用例1
-src\assets\icons\test2\dynamic-avatar-2.svg
+src/assets/icons/test2/dynamic-avatar-2.svg
 <svg-icon name="test2-dynamic-avatar-2"></svg-icon>
 
 用例2
-src\assets\icons\dynamic-avatar-2.svg
+src/assets/icons/dynamic-avatar-2.svg
 <svg-icon name="dynamic-avatar-2"></svg-icon>
 
 ```
@@ -299,7 +306,7 @@ Vue 3 command line Type-Checking tool base on IDE plugin Volar
 
 
 ```json
-"lint": "eslint --fix \"src/**/*([^d]|[^.]d).{ts,vue}\""
+"lint": "eslint --fix /"src/**/*([^d]|[^.]d).{ts,vue}/""
 "lint": "eslint --ext .ts,.vue src/** --error-on-unmatched-pattern"   --quiet(不报警告)
 "lint:fix": "eslint --ext .ts,.vue src/** --error-on-unmatched-pattern --fix"
 ```
@@ -354,9 +361,9 @@ jest.config.js
 
 module.exports = {
   transform: {
-    "^.+\\.vue$": "vue-jest",
-    "^.+\\js$": "babel-jest",
-    "^.+\\ts$": "ts-jest",
+    "^.+//.vue$": "vue-jest",
+    "^.+//js$": "babel-jest",
+    "^.+//ts$": "ts-jest",
   },
   moduleNameMapper: {
     "^@/components(.*)$": "<rootDir>/src/components$1",

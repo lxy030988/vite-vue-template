@@ -29,57 +29,57 @@ const menus = [
     path: 'home',
     name: '系统首页'
   },
-  // {
-  //   id: 2,
-  //   parentId: 0,
-  //   icon: 'menu-setting',
-  //   path: 'setting',
-  //   name: '系统设置',
-  //   children: [
-  //     {
-  //       id: 26,
-  //       parentId: 2,
-  //       path: 'plan',
-  //       name: '计划页面'
-  //     },
-  //     {
-  //       id: 27,
-  //       parentId: 2,
-  //       path: 'upload',
-  //       name: '文件上传'
-  //     }
-  //   ]
-  // },
   {
-    id: 3,
+    id: 2,
     parentId: 0,
-    icon: 'menu-internal-authorization',
-    path: 'internalAuthorization',
-    name: '内部授权',
+    icon: 'menu-setting',
+    path: 'setting',
+    name: '系统设置',
     children: [
       {
-        id: 31,
-        parentId: 3,
-        path: AuthorizationTypes.INSIDE,
-        name: '授权管理'
-      }
-    ]
-  },
-  {
-    id: 4,
-    parentId: 0,
-    icon: 'menu-outside-authorization',
-    path: 'outsideAuthorization',
-    name: '外部授权',
-    children: [
+        id: 26,
+        parentId: 2,
+        path: 'plan',
+        name: '计划页面'
+      },
       {
-        id: 41,
-        parentId: 4,
-        path: AuthorizationTypes.OUTSIDE,
-        name: '授权码管理'
+        id: 27,
+        parentId: 2,
+        path: 'upload',
+        name: '文件上传'
       }
     ]
   }
+  // {
+  //   id: 3,
+  //   parentId: 0,
+  //   icon: 'menu-internal-authorization',
+  //   path: 'internalAuthorization',
+  //   name: '内部授权',
+  //   children: [
+  //     {
+  //       id: 31,
+  //       parentId: 3,
+  //       path: AuthorizationTypes.INSIDE,
+  //       name: '授权管理'
+  //     }
+  //   ]
+  // },
+  // {
+  //   id: 4,
+  //   parentId: 0,
+  //   icon: 'menu-outside-authorization',
+  //   path: 'outsideAuthorization',
+  //   name: '外部授权',
+  //   children: [
+  //     {
+  //       id: 41,
+  //       parentId: 4,
+  //       path: AuthorizationTypes.OUTSIDE,
+  //       name: '授权码管理'
+  //     }
+  //   ]
+  // }
 ]
 
 export default defineComponent({
