@@ -10,7 +10,7 @@
   </ul>
 
   <div class="test">test</div>
-  <!-- <a-button type="primary" @click="test">测试</a-button> -->
+  <!-- <el-button type="primary" @click="test">测试</el-button> -->
   <div class="echarts" ref="echartRef"></div>
 </template>
 

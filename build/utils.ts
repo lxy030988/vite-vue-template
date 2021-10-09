@@ -35,8 +35,7 @@ export function isProdFn(mode: 'development' | 'production'): boolean {
   return mode === 'production'
 }
 
-export const isFunction = (arg: unknown): arg is (...args: any[]) => any =>
-  typeof arg === 'function'
+export const isFunction = (arg: unknown): arg is (...args: any[]) => any => typeof arg === 'function'
 
 export function readAllFile(root: string, reg: RegExp) {
   let resultArr: string[] = []

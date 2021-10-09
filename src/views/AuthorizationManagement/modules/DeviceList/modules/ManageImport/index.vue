@@ -19,23 +19,21 @@
           <span>设备信息表格模板下载</span>
         </a>
         <a-upload :file-list="files" :before-upload="beforeUpload">
-          <a-button>
+          <el-button>
             <upload-outlined />
             上传文件
-          </a-button>
+          </el-button>
         </a-upload>
       </a-form-item>
       <div class="text-center">
-        <a-button @click="resetForm">取消</a-button>
-        <a-button class="jc-ml" type="primary" @click="onSubmit">确定</a-button>
+        <el-button @click="resetForm">取消</el-button>
+        <el-button class="jc-ml" type="primary" @click="onSubmit">确定</el-button>
       </div>
     </a-form>
   </a-modal>
 </template>
 
 <script lang="ts">
-import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
-import { UploadOutlined } from '@ant-design/icons-vue'
 import { defineComponent, PropType, reactive, ref, toRaw, watchEffect } from 'vue'
 import { NOT_NULL, SELECT_NOT_NULL } from '@/utils/rule'
 import { useForm } from '@/hooks'
@@ -45,9 +43,6 @@ import { importDevice } from '@/api/authorizationManagement'
 import { NumMessage } from '@/utils/message'
 export default defineComponent({
   name: 'AuthorizationManagementDeviceListManageImport',
-  components: {
-    UploadOutlined
-  },
   props: {
     visible: {
       type: Boolean,
@@ -94,7 +89,7 @@ export default defineComponent({
         .then(() => {
           validated()
         })
-        .catch((error: ValidateErrorEntity<TParamsImportDevice>) => {
+        .catch((error: any) => {
           console.log('error', error)
         })
     }
@@ -116,7 +111,7 @@ export default defineComponent({
 
     const resetForm = () => {
       formRef.value!.resetFields()
-      resetFields()
+      // resetFields()
       emit('update:visible', false)
     }
 

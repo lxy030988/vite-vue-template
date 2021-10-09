@@ -3,7 +3,7 @@
     <jc-filter @filter="goFilter" />
     <a-card class="jc-mt" title="列表内容" :bordered="false">
       <template #extra>
-        <a-button type="primary" @click="magage(null)">添加授权</a-button>
+        <el-button type="primary" @click="magage(null)">添加授权</el-button>
       </template>
       <a-table :loading="loading" row-key="id" :data-source="list" :columns="columns" :pagination="false">
         <template #index="{ index }">
@@ -31,22 +31,22 @@
           {{ formatDate(record) }}
         </template>
         <template #operation="{ record }">
-          <a-button type="link" title="详情" @click="showDetail(record)">
+          <el-button type="link" title="详情" @click="showDetail(record)">
             <template #icon>
               <InfoCircleOutlined />
             </template>
-          </a-button>
-          <a-button type="link" title="编辑" @click="magage(record)">
+          </el-button>
+          <el-button type="link" title="编辑" @click="magage(record)">
             <template #icon>
               <FormOutlined />
             </template>
-          </a-button>
+          </el-button>
           <a-popconfirm title="您确定要删除吗?" @confirm="onDelete(record)">
-            <a-button type="link" danger title="删除">
+            <el-button type="link" danger title="删除">
               <template #icon>
                 <DeleteOutlined />
               </template>
-            </a-button>
+            </el-button>
           </a-popconfirm>
         </template>
       </a-table>
@@ -76,16 +76,14 @@
 import { defineAsyncComponent, defineComponent, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
-import { DeleteOutlined, FormOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
-
 import { AuthorizationTypes, LICENSE_STATUSES } from './CONST'
 import { usePage } from '@/hooks'
 
 import { deleteAuthManage, getAuthManageList, deviceCount } from '@/api/authorizationManagement'
 import { TAuthorizationListItem } from '@/api/authorizationManagement/model'
-import { ColumnProps } from 'ant-design-vue/lib/table/interface'
+
 //定义表格默认列
-const dcolumns: ColumnProps[] = [
+const dcolumns: any[] = [
   {
     title: '序号',
     slots: { customRender: 'index' }
@@ -132,10 +130,6 @@ const dcolumns: ColumnProps[] = [
 export default defineComponent({
   name: 'AuthorizationManagementIndex',
   components: {
-    DeleteOutlined,
-    FormOutlined,
-    InfoCircleOutlined,
-
     JcPagination: defineAsyncComponent(() => import('@/components/pagination/index.vue')),
     JcFilter: defineAsyncComponent(() => import('./modules/Filter/index.vue')),
     JcManage: defineAsyncComponent(() => import('./modules/Manage/index.vue')),

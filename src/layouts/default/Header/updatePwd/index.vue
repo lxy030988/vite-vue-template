@@ -15,7 +15,6 @@
 </template>
 
 <script lang="ts">
-import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import { reactive, toRaw, defineComponent, ref } from 'vue'
 import { NOT_NULL } from '@/utils/rule/index'
 import { updatePwd } from '@/api/user/index'
@@ -60,7 +59,7 @@ export default defineComponent({
         .then(() => {
           validated()
         })
-        .catch((error: ValidateErrorEntity) => {
+        .catch((error: any) => {
           console.log('validate error', error)
         })
     }

@@ -24,8 +24,8 @@
         />
       </a-form-item>
       <a-form-item class="jc-tabfilter-btns">
-        <a-button type="primary" html-type="submit" @click="onSubmit">查询</a-button>
-        <a-button class="jc-ml" @click="resetFields">重置</a-button>
+        <el-button type="primary" html-type="submit" @click="onSubmit">查询</el-button>
+        <el-button class="jc-ml" @click="resetFields">重置</el-button>
       </a-form-item>
     </a-form>
   </a-card>

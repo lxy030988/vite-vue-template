@@ -12,13 +12,10 @@ import { OutputAsset, OutputChunk, OutputOptions, Plugin } from 'rollup'
 import { GzipPluginOptions } from './types'
 
 const isFunction = (arg: unknown): arg is (...args: any[]) => any => typeof arg === 'function'
-const isRegExp = (arg: unknown): arg is RegExp =>
-  Object.prototype.toString.call(arg) === '[object RegExp]'
+const isRegExp = (arg: unknown): arg is RegExp => Object.prototype.toString.call(arg) === '[object RegExp]'
 
 export type StringMappingOption = (originalString: string) => string
-export type CustomCompressionOption = (
-  content: string | Buffer
-) => string | Buffer | Promise<string | Buffer>
+export type CustomCompressionOption = (content: string | Buffer) => string | Buffer | Promise<string | Buffer>
 
 const readFilePromise = promisify(readFile)
 const writeFilePromise = promisify(writeFile)
@@ -48,10 +45,7 @@ function getOutputFileContent(
     let source: string | Buffer
     source = outputFile.code
     if (outputOptions.sourcemap && outputFile.map) {
-      const url =
-        outputOptions.sourcemap === 'inline'
-          ? outputFile.map.toUrl()
-          : `${basename(outputFileName)}.map`
+      const url = outputOptions.sourcemap === 'inline' ? outputFile.map.toUrl() : `${basename(outputFileName)}.map`
 
       // https://github.com/rollup/rollup/blob/master/src/utils/sourceMappingURL.ts#L1
       source += `//# source` + `MappingURL=${url}\n`
@@ -120,10 +114,7 @@ function gzipPlugin(options: GzipPluginOptions = {}): Plugin {
               return Promise.resolve()
             }
 
-            if (
-              isFunction(fileNameFilter) &&
-              !(fileNameFilter as (x: string) => boolean)(fileName)
-            ) {
+            if (isFunction(fileNameFilter) && !(fileNameFilter as (x: string) => boolean)(fileName)) {
               return Promise.resolve()
             }
 
@@ -153,8 +144,7 @@ function gzipPlugin(options: GzipPluginOptions = {}): Plugin {
           })
           .concat([
             (() => {
-              if (!options.additionalFiles || !options.additionalFiles.length)
-                return Promise.resolve()
+              if (!options.additionalFiles || !options.additionalFiles.length) return Promise.resolve()
 
               const compressAdditionalFiles = () =>
                 Promise.all(

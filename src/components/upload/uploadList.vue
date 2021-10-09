@@ -8,20 +8,18 @@
       :before-upload="beforeUpload"
       @change="handleChange"
     >
-      <a-button type="primary" :disabled="loading">
+      <el-button type="primary" :disabled="loading">
         <upload-outlined />
         上传文件
-      </a-button>
+      </el-button>
     </a-upload>
   </div>
 </template>
 <script lang="ts">
-import { UploadOutlined } from '@ant-design/icons-vue'
 import { defineComponent, PropType, ref } from 'vue'
 
 import api from '@/api/api'
 import { ResCodeEnum } from '@/enums/httpEnum'
-import { message } from 'ant-design-vue'
 import { getToken } from '@/utils/storage/user'
 
 interface FileItem {
@@ -39,9 +37,6 @@ interface FileInfo {
 
 export default defineComponent({
   name: 'UploadList',
-  components: {
-    UploadOutlined
-  },
   props: {
     fileList: {
       type: Array as PropType<FileItem[]>,
@@ -67,7 +62,7 @@ export default defineComponent({
           if (file.response.code === ResCodeEnum.SUCCESS) {
             file.url = file.response.data || ''
           } else {
-            message.error('上传失败')
+            // message.error('上传失败')
           }
         }
         return file

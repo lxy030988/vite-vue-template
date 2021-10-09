@@ -1,5 +1,5 @@
 # vite-vue-template
-vite2+vue3+antd后台管理系统模板
+ vite2 + vue3 + element-plus 后台管理系统模板
 
 ## 基础
 
@@ -13,6 +13,9 @@ import { defineComponent, inject, provide, onMounted, PropType, reactive, Ref, r
 setup(props,ctx) {}
 ```
 
+### element-plus
+
+- https://element-plus.gitee.io/zh-CN/
 
 
 ### vue3.2
@@ -159,7 +162,7 @@ src/assets/icons/dynamic-avatar-2.svg
       <vue-echarts :options="options"></vue-echarts>
     </div>
     <div>
-      <a-button type="primary" @click="changeSeriesData">改变echarts数据</a-button>
+      <el-button type="primary" @click="changeSeriesData">改变echarts数据</el-button>
     </div>
   </div>
 </template>
@@ -432,7 +435,7 @@ module.exports = {
 
 ```vue
 <div class="plan3">plan</div>
-<a-button type="primary" @click="test">测试</a-button>
+<el-button type="primary" @click="test">测试</el-button>
 
 <script lang="ts">
 export default defineComponent({

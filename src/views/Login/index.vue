@@ -24,7 +24,7 @@
             </a-input>
           </a-form-item>
           <a-form-item>
-            <a-button type="primary" @click="onSubmit"> 登录 </a-button>
+            <el-button type="primary" @click="onSubmit"> 登录 </el-button>
           </a-form-item>
         </a-form>
       </div>

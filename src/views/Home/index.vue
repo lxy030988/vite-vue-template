@@ -4,7 +4,7 @@
   <img alt="Vue logo" src="../../assets/logo.png" />
   <img src="@/assets/icons/menu/home.svg" alt="" style="width: 20px" />
   <div>
-    <a-button type="primary" @click="testVuex"> 测试Vuex </a-button>
+    <el-button type="primary" @click="testVuex"> 测试Vuex </el-button>
   </div>
   <Messagea />
   <div class="jc-svg-icon assd s s s s">
@@ -15,7 +15,7 @@
       <vue-echarts :options="options" />
     </div>
     <div>
-      <a-button type="primary" @click="test"> 测试 </a-button>
+      <el-button type="primary" @click="test"> 测试 </el-button>
     </div>
   </div>
 </template>

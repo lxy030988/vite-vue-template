@@ -3,10 +3,7 @@ import { readFileSync, writeFileSync } from 'fs'
 import { GzipPluginOptions } from './types'
 import { readAllFile, getCwdPath, isBuildGzip, isSiteMode } from '../../utils'
 
-export function startGzip(
-  fileContent: string | Buffer,
-  options: GzipPluginOptions = {}
-): Promise<Buffer> {
+export function startGzip(fileContent: string | Buffer, options: GzipPluginOptions = {}): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     gzip(fileContent, options.gzipOptions || {}, (err, result) => {
       if (err) {

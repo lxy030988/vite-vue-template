@@ -6,7 +6,7 @@ import { ResCodeEnum } from '@/enums/httpEnum'
 import { TRes } from './model'
 import { getToken } from '../storage/user'
 
-import { message } from 'ant-design-vue'
+import { ElMessage } from 'element-plus'
 import router from '@/router' //只能在setup里用useRouter
 
 //取消重复请求
@@ -50,7 +50,7 @@ const http: AxiosInstance = axios.create({
 
 http.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    config.headers.token = getToken()
+    config.headers!.token = getToken()!
     removePendingRequest(config)
     addPendingRequest(config)
     return config
@@ -69,10 +69,10 @@ http.interceptors.response.use(
         return res.data.data
       } else {
         if (res.data.code === ResCodeEnum.AUTH_EXPIRE) {
-          message.error('您未登录或登录已失效')
+          ElMessage.error('您未登录或登录已失效')
           router.push({ path: '/login' })
         } else {
-          message.error(res.data.msg)
+          ElMessage.error(res.data.msg)
           console.error(res.data.msg)
         }
         return Promise.reject(res)

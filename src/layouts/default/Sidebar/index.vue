@@ -1,22 +1,20 @@
 <template>
   <div class="sidebar">
-    <a-menu
-      v-model:selectedKeys="selectedKeys"
-      v-model:openKeys="openKeys"
-      class="sidebar-el-menu"
-      mode="inline"
-      theme="dark"
-      @click="clickMenu"
+    <el-menu
+      :default-active="da"
+      active-text-color="#ffd04b"
+      background-color="#051530"
+      text-color="#fff"
+      @select="clickMenu"
     >
       <sidebar-item v-for="item in menus" :key="item.id" :item="item" />
-    </a-menu>
+    </el-menu>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { MenuInfo } from '../model'
 
 import SidebarItem from './SidebarItem.vue'
 import { AuthorizationTypes } from '@/views/AuthorizationManagement/CONST'
@@ -89,22 +87,20 @@ export default defineComponent({
   },
   setup() {
     const state = reactive({
-      selectedKeys: ['home'],
-      openKeys: ['']
+      da: 'home'
     })
 
     //点击菜单 跳转路由
     const router = useRouter()
-    function clickMenu(v: MenuInfo) {
-      // console.log('clickMenu', v)
-      router.push({ path: '/' + v.keyPath.join('/') })
+    function clickMenu(index: string, indexPath: any[]) {
+      // console.log('clickMenu', index, indexPath)
+      router.push({ path: '/' + indexPath.join('/') })
     }
 
     //根据路由设置 默认选中菜单和默认展开的菜单
     const route = useRoute()
     const curs = route.path.slice(1).split('/')
-    state.selectedKeys = [curs[curs.length - 1]]
-    state.openKeys = curs.slice(0, curs.length - 1)
+    state.da = curs[curs.length - 1]
 
     return {
       menus,
@@ -122,6 +118,9 @@ export default defineComponent({
   ::v-deep(.svg-icon) {
     margin-right: $jc-default-dis * 0.5;
     font-size: $jc-font-size-large;
+  }
+  .el-menu {
+    height: 100%;
   }
 }
 </style>

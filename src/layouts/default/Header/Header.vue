@@ -1,28 +1,27 @@
 <template>
   <div class="header">
     <div class="logo">
-      <img src="@/assets/images/logo.png" />
-      行政执法授权平台
+      <!-- <img src="@/assets/images/logo.png" /> -->
+      vite-vue-template
     </div>
     <div class="header-right">
       <div class="header-user-con">
         <!-- 用户名下拉菜单 -->
-        <a-dropdown>
-          <span class="ant-dropdown-link">
-            <img src="@/assets/images/avator.png" />
-            {{ username }}
-            <!-- <DownOutlined /> -->
+        <el-dropdown @command="handleCommand">
+          <span class="el-dropdown-link">
+            <!-- <img src="@/assets/images/avator.png" /> -->
+            {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
-          <template #overlay>
-            <a-menu @click="onClick">
-              <a-menu-item :key="DropdownEnum.USER_INFO">个人信息</a-menu-item>
-              <a-menu-item :key="DropdownEnum.UPDATE_PASSWORD">修改密码</a-menu-item>
-              <a-menu-item :key="DropdownEnum.LOGOUT">退出登录</a-menu-item>
-            </a-menu>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item :command="DropdownEnum.USER_INFO">个人信息</el-dropdown-item>
+              <el-dropdown-item :command="DropdownEnum.UPDATE_PASSWORD">修改密码</el-dropdown-item>
+              <el-dropdown-item :command="DropdownEnum.LOGOUT">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
           </template>
-        </a-dropdown>
-        <update-pwd v-model:visible="visible" />
-        <user-info v-model:visible="userVisible" />
+        </el-dropdown>
+        <!-- <update-pwd v-model:visible="visible" /> -->
+        <!-- <user-info v-model:visible="userVisible" /> -->
       </div>
     </div>
   </div>
@@ -32,7 +31,7 @@
 import { computed, defineComponent, ref } from 'vue'
 import updatePwd from './updatePwd/index.vue'
 import userInfo from './userInfo/index.vue'
-import { MenuInfo } from '../model'
+
 import { DropdownEnum } from '../enum'
 import { useRouter } from 'vue-router'
 import { useMyStore } from '@/hooks'
@@ -47,9 +46,8 @@ export default defineComponent({
     const { state, commit } = useMyStore()
     let visible = ref(false)
     let userVisible = ref(false)
-    let username = computed(() => state.user.user?.userName)
-    const onClick = ({ key }: MenuInfo) => {
-      // console.log(`Click on item ${key}`)
+    let username = computed(() => state.user.user?.userName || 'admin')
+    const handleCommand = (key: string) => {
       if (key === DropdownEnum.LOGOUT) {
         try {
           commit('user/SET_USER', null)
@@ -68,7 +66,7 @@ export default defineComponent({
 
     return {
       username,
-      onClick,
+      handleCommand,
       DropdownEnum,
       visible,
       userVisible
@@ -79,21 +77,18 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .header {
-  background-color: $jc-header-bgColor;
+  background-color: $jc-color-white;
   position: relative;
   box-sizing: border-box;
   height: $jc-header-height;
   font-size: $jc-font-size-larger;
-  color: $jc-color-white;
+  border-bottom: 1px solid $jc-color-line-primary;
 }
 
 .header .logo {
   float: left;
   line-height: $jc-header-height;
   padding-left: $jc-default-dis;
-  img {
-    margin-right: 10px;
-  }
 }
 
 .header-right {
@@ -108,7 +103,7 @@ export default defineComponent({
   align-items: center;
 }
 
-.ant-dropdown-link {
+.el-dropdown-link {
   cursor: pointer;
 
   img {
@@ -117,10 +112,5 @@ export default defineComponent({
     margin-right: $jc-default-dis * 0.4;
     border-radius: 50%;
   }
-}
-.ant-dropdown-menu {
-  margin-top: 5px;
-  padding: 10px 18px;
-  margin-left: -6px;
 }
 </style>

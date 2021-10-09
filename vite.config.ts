@@ -49,7 +49,7 @@ module.exports = ({ mode }: any) => {
       }
     },
     optimizeDeps: {
-      include: ['ant-design-vue/es/locale/zh_CN', '@ant-design/icons-vue'],
+      include: ['element-plus/lib/locale/lang/zh-cn'],
       exclude: []
     },
     define: {

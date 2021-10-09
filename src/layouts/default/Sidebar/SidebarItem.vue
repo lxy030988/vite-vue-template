@@ -1,17 +1,17 @@
 <template>
   <div v-if="!item.hidden">
     <template v-if="item.children">
-      <a-sub-menu :key="item.path">
+      <el-sub-menu :index="item.path">
         <template #title>
           <r-item :icon="item.icon" :title="item.name" />
         </template>
         <sidebar-item v-for="child in item.children" :key="child.id" :item="child" />
-      </a-sub-menu>
+      </el-sub-menu>
     </template>
     <template v-else>
-      <a-menu-item :key="item.path">
+      <el-menu-item :index="item.path">
         <r-item :icon="item.icon" :title="item.name" />
-      </a-menu-item>
+      </el-menu-item>
     </template>
   </div>
 </template>

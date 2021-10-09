@@ -1,17 +1,23 @@
 <template>
-  <a-config-provider :locale="zhCN">
+  <el-config-provider :locale="locale">
     <router-view />
-  </a-config-provider>
+  </el-config-provider>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import 'moment/dist/locale/zh-cn'
+import { ElConfigProvider } from 'element-plus'
+import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+
 export default defineComponent({
   name: 'App',
+  components: {
+    ElConfigProvider
+  },
   setup() {
-    return { zhCN }
+    return {
+      locale: zhCn
+    }
   }
 })
 </script>

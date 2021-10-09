@@ -49,16 +49,14 @@
         <a-textarea v-model:value="formState.description" placeholder="请输入问题描述(仅限1000个字符)" />
       </a-form-item>
       <div class="text-center">
-        <a-button @click="resetForm">取消</a-button>
-        <a-button class="jc-ml" type="primary" :loading="loading" @click="onSubmit">确定</a-button>
+        <el-button @click="resetForm">取消</el-button>
+        <el-button class="jc-ml" type="primary" :loading="loading" @click="onSubmit">确定</el-button>
       </div>
     </a-form>
   </a-modal>
 </template>
 
 <script lang="ts">
-import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
-import moment from 'moment'
 import { defineAsyncComponent, defineComponent, PropType, reactive, ref, toRaw, watch, watchEffect } from 'vue'
 import { getStringRule, NOT_NULL, SELECT_NOT_NULL } from '@/utils/rule'
 import { useForm } from '@/hooks'
@@ -166,10 +164,10 @@ export default defineComponent({
           title.value = '添加授权'
           isEditDevice.value = false
           formState.licenseCode = createNonceStr(8)
-          const now = moment().format('YYYYMMDD')
+          // const now = moment().format('YYYYMMDD')
           const nums = props.num + 1
-          formState.contractNumber = `JCXSB${now}${nums}`
-          formState.batchNumber = `ZFY${now}${nums}`
+          formState.contractNumber = `JCXSB${1}${nums}`
+          formState.batchNumber = `ZFY${1}${nums}`
         }
       }
     )
@@ -197,7 +195,7 @@ export default defineComponent({
         .then(() => {
           validated()
         })
-        .catch((error: ValidateErrorEntity<TParamsManage>) => {
+        .catch((error: any) => {
           console.log('validate error', error)
         })
     }
@@ -224,7 +222,7 @@ export default defineComponent({
 
     const resetForm = () => {
       formRef.value!.resetFields()
-      resetFields()
+      // resetFields()
       fileList.value = []
       emit('update:visible', false)
     }

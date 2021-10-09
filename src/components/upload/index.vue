@@ -15,7 +15,7 @@
     <a-progress :percent="progressPercent" />
   </div>
   <div>
-    <a-button type="primary" @click="uploadBtn">上传</a-button>
+    <el-button type="primary" @click="uploadBtn">上传</el-button>
   </div>
   <div>
     <!-- chunk.progress 
@@ -32,7 +32,7 @@
           }"
           :style="{ height: chunk.progress + '%' }"
         >
-          <LoadingOutlined v-if="chunk.progress < 100 && chunk.progress > 0" />
+          <div v-if="chunk.progress < 100 && chunk.progress > 0">loading</div>
         </div>
       </div>
     </div>
@@ -43,7 +43,6 @@
 import { computed, defineComponent, onMounted, reactive, Ref, ref, toRefs } from 'vue'
 
 import { utest, uploadFile, checkFile } from '@/api/upload'
-import { LoadingOutlined } from '@ant-design/icons-vue'
 
 import {
   bindEvents,
@@ -59,7 +58,6 @@ import {
 } from './hooks'
 
 export default defineComponent({
-  components: { LoadingOutlined },
   async setup() {
     // let progressPercent = ref(0)
     let hashProgress = ref(0)
